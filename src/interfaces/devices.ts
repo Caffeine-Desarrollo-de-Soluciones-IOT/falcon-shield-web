@@ -5,6 +5,7 @@ export interface IDevice {
   brand: string;
   model: string;
   specs: IDeviceSpecs;
+  type: keyof typeof EDeviceType;
 }
 
 export interface IDeviceSpecs {
@@ -12,4 +13,12 @@ export interface IDeviceSpecs {
   connectivity: string;
   compatibility: string;
   warranty: string;
+}
+
+export enum EDeviceType {
+  SENSOR = 'SENSOR',
+  ACTUATOR = 'ACTUATOR',
+  CONTROLLER = 'CONTROLLER',
+  DISPLAY = 'DISPLAY',
+  CAMERA = 'CAMERA'
 }
