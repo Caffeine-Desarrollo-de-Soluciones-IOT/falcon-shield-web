@@ -1,3 +1,16 @@
+import { httpClient } from "@/config/httpClient";
+import type { IDevice } from "@/interfaces/devices";
+
+export const getAllAvailableDevices = async () => {
+  const res = await httpClient.get<IDevice[]>("/devices");
+  return res.data;
+}
+
+export const getRegisteredDevices = async () => {
+  const res = await httpClient.get<IDevice[]>("/devices/registered");
+  return res.data;
+}
+
 export const ProductService = {
   getProductsData() {
     return [

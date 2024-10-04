@@ -1,0 +1,137 @@
+{
+  "userProfile": {
+    "account": {
+      "id": "abc123",
+      "username": "svollerei",
+      "firstName": "Seele",
+      "lastName": "Vollerei",
+      "email": "svollerei@gmail.com"
+    },
+    "premium": true
+  },
+  "properties": [
+    {
+      "id": 2,
+      "name": "Lisa's House",
+      "image_url": "lisa_house.jpg",
+      "address": "456 Maple St",
+      "user_id": "abc123"
+    },
+    {
+      "id": 3,
+      "name": "John's House",
+      "image_url": "john_house.jpg",
+      "address": "456 Maple St",
+      "user_id": "abc123"
+    }
+  ],
+  "areas": [
+    {
+      "id": 3,
+      "name": "Kitchen",
+      "icon": "icon_kitchen",
+      "color": "#0000ff",
+      "property_id": 2
+    },
+    {
+      "id": 4,
+      "name": "Garage",
+      "icon": "icon_garage",
+      "color": "#ff00ff",
+      "property_id": 3
+    }
+  ],
+  "devices": [
+    {
+      "id": 4,
+      "name": "Smoke Detector",
+      "description": "Smoke Detector, detects CO2, smoke and fire",
+      "brand": "Nest",
+      "model": "Nest Protect",
+      "specs": {
+        "power": "Battery",
+        "connectivity": "Wi-Fi",
+        "compatibility": "iOS, Android",
+        "warranty": "2 years"
+      },
+      "device_type_id": 1,
+      "area_id": 3,
+      "property_id": 2
+    },
+    {
+      "id": 6,
+      "name": "Window Sensor",
+      "description": "Window Sensor, detects when a window is opened",
+      "brand": "Ring",
+      "model": "Ring Alarm Contact Sensor",
+      "specs": {
+        "power": "Battery",
+        "connectivity": "Z-Wave",
+        "compatibility": "iOS, Android",
+        "warranty": "1 year"
+      },
+      "device_type_id": 2,
+      "area_id": 4,
+      "property_id": 3
+    }
+  ],
+  "alerts": [
+    {
+      "id": 4,
+      "title": "Dispositivo Requiere Mantenimiento",
+      "description": "El dipositivo 'Detector de humo' del area 'cocina' requiere mantenimiento",
+      "timestamp": "2024-09-25T08:00:00Z",
+      "event_type": "Mantenimiento"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "type": "OFFLINE",
+      "content": "Sensor de movimiento apagado en Living Room",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "type": "ONLINE",
+      "content": "Sensor de movimiento encendido en Living Room",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": 3,
+      "type": "ALERT",
+      "content": "Intento de acceso denegado en la cerradura de la puerta principal",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": 4,
+      "type": "ERROR",
+      "content": "Error en la cerradura de la puerta principal",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": 5,
+      "type": "UPDATE",
+      "content": "Actualización de software disponible para la cámara de seguridad",
+      "timestamp": "2024-09-25T08:00:00Z"
+    }
+  ],
+  "device_types": [
+    {
+      "id": 1,
+      "name": "Alarm"
+    },
+    {
+      "id": 2,
+      "name": "Sensor"
+    },
+    {
+      "id": 3,
+      "name": "Camera"
+    },
+    {
+      "id": 4,
+      "name": "Lock"
+    }
+  ]
+}
