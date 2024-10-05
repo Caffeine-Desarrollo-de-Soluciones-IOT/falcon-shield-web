@@ -59,6 +59,22 @@
       "property_id": 2
     },
     {
+      "id": 5,
+      "name": "Smoke Detector",
+      "description": "Smoke Detector, detects CO2, smoke and fire",
+      "brand": "Nest",
+      "model": "Nest Protect",
+      "specs": {
+        "power": "Battery",
+        "connectivity": "Wi-Fi",
+        "compatibility": "iOS, Android",
+        "warranty": "2 years"
+      },
+      "device_type_id": 1,
+      "area_id": 3,
+      "property_id": 2
+    },
+    {
       "id": 6,
       "name": "Window Sensor",
       "description": "Window Sensor, detects when a window is opened",

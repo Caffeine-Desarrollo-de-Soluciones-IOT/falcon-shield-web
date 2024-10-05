@@ -263,7 +263,7 @@ function getStatusLabel(type: EDeviceType) {
         <StepPanel v-slot="{ activateCallback }">
           <label for="deviceSelect" class="block font-bold mb-3">Device</label>
           <Select
-          id="deviceSelect"
+            id="deviceSelect"
             v-model="selectedDevice"
             :options="groupedDevices"
             optionLabel="label"
@@ -275,7 +275,7 @@ function getStatusLabel(type: EDeviceType) {
           >
             <template #optiongroup="slotProps">
               <div class="flex items-center">
-                <i :class="`mr-2 ${slotProps.option.icon}`"/>
+                <i :class="`mr-2 ${slotProps.option.icon}`" />
                 <div>{{ slotProps.option.label }}</div>
               </div>
             </template>
