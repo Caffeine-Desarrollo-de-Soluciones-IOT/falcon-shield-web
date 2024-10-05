@@ -1,5 +1,5 @@
-import AppLayout from '@/layout/AppLayout.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import AppLayout from '@/layout/AppLayout.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,11 +30,20 @@ const router = createRouter({
           component: () => import('@/views/pages/my-properties/MyProperties.vue')
         },
         {
+          path: '/my-properties/:property_id/my-areas',
+          name: 'my-areas',
+          component: () => import('@/views/pages/my-areas/MyAreas.vue')
+        },
+        {
+          path: '/my-properties/:property_id/my-areas/:area_id/devices',
+          name: 'devices',
+          component: () => import('@/views/pages/my-devices/DevicesXArea.vue')
+        },
+        {
           path: 'events',
           name: 'events',
           component: () => import('@/views/pages/events/Events.vue')
         },
-
         //UI KIT
         {
           path: '/uikit',
@@ -140,6 +149,7 @@ const router = createRouter({
       name: 'login',
       component: () => import('@/views/pages/auth/Login.vue')
     },
+    //access denied
     {
       path: '/auth/access',
       name: 'accessDenied',
@@ -158,6 +168,6 @@ const router = createRouter({
       component: () => import('@/views/pages/error/NotFound.vue')
     }
   ]
-})
+});
 
-export default router
+export default router;
