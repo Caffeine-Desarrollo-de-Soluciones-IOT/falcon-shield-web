@@ -3,32 +3,81 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { PropertyService } from '@/service/PropertyService';
 import { AreaService } from '@/service/AreaService';
+import { useToast } from 'primevue/usetoast';
+import { format } from 'date-fns';
 
 const router = useRouter();
 const route = useRoute();
-const areas = ref([]);
+const areas = ref(null);
+const area = ref({ name: '', icon: '', color: '', property_id: 2});
 const propertyId = route.params.property_id;
 const propertyName = ref('');
+const areaDialog = ref(false);
+const submitted = ref(false);
+const toast = useToast();
+const fileupload = ref();
+
 const picklistAreas = ref(null);
 const orderlistAreas = ref(null);
 const options = ref(['grid', 'list']);
 const layout = ref('grid');
+const selectedFile = ref<File | null>(null);
 
 onMounted(() => {
-  AreaService.getAreasSmallByPropertyId(propertyId).then((data) => {
-    areas.value = data.slice(0, 6);
-    picklistAreas.value = [data, []];
-    orderlistAreas.value = data;
-  });
+  loadAreas();
 
   PropertyService.getPropertyById(propertyId).then((property) => {
     propertyName.value = property[0].name;
   });
 });
 
+function loadAreas() {
+  AreaService.getAreasSmallByPropertyId(propertyId).then((data) => {
+    areas.value = data.slice(0, 6);
+    picklistAreas.value = [data, []];
+    orderlistAreas.value = data;
+  });
+}
+
 function viewMoreDevices(areaId) {
   const propertyId = route.params.property_id;
   router.push(`/my-properties/${propertyId}/my-areas/${areaId}/devices`);
+}
+
+function openNew() {
+  area.value = { name: '', icon: '', color: '', property_id: 2};
+  submitted.value = false;
+  areaDialog.value = true;
+}
+
+function hideDialog() {
+  areaDialog.value = false;
+  submitted.value = false;
+}
+
+function saveArea() {
+  submitted.value = true;
+
+  if (!area.value.name) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Name is required', life: 3000 });
+    return;
+  }
+
+  AreaService.createArea(area.value).then(() => {
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Area saved successfully', life: 3000 });
+    loadAreas();
+    areaDialog.value = false;
+  }).catch(error => {
+    toast.add({ severity: 'error', summary: 'Error', detail: error.message, life: 3000 });
+  });
+}
+
+function upload() {
+  fileupload.value.upload();
+}
+
+function onUpload() {
+  toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
 }
 </script>
 
@@ -36,17 +85,27 @@ function viewMoreDevices(areaId) {
   <div class="flex flex-col">
     <div class="card">
       <div class="font-semibold text-xl">Areas for {{ propertyName }}</div>
-      <DataView :value="areas" :layout="layout">
-        <template #header>
-          <div class="flex justify-end">
-            <SelectButton v-model="layout" :options="options" :allowEmpty="false">
-              <template #option="{ option }">
-                <i :class="[option === 'list' ? 'pi pi-bars' : 'pi pi-table']" />
-              </template>
-            </SelectButton>
-          </div>
+      <Toolbar class="mb-6">
+        <template #start>
+          <Button
+            label="New"
+            icon="pi pi-plus"
+            severity="secondary"
+            class="mr-2"
+            @click="openNew"
+          />
         </template>
 
+        <template #end>
+          <SelectButton v-model="layout" :options="options" :allowEmpty="false">
+            <template #option="{ option }">
+              <i :class="[option === 'list' ? 'pi pi-bars' : 'pi pi-table']" />
+            </template>
+          </SelectButton>
+        </template>
+      </Toolbar>
+
+      <DataView :value="areas" :layout="layout">
         <template #list="slotProps">
           <div class="flex flex-col">
             <div v-for="(item, index) in slotProps.items" :key="index">
@@ -57,8 +116,8 @@ function viewMoreDevices(areaId) {
                 <div class="md:w-40 relative">
                   <img
                     class="block xl:block mx-auto rounded w-full"
-                    :src="`https://primefaces.org/cdn/primevue/images/product/${item.image_url}`"
-                    :alt="item.name"
+                    :src="`https://primefaces.org/cdn/primevue/images/product/${item.icon}`"
+                    :alt="item.icon"
                   />
                 </div>
                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
@@ -68,7 +127,6 @@ function viewMoreDevices(areaId) {
                         item.type
                       }}</span>
                       <div class="text-lg font-medium mt-2">{{ item.name }}</div>
-                      <span class="text-surface-900 font-medium text-sm">{{ item.address }}</span>
                     </div>
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
@@ -114,7 +172,6 @@ function viewMoreDevices(areaId) {
                       <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
                         item.type
                       }}</span>
-                      <div class="text-lg font-medium mt-1">{{ item.address }}</div>
                     </div>
                   </div>
                   <div class="flex flex-col gap-6 mt-6">
@@ -136,5 +193,45 @@ function viewMoreDevices(areaId) {
         </template>
       </DataView>
     </div>
+
+    <Dialog
+      v-model:visible="areaDialog"
+      :style="{ width: '450px' }"
+      header="Area Details"
+      :modal="true"
+      :draggable="false"
+    >
+      <div class="flex flex-col gap-6">
+        <div>
+          <label for="name" class="block font-bold mb-3">Name</label>
+          <InputText
+            id="name"
+            v-model.trim="area.name"
+            required="true"
+            autofocus
+            :invalid="submitted && !area.name"
+            fluid
+          />
+          <small v-if="submitted && !area.name" class="text-red-500">Name is required.</small>
+        </div>
+        <!--<div>
+          <label for="image" class="block font-bold mb-3">Image</label>
+          <FileUpload
+            name="image[]"
+            @uploader="onUpload"
+            accept="image/*"
+            :maxFileSize="1000000"
+            autofocus
+            :invalid="submitted && !area.image"
+            fluid
+          />
+        </div>-->
+      </div>
+
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Save" icon="pi pi-check" @click="saveArea" />
+      </template>
+    </Dialog>
   </div>
 </template>

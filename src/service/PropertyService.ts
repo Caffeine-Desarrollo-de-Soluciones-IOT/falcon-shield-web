@@ -1,9 +1,10 @@
 import { httpClient } from '@/config/httpClient';
+import { type IProperty } from '@/interfaces/properties';
 
 const serviceName = '/properties';
 
 export const PropertyService = {
-  async getProperties() {
+  async getProperties(): Promise<IProperty[]> {
     const response = await httpClient.get(`${serviceName}`);
     return response.data;
   },
@@ -20,6 +21,11 @@ export const PropertyService = {
 
   async getPropertyById(propertyId: string) {
     const response = await httpClient.get(`${serviceName}/?id=${propertyId}`);
+    return response.data;
+  },
+
+  async createProperty(property: IProperty): Promise<IProperty> {
+    const response = await httpClient.post(`${serviceName}`, property);
     return response.data;
   }
 };

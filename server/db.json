@@ -11,30 +11,44 @@
   },
   "properties": [
     {
-      "id": 2,
+      "id": "2",
       "name": "Lisa's House",
       "image_url": "lisa_house.jpg",
       "address": "456 Maple St",
       "user_id": "abc123"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "John's House",
       "image_url": "john_house.jpg",
       "address": "456 Maple St",
       "user_id": "abc123"
+    },
+    {
+      "id": "10f1",
+      "name": "Inglés",
+      "address": "Av. Example 123",
+      "user_id": "abc123",
+      "image_url": ""
+    },
+    {
+      "id": "de91",
+      "name": "Inglés",
+      "address": "Av. Example 123",
+      "user_id": "abc123",
+      "image_url": "86fca04f-6336-41ff-bf0d-8fad8503abaa.jpeg?alt=media&token=1150caed-5c20-4e77-a881-6f150d96bbb7"
     }
   ],
   "areas": [
     {
-      "id": 3,
+      "id": "3",
       "name": "Kitchen",
       "icon": "icon_kitchen",
       "color": "#0000ff",
       "property_id": 2
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Garage",
       "icon": "icon_garage",
       "color": "#ff00ff",
@@ -43,7 +57,7 @@
   ],
   "devices": [
     {
-      "id": 4,
+      "id": "4",
       "name": "Smoke Detector",
       "description": "Smoke Detector, detects CO2, smoke and fire",
       "brand": "Nest",
@@ -59,7 +73,7 @@
       "property_id": 2
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Smoke Detector",
       "description": "Smoke Detector, detects CO2, smoke and fire",
       "brand": "Nest",
@@ -75,7 +89,7 @@
       "property_id": 2
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Window Sensor",
       "description": "Window Sensor, detects when a window is opened",
       "brand": "Ring",
@@ -93,7 +107,7 @@
   ],
   "alerts": [
     {
-      "id": 4,
+      "id": "4",
       "title": "Dispositivo Requiere Mantenimiento",
       "description": "El dipositivo 'Detector de humo' del area 'cocina' requiere mantenimiento",
       "timestamp": "2024-09-25T08:00:00Z",
@@ -102,31 +116,31 @@
   ],
   "events": [
     {
-      "id": 1,
+      "id": "1",
       "type": "OFFLINE",
       "content": "Sensor de movimiento apagado en Living Room",
       "timestamp": "2024-09-25T08:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "type": "ONLINE",
       "content": "Sensor de movimiento encendido en Living Room",
       "timestamp": "2024-09-25T08:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "type": "ALERT",
       "content": "Intento de acceso denegado en la cerradura de la puerta principal",
       "timestamp": "2024-09-25T08:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "type": "ERROR",
       "content": "Error en la cerradura de la puerta principal",
       "timestamp": "2024-09-25T08:00:00Z"
     },
     {
-      "id": 5,
+      "id": "5",
       "type": "UPDATE",
       "content": "Actualización de software disponible para la cámara de seguridad",
       "timestamp": "2024-09-25T08:00:00Z"
@@ -134,19 +148,19 @@
   ],
   "device_types": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Alarm"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Sensor"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Camera"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Lock"
     }
   ]
