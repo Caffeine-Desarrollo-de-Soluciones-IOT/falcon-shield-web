@@ -13,46 +13,30 @@
     {
       "id": "2",
       "name": "Lisa's House",
-      "image_url": "lisa_house.jpg",
+      "image_url": "84fc9200-09db-416a-b12c-714ca5b4488e.jpeg?alt=media&token=ea98b5c7-4bd0-4eb0-9761-afec0093537a",
       "address": "456 Maple St",
       "user_id": "abc123"
     },
     {
       "id": "3",
       "name": "John's House",
-      "image_url": "john_house.jpg",
+      "image_url": "51124cf9-3e05-4e48-b4fe-e179c2515af0.jpg?alt=media&token=027bdc76-9803-4fb1-8e9e-6288b1e62126",
       "address": "456 Maple St",
       "user_id": "abc123"
-    },
-    {
-      "id": "10f1",
-      "name": "Inglés",
-      "address": "Av. Example 123",
-      "user_id": "abc123",
-      "image_url": ""
-    },
-    {
-      "id": "de91",
-      "name": "Inglés",
-      "address": "Av. Example 123",
-      "user_id": "abc123",
-      "image_url": "86fca04f-6336-41ff-bf0d-8fad8503abaa.jpeg?alt=media&token=1150caed-5c20-4e77-a881-6f150d96bbb7"
     }
   ],
   "areas": [
     {
       "id": "3",
       "name": "Kitchen",
-      "icon": "icon_kitchen",
-      "color": "#0000ff",
-      "property_id": 2
+      "type": "1",
+      "property_id": "2"
     },
     {
       "id": "4",
       "name": "Garage",
-      "icon": "icon_garage",
-      "color": "#ff00ff",
-      "property_id": 3
+      "type": "2",
+      "property_id": "3"
     }
   ],
   "devices": [
@@ -68,9 +52,9 @@
         "compatibility": "iOS, Android",
         "warranty": "2 years"
       },
-      "device_type_id": 1,
-      "area_id": 3,
-      "property_id": 2
+      "device_type_id": "1",
+      "area_id": "3",
+      "property_id": "2"
     },
     {
       "id": "5",
@@ -84,9 +68,9 @@
         "compatibility": "iOS, Android",
         "warranty": "2 years"
       },
-      "device_type_id": 1,
-      "area_id": 3,
-      "property_id": 2
+      "device_type_id": "1",
+      "area_id": "3",
+      "property_id": "2"
     },
     {
       "id": "6",
@@ -100,9 +84,9 @@
         "compatibility": "iOS, Android",
         "warranty": "1 year"
       },
-      "device_type_id": 2,
-      "area_id": 4,
-      "property_id": 3
+      "device_type_id": "2",
+      "area_id": "4",
+      "property_id": "3"
     }
   ],
   "alerts": [
@@ -162,6 +146,33 @@
     {
       "id": "4",
       "name": "Lock"
+    }
+  ],
+  "area_types": [
+    {
+      "id": "1",
+      "name": "Kitchen",
+      "icon_url": "icons%2Fbedroom.png?alt=media&token=ff29eeec-e075-4207-bedc-a74e09e2baa7"
+    },
+    {
+      "id": "2",
+      "name": "Garage",
+      "icon_url": "icons%2Fgaraje.png?alt=media&token=77802c3d-e86a-4590-9ebc-fe2f35eca2ff"
+    },
+    {
+      "id": "3",
+      "name": "Living Room",
+      "icon_url": "icons%2Fliving-room.png?alt=media&token=008b5e98-9c4b-4a89-8f32-756100fd3555"
+    },
+    {
+      "id": "4",
+      "name": "Dining Room",
+      "icon_url": "icons%2Fdining-room.png?alt=media&token=f634ead0-3d65-4a92-bef8-017580a9e724"
+    },
+    {
+      "id": "5",
+      "name": "Bedroom",
+      "icon_url": "icons%2Fbedroom.png?alt=media&token=ff29eeec-e075-4207-bedc-a74e09e2baa7"
     }
   ]
 }

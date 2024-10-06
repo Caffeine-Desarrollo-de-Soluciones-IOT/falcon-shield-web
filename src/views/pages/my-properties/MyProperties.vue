@@ -13,13 +13,11 @@ const propertyDialog = ref(false);
 const submitted = ref(false);
 const addressVisibility = ref({});
 const toast = useToast();
-const fileupload = ref();
+const selectedFile = ref<File | null>(null);
+const src = ref(null); // Para la vista previa de la imagen
 
-const picklistProperties = ref(null);
-const orderlistProperties = ref(null);
 const options = ref(['grid', 'list']);
 const layout = ref('grid');
-const selectedFile = ref<File | null>(null);
 
 onMounted(() => {
   loadProperties();
@@ -28,8 +26,6 @@ onMounted(() => {
 function loadProperties() {
   PropertyService.getPropertiesSmall().then((data) => {
     properties.value = data.slice(0, 6);
-    picklistProperties.value = [data, []];
-    orderlistProperties.value = data;
   });
 }
 
@@ -45,6 +41,7 @@ function openNew() {
   property.value = { name: '', address: '', user_id: 'abc123', image_url: '' };
   submitted.value = false;
   propertyDialog.value = true;
+  src.value = null; // Reiniciar vista previa al abrir el diálogo
 }
 
 function hideDialog() {
@@ -66,15 +63,13 @@ async function saveProperty() {
       property.value.image_url = imageName;  // Guardar solo el nombre de la imagen en la propiedad
     } else {
       toast.add({ severity: 'error', summary: 'Error', detail: 'Image upload failed', life: 3000 });
-      return; // Detener si no se pudo subir la imagen
+      return;
     }
   }
 
   PropertyService.createProperty(property.value).then(() => {
     toast.add({ severity: 'success', summary: 'Success', detail: 'Property Created', life: 3000 });
-    PropertyService.getPropertiesSmall().then((data) => {
-      properties.value = data.slice(0, 6);
-    });
+    loadProperties();
     propertyDialog.value = false;
     property.value = { name: '', image_url: '', address: '', user_id: 'abc123' };
   }).catch(() => {
@@ -82,26 +77,21 @@ async function saveProperty() {
   });
 }
 
-function onFileChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
-    selectedFile.value = target.files[0]; // Guardar el archivo seleccionado
-  }
-}
+function onFileSelect(event) {
+  selectedFile.value = event.files[0]; 
 
-/*function upload() {
-  fileupload.value.upload();
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    src.value = e.target.result;
+  };
+  reader.readAsDataURL(selectedFile.value);
 }
-
-function onUpload() {
-  toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
-}*/
 </script>
 
 <template>
   <div class="flex flex-col">
     <div class="card">
-      <div class="font-semibold text-xl">My Properties</div>
+      <div class="font-semibold text-xl mb-6">My Properties</div>
       <Toolbar class="mb-6">
         <template #start>
           <Button
@@ -123,6 +113,57 @@ function onUpload() {
       </Toolbar>
 
       <DataView :value="properties" :layout="layout">
+        <template #grid="slotProps">
+          <div class="grid grid-cols-12 gap-4">
+            <div
+              v-for="(item, index) in slotProps.items"
+              :key="index"
+              class="col-span-12 sm:col-span-6 lg:col-span-4 p-2"
+            >
+              <div
+                class="p-6 border border-surface-200 bg-surface-0 rounded flex flex-col"
+              >
+                <div class="bg-surface-50 flex justify-center rounded p-4">
+                  <img
+                    class="rounded w-full"
+                    :src="`${storageBaseUrl}${item.image_url}`"
+                    :alt="item.name"
+                    style="max-height: 150px"
+                  />
+                </div>
+                <div class="pt-6">
+                  <div class="flex flex-row justify-between items-start gap-2">
+                    <div>
+                      <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                      <div class="text-surface-900 font-medium text-sm flex items-center gap-2">
+                        <span v-if="addressVisibility[item.id]">{{ item.address }}</span>
+                        <Button @click="toggleAddressVisibility(item.id)" class="p-button-link">
+                          {{ addressVisibility[item.id] ? 'Hide address' : 'Show address' }}
+                          <i
+                            :class="addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                            class="ml-2"
+                          />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex flex-col md:items-end gap-8">
+                    <div class="flex flex-row-reverse md:flex-row gap-2">
+                      <Button icon="pi pi-heart" outlined></Button>
+                      <Button
+                        icon="pi pi-plus"
+                        label="View areas"
+                        @click="viewMoreAreas(item.id)"
+                        class="flex-auto md:flex-initial whitespace-nowrap"
+                      ></Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+
         <template #list="slotProps">
           <div class="flex flex-col">
             <div v-for="(item, index) in slotProps.items" :key="index">
@@ -132,9 +173,10 @@ function onUpload() {
               >
                 <div class="md:w-40 relative">
                   <img
-                    class="block xl:block mx-auto rounded w-full"
+                    class="rounded w-full"
                     :src="`${storageBaseUrl}${item.image_url}`"
                     :alt="item.name"
+                    style="max-width: 300px"
                   />
                 </div>
                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
@@ -172,62 +214,6 @@ function onUpload() {
             </div>
           </div>
         </template>
-
-        <template #grid="slotProps">
-          <div class="grid grid-cols-12 gap-4">
-            <div
-              v-for="(item, index) in slotProps.items"
-              :key="index"
-              class="col-span-12 sm:col-span-6 lg:col-span-4 p-2"
-            >
-              <div
-                class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
-              >
-                <div class="bg-surface-50 flex justify-center rounded p-4">
-                  <div class="relative mx-auto">
-                    <img
-                      class="rounded w-full"
-                      :src="`${storageBaseUrl}${item.image_url}`"
-                    :alt="item.name"
-                      style="max-width: 300px"
-                    />
-                  </div>
-                </div>
-                <div class="pt-6">
-                  <div class="flex flex-row justify-between items-start gap-2">
-                    <div>
-                      <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                        item.type
-                      }}</span>
-                    </div>
-                  </div>
-                  <div class="flex flex-col gap-6 mt-6">
-                    <span class="text-2xl font-semibold">{{ item.name }}</span>
-                    <div class="text-surface-900 font-medium text-sm flex items-center gap-2">
-                      <span v-if="addressVisibility[item.id]">{{ item.address }}</span>
-                      <Button @click="toggleAddressVisibility(item.id)" class="p-button-link">
-                        {{ addressVisibility[item.id] ? 'Hide address' : 'Show address' }}
-                        <i
-                          :class="addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'"
-                          class="ml-2"
-                        />
-                      </Button>
-                    </div>
-                    <div class="flex gap-2">
-                      <Button
-                        icon="pi pi-plus"
-                        label="View areas"
-                        @click="viewMoreAreas(item.id)"
-                        class="flex-auto whitespace-nowrap"
-                      ></Button>
-                      <Button icon="pi pi-heart" outlined></Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </template>
       </DataView>
     </div>
 
@@ -257,30 +243,26 @@ function onUpload() {
             id="address"
             v-model.trim="property.address"
             required="true"
-            autofocus
             :invalid="submitted && !property.address"
             fluid
           />
-          <small v-if="submitted && !property.address" class="text-red-500"
-            >Address is required.</small
-          >
+          <small v-if="submitted && !property.address" class="text-red-500">Address is required.</small>
         </div>
         <div>
           <label for="image" class="block font-bold mb-3">Image</label>
-          <input type="file" id="image" accept="image/*" @change="onFileChange" />
-        </div>
-        <!--<div>
-          <label for="image" class="block font-bold mb-3">Image</label>
-          <FileUpload
-            name="image[]"
-            @uploader="onUpload"
+          <div class="card flex flex-col items-center gap-6">
+            <FileUpload 
+            mode="basic"
             accept="image/*"
-            :maxFileSize="1000000"
-            autofocus
-            :invalid="submitted && !property.image"
-            fluid
+            @select="onFileSelect"
+            customUpload
+            auto
+            severity="secondary"
+            class="p-button-outlined"
           />
-        </div>-->
+          <img v-if="src" :src="src" alt="image" class="shadow-md rounded-xl w-full sm:w-64" />
+          </div>          
+        </div>
       </div>
 
       <template #footer>

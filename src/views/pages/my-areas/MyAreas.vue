@@ -16,12 +16,12 @@ const areaDialog = ref(false);
 const submitted = ref(false);
 const toast = useToast();
 const fileupload = ref();
+const selectedFile = ref<File | null>(null);
 
 const picklistAreas = ref(null);
 const orderlistAreas = ref(null);
 const options = ref(['grid', 'list']);
 const layout = ref('grid');
-const selectedFile = ref<File | null>(null);
 
 onMounted(() => {
   loadAreas();
