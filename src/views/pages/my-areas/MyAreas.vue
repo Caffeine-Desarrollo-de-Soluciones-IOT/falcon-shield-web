@@ -1,38 +1,42 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { PropertyService } from '@/service/PropertyService';
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { AreaService } from '@/service/AreaService';
 
 const router = useRouter();
-const properties = ref(null);
-const addressVisibility = ref({});
-const picklistProperties = ref(null);
-const orderlistProperties = ref(null);
+const route = useRoute();
+const areas = ref([]);
+const propertyId = route.params.property_id;
+const propertyName = ref('');
+const picklistAreas = ref(null);
+const orderlistAreas = ref(null);
 const options = ref(['grid', 'list']);
 const layout = ref('grid');
 
 onMounted(() => {
-  PropertyService.getPropertiesSmall().then((data) => {
-    properties.value = data.slice(0, 6);
-    picklistProperties.value = [data, []];
-    orderlistProperties.value = data;
+  AreaService.getAreasSmallByPropertyId(propertyId).then((data) => {
+    areas.value = data.slice(0, 6);
+    picklistAreas.value = [data, []];
+    orderlistAreas.value = data;
+  });
+
+  PropertyService.getPropertyById(propertyId).then((property) => {
+    propertyName.value = property[0].name;
   });
 });
 
-function viewMoreAreas(propertyId) {
-  router.push(`/my-properties/${propertyId}/my-areas`);
-}
-
-function toggleAddressVisibility(propertyId) {
-  addressVisibility.value[propertyId] = !addressVisibility.value[propertyId];
+function viewMoreDevices(areaId) {
+  const propertyId = route.params.property_id;
+  router.push(`/my-properties/${propertyId}/my-areas/${areaId}/devices`);
 }
 </script>
 
 <template>
   <div class="flex flex-col">
     <div class="card">
-      <div class="font-semibold text-xl">My Properties</div>
-      <DataView :value="properties" :layout="layout">
+      <div class="font-semibold text-xl">Areas for {{ propertyName }}</div>
+      <DataView :value="areas" :layout="layout">
         <template #header>
           <div class="flex justify-end">
             <SelectButton v-model="layout" :options="options" :allowEmpty="false">
@@ -64,16 +68,7 @@ function toggleAddressVisibility(propertyId) {
                         item.type
                       }}</span>
                       <div class="text-lg font-medium mt-2">{{ item.name }}</div>
-                      <div class="text-surface-900 font-medium text-sm flex items-center gap-2">
-                        <span v-if="addressVisibility[item.id]">{{ item.address }}</span>
-                        <Button @click="toggleAddressVisibility(item.id)" class="p-button-link">
-                          {{ addressVisibility[item.id] ? 'Hide address' : 'Show address' }}
-                          <i
-                            :class="addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'"
-                            class="ml-2"
-                          />
-                        </Button>
-                      </div>
+                      <span class="text-surface-900 font-medium text-sm">{{ item.address }}</span>
                     </div>
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
@@ -81,8 +76,8 @@ function toggleAddressVisibility(propertyId) {
                       <Button icon="pi pi-heart" outlined></Button>
                       <Button
                         icon="pi pi-plus"
-                        label="View areas"
-                        @click="viewMoreAreas(item.id)"
+                        label="View devices"
+                        @click="viewMoreDevices(item.id)"
                         class="flex-auto md:flex-initial whitespace-nowrap"
                       ></Button>
                     </div>
@@ -119,25 +114,16 @@ function toggleAddressVisibility(propertyId) {
                       <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
                         item.type
                       }}</span>
+                      <div class="text-lg font-medium mt-1">{{ item.address }}</div>
                     </div>
                   </div>
                   <div class="flex flex-col gap-6 mt-6">
                     <span class="text-2xl font-semibold">{{ item.name }}</span>
-                    <div class="text-surface-900 font-medium text-sm flex items-center gap-2">
-                      <span v-if="addressVisibility[item.id]">{{ item.address }}</span>
-                      <Button @click="toggleAddressVisibility(item.id)" class="p-button-link">
-                        {{ addressVisibility[item.id] ? 'Hide address' : 'Show address' }}
-                        <i
-                          :class="addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'"
-                          class="ml-2"
-                        />
-                      </Button>
-                    </div>
                     <div class="flex gap-2">
                       <Button
                         icon="pi pi-plus"
-                        label="View areas"
-                        @click="viewMoreAreas(item.id)"
+                        label="View devices"
+                        @click="viewMoreDevices(item.id)"
                         class="flex-auto whitespace-nowrap"
                       ></Button>
                       <Button icon="pi pi-heart" outlined></Button>
