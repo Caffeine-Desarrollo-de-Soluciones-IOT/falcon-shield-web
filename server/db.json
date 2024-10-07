@@ -23,26 +23,19 @@
       "image_url": "51124cf9-3e05-4e48-b4fe-e179c2515af0.jpg?alt=media&token=027bdc76-9803-4fb1-8e9e-6288b1e62126",
       "address": "456 Maple St",
       "user_id": "abc123"
-    },
-    {
-      "id": "01f4",
-      "name": "Casita2",
-      "address": "Av. Example 123",
-      "user_id": "abc123",
-      "image_url": "icons%2Fimage-default.jpg?alt=media&token=ad9f427e-0e10-4921-84b1-def775f541e7"
     }
   ],
   "areas": [
     {
       "id": "3",
       "name": "Kitchen",
-      "icon_id": "1",
+      "icon_id": "2",
       "property_id": "2"
     },
     {
       "id": "4",
       "name": "Garage",
-      "icon_id": "2",
+      "icon_id": "3",
       "property_id": "3"
     }
   ],
@@ -158,26 +151,31 @@
   "icons": [
     {
       "id": "1",
+      "name": "Default",
+      "icon_url": "icons%2Fimage-default.jpg?alt=media&token=ad9f427e-0e10-4921-84b1-def775f541e7"
+    },
+    {
+      "id": "2",
       "name": "Kitchen",
       "icon_url": "icons%2Fkitchen-appliance.png?alt=media&token=48637017-585a-4480-9748-9a520c0e2659"
     },
     {
-      "id": "2",
+      "id": "3",
       "name": "Garage",
       "icon_url": "icons%2Fgaraje.png?alt=media&token=77802c3d-e86a-4590-9ebc-fe2f35eca2ff"
     },
     {
-      "id": "3",
+      "id": "4",
       "name": "Living Room",
       "icon_url": "icons%2Fliving-room.png?alt=media&token=008b5e98-9c4b-4a89-8f32-756100fd3555"
     },
     {
-      "id": "4",
+      "id": "5",
       "name": "Dining Room",
       "icon_url": "icons%2Fdining-room.png?alt=media&token=f634ead0-3d65-4a92-bef8-017580a9e724"
     },
     {
-      "id": "5",
+      "id": "6",
       "name": "Bedroom",
       "icon_url": "icons%2Fbedroom.png?alt=media&token=ff29eeec-e075-4207-bedc-a74e09e2baa7"
     }
