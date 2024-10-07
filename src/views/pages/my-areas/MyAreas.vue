@@ -3,25 +3,30 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { PropertyService } from '@/service/PropertyService';
 import { AreaService } from '@/service/AreaService';
+import { EAreaType } from '@/interfaces/areas';
 import { useToast } from 'primevue/usetoast';
-import { format } from 'date-fns';
+import { IconService } from '../../../service/IconService';
+import { storageBaseUrl } from '@/config/firebaseConfig';
 
 const router = useRouter();
 const route = useRoute();
 const areas = ref(null);
-const area = ref({ name: '', icon: '', color: '', property_id: 2});
+const area = ref({ name: '', icon_id: '', property_id: '2' });
 const propertyId = route.params.property_id;
 const propertyName = ref('');
 const areaDialog = ref(false);
 const submitted = ref(false);
 const toast = useToast();
-const fileupload = ref();
-const selectedFile = ref<File | null>(null);
 
 const picklistAreas = ref(null);
 const orderlistAreas = ref(null);
 const options = ref(['grid', 'list']);
 const layout = ref('grid');
+
+// Para los íconos
+const icons = ref([]);
+const selectedIcon = ref(null);
+const popoverRef = ref(null);
 
 onMounted(() => {
   loadAreas();
@@ -29,6 +34,8 @@ onMounted(() => {
   PropertyService.getPropertyById(propertyId).then((property) => {
     propertyName.value = property[0].name;
   });
+
+  loadIcons();
 });
 
 function loadAreas() {
@@ -39,13 +46,27 @@ function loadAreas() {
   });
 }
 
+function loadIcons() {
+  IconService.getIcons().then((data) => {
+    icons.value = data;
+  });
+}
+
+function getIconUrl(iconId) {
+  console.log(`Buscando URL para Icon ID: ${iconId}`); // Verifica qué ID se está pasando
+  const icon = icons.value.find((icon) => icon.id === iconId);
+  const url = icon ? `${storageBaseUrl}${icon.icon_url}` : null;
+  console.log(`Icon ID: ${iconId}, URL: ${url}`); // Verifica qué URL se genera
+  return url;
+}
+
 function viewMoreDevices(areaId) {
   const propertyId = route.params.property_id;
   router.push(`/my-properties/${propertyId}/my-areas/${areaId}/devices`);
 }
 
 function openNew() {
-  area.value = { name: '', icon: '', color: '', property_id: 2};
+  area.value = { name: '', icon_id: '', property_id: '2' };
   submitted.value = false;
   areaDialog.value = true;
 }
@@ -63,21 +84,47 @@ function saveArea() {
     return;
   }
 
-  AreaService.createArea(area.value).then(() => {
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Area saved successfully', life: 3000 });
-    loadAreas();
-    areaDialog.value = false;
-  }).catch(error => {
-    toast.add({ severity: 'error', summary: 'Error', detail: error.message, life: 3000 });
-  });
+  AreaService.createArea(area.value)
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Area saved successfully',
+        life: 3000
+      });
+      loadAreas();
+      areaDialog.value = false;
+    })
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: 'Error', detail: error.message, life: 3000 });
+    });
 }
 
-function upload() {
-  fileupload.value.upload();
+function mapAreaTypeToName(typeId: number): EAreaType | undefined {
+  switch (typeId) {
+    case '1':
+      return 'Kitchen';
+    case '2':
+      return 'Garage';
+    case '3':
+      return 'Living Room';
+    case '4':
+      return 'Dining Room';
+    case '5':
+      return 'Bedroom';
+    default:
+      return undefined;
+  }
 }
 
-function onUpload() {
-  toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
+function selectIcon(icon) {
+  selectedIcon.value = icon;
+  area.value.icon_id = icon.id;
+  popoverRef.value.hide();
+}
+
+function showIconPopover(event) {
+  popoverRef.value.toggle(event);
 }
 </script>
 
@@ -113,21 +160,18 @@ function onUpload() {
                 class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
                 :class="{ 'border-t border-surface': index !== 0 }"
               >
-                <div class="md:w-40 relative">
+                <div class="md:w-40 flex justify-center items-center">
                   <img
-                    class="block xl:block mx-auto rounded w-full"
-                    :src="`https://primefaces.org/cdn/primevue/images/product/${item.icon}`"
-                    :alt="item.icon"
+                    v-if="getIconUrl(item.icon_id)"
+                    :src="getIconUrl(item.icon_id)"
+                    alt="Area Icon"
+                    class="area-icon"
+                    style="height: 50px"
                   />
                 </div>
                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                   <div class="flex flex-row md:flex-col justify-between items-start gap-2">
-                    <div>
-                      <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                        item.type
-                      }}</span>
                       <div class="text-lg font-medium mt-2">{{ item.name }}</div>
-                    </div>
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
@@ -159,21 +203,15 @@ function onUpload() {
                 <div class="bg-surface-50 flex justify-center rounded p-4">
                   <div class="relative mx-auto">
                     <img
-                      class="rounded w-full"
-                      :src="`https://primefaces.org/cdn/primevue/images/product/${item.image_url}`"
-                      :alt="item.name"
-                      style="max-width: 300px"
+                      v-if="getIconUrl(item.icon_id)"
+                      :src="getIconUrl(item.icon_id)"
+                      alt="Area Icon"
+                      class="area-icon"
+                      style="height: 50px"
                     />
                   </div>
                 </div>
                 <div class="pt-6">
-                  <div class="flex flex-row justify-between items-start gap-2">
-                    <div>
-                      <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                        item.type
-                      }}</span>
-                    </div>
-                  </div>
                   <div class="flex flex-col gap-6 mt-6">
                     <span class="text-2xl font-semibold">{{ item.name }}</span>
                     <div class="flex gap-2">
@@ -214,18 +252,38 @@ function onUpload() {
           />
           <small v-if="submitted && !area.name" class="text-red-500">Name is required.</small>
         </div>
-        <!--<div>
-          <label for="image" class="block font-bold mb-3">Image</label>
-          <FileUpload
-            name="image[]"
-            @uploader="onUpload"
-            accept="image/*"
-            :maxFileSize="1000000"
-            autofocus
-            :invalid="submitted && !area.image"
-            fluid
+
+        <div>
+          <label for="icon" class="block font-bold mb-3">Icon</label>
+          <Button
+            type="button"
+            :label="selectedIcon ? selectedIcon.name : 'Select Icon'"
+            @click="showIconPopover"
+            class="min-w-48"
           />
-        </div>-->
+
+          <!-- Popover for Icon Selection -->
+          <Popover ref="popoverRef">
+            <div class="flex flex-col gap-4">
+              <div>
+                <span class="font-medium block mb-2">Available Icons</span>
+                <ul class="list-none p-0 m-0 flex flex-col">
+                  <li
+                    v-for="icon in icons"
+                    :key="icon.id"
+                    class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border"
+                    @click="selectIcon(icon)"
+                  >
+                    <img :src="`${storageBaseUrl}${icon.icon_url}`" style="width: 32px" />
+                    <div>
+                      <span class="font-medium">{{ icon.name }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Popover>
+        </div>
       </div>
 
       <template #footer>

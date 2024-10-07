@@ -121,21 +121,21 @@ function onFileSelect(event) {
               class="col-span-12 sm:col-span-6 lg:col-span-4 p-2"
             >
               <div
-                class="p-6 border border-surface-200 bg-surface-0 rounded flex flex-col"
+                class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
               >
                 <div class="bg-surface-50 flex justify-center rounded p-4">
                   <img
                     class="rounded w-full"
                     :src="`${storageBaseUrl}${item.image_url}`"
                     :alt="item.name"
-                    style="max-height: 150px"
+                    style="height: 150px"
                   />
                 </div>
                 <div class="pt-6">
                   <div class="flex flex-row justify-between items-start gap-2">
                     <div>
                       <div class="text-lg font-medium mt-2">{{ item.name }}</div>
-                      <div class="text-surface-900 font-medium text-sm flex items-center gap-2">
+                      <div class="font-medium text-sm flex items-center gap-2">
                         <span v-if="addressVisibility[item.id]">{{ item.address }}</span>
                         <Button @click="toggleAddressVisibility(item.id)" class="p-button-link">
                           {{ addressVisibility[item.id] ? 'Hide address' : 'Show address' }}

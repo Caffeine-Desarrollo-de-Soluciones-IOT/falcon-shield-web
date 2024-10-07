@@ -23,20 +23,33 @@
       "image_url": "51124cf9-3e05-4e48-b4fe-e179c2515af0.jpg?alt=media&token=027bdc76-9803-4fb1-8e9e-6288b1e62126",
       "address": "456 Maple St",
       "user_id": "abc123"
+    },
+    {
+      "id": "958d",
+      "name": "Casita",
+      "address": "Av. Example 123",
+      "user_id": "abc123",
+      "image_url": "b0cbf797-427a-4db7-951f-c1fdf952b1e2.webp?alt=media&token=7d94631d-c852-4e58-bc24-7c1906137cd3"
     }
   ],
   "areas": [
     {
       "id": "3",
       "name": "Kitchen",
-      "type": "1",
+      "icon_id": "1",
       "property_id": "2"
     },
     {
       "id": "4",
       "name": "Garage",
-      "type": "2",
+      "icon_id": "2",
       "property_id": "3"
+    },
+    {
+      "id": "23c6",
+      "name": "Test",
+      "icon_id": "3",
+      "property_id": "2"
     }
   ],
   "devices": [
@@ -148,11 +161,11 @@
       "name": "Lock"
     }
   ],
-  "area_types": [
+  "icons": [
     {
       "id": "1",
       "name": "Kitchen",
-      "icon_url": "icons%2Fbedroom.png?alt=media&token=ff29eeec-e075-4207-bedc-a74e09e2baa7"
+      "icon_url": "icons%2Fkitchen-appliance.png?alt=media&token=48637017-585a-4480-9748-9a520c0e2659"
     },
     {
       "id": "2",
