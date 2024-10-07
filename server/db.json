@@ -23,6 +23,13 @@
       "image_url": "51124cf9-3e05-4e48-b4fe-e179c2515af0.jpg?alt=media&token=027bdc76-9803-4fb1-8e9e-6288b1e62126",
       "address": "456 Maple St",
       "user_id": "abc123"
+    },
+    {
+      "id": "01f4",
+      "name": "Casita2",
+      "address": "Av. Example 123",
+      "user_id": "abc123",
+      "image_url": "icons%2Fimage-default.jpg?alt=media&token=ad9f427e-0e10-4921-84b1-def775f541e7"
     }
   ],
   "areas": [

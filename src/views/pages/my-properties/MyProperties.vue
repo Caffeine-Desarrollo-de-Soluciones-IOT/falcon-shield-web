@@ -294,7 +294,7 @@ function onFileSelect(event) {
                         dropdownIcon="pi pi-chevron-down"
                         @click="viewMoreAreas(item.id)"
                         class="flex-auto md:flex-initial whitespace-nowrap"
-                        :model="items"
+                        :model="items(item)"
                       />
                     </div>
                   </div>
@@ -311,7 +311,7 @@ function onFileSelect(event) {
       v-model:visible="propertyDialog"
       :style="{ width: '450px' }"
       header="Property Details"
-      :modal="true"
+      modal
       :draggable="false"
     >
       <div class="flex flex-col gap-6">
@@ -366,10 +366,11 @@ function onFileSelect(event) {
     <!-- Diálogo para confirmar eliminación -->
     <Dialog
       header="Confirm"
-      :visible="deleteDialog"
+      v-model:visible="deleteDialog"
       modal
-      @hide="deleteDialog = false"
+      :draggable="false"
       footer="footer"
+      :style="{ width: '450px' }"
     >
       <div>Are you sure you want to delete <b>{{ propertyToDelete?.name }}</b>?</div>
       <template #footer>
