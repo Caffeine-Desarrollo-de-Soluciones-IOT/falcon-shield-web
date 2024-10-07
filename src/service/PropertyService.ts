@@ -9,18 +9,18 @@ export const PropertyService = {
     return response.data;
   },
 
-  async getPropertiesMini() {
+  async getPropertiesMini(): Promise<IProperty[]> {
     const response = await httpClient.get<IProperty[]>(`${serviceName}`);
     return response.data.slice(0, 5);
   },
 
-  async getPropertiesSmall() {
+  async getPropertiesSmall(): Promise<IProperty[]> {
     const response = await httpClient.get<IProperty[]>(`${serviceName}`);
     return response.data.slice(0, 10);
   },
 
   async getPropertyById(propertyId: string): Promise<IProperty> {
-    const response = await httpClient.get(`${serviceName}/?id=${propertyId}`);
+    const response = await httpClient.get<IProperty>(`${serviceName}/?id=${propertyId}`);
     return response.data;
   },
 
@@ -29,17 +29,17 @@ export const PropertyService = {
       property.image_url =
         'icons%2Fimage-default.jpg?alt=media&token=ad9f427e-0e10-4921-84b1-def775f541e7'; // Ruta a la imagen por defecto
     }
-    const response = await httpClient.post(`${serviceName}`, property);
-    return response.data;
-  },
-
-  async deleteProperty(propertyId: string): Promise<void> {
-    const response = await httpClient.delete(`${serviceName}/${propertyId}`);
+    const response = await httpClient.post<IProperty>(`${serviceName}`, property);
     return response.data;
   },
 
   async updateProperty(propertyId: string, propertyData: IProperty): Promise<void> {
-    const response = await httpClient.put(`${serviceName}/${propertyId}`, propertyData);
+    const response = await httpClient.put<void>(`${serviceName}/${propertyId}`, propertyData);
+    return response.data;
+  },
+
+  async deleteProperty(propertyId: string): Promise<void> {
+    const response = await httpClient.delete<void>(`${serviceName}/${propertyId}`);
     return response.data;
   }
 };
