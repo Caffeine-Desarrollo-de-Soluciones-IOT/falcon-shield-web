@@ -18,10 +18,10 @@ const areaDialog = ref(false);
 const submitted = ref(false);
 const toast = useToast();
 
-const picklistAreas = ref(null);
-const orderlistAreas = ref(null);
 const options = ref(['grid', 'list']);
 const layout = ref('grid');
+const picklistAreas = ref(null);
+const orderlistAreas = ref(null);
 
 // Para los íconos
 const icons = ref([]);
@@ -53,10 +53,8 @@ function loadIcons() {
 }
 
 function getIconUrl(iconId) {
-  console.log(`Buscando URL para Icon ID: ${iconId}`); // Verifica qué ID se está pasando
   const icon = icons.value.find((icon) => icon.id === iconId);
   const url = icon ? `${storageBaseUrl}${icon.icon_url}` : null;
-  console.log(`Icon ID: ${iconId}, URL: ${url}`); // Verifica qué URL se genera
   return url;
 }
 

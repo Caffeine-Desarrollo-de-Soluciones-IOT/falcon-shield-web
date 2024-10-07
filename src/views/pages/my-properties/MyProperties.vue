@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropertyService } from '@/service/PropertyService';
-import { imageService } from '@/service/ImageService'; 
+import { imageService } from '@/service/ImageService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -9,7 +9,9 @@ import { useToast } from 'primevue/usetoast';
 const router = useRouter();
 const properties = ref(null);
 const property = ref({ name: '', address: '', user_id: 'abc123', image_url: '' });
+const propertyToDelete = ref(null);
 const propertyDialog = ref(false);
+const deleteDialog = ref(false);
 const submitted = ref(false);
 const addressVisibility = ref({});
 const toast = useToast();
@@ -18,6 +20,25 @@ const src = ref(null); // Para la vista previa de la imagen
 
 const options = ref(['grid', 'list']);
 const layout = ref('grid');
+const picklistAreas = ref(null);
+const orderlistAreas = ref(null);
+
+const items = (item) => [
+  {
+    label: 'Edit',
+    icon: 'pi pi-pencil',
+    command: () => {
+      editProperty(item);
+    }
+  },
+  {
+    label: 'Delete',
+    icon: 'pi pi-times',
+    command: () => {
+      confirmDelete(item);
+    }
+  }
+];
 
 onMounted(() => {
   loadProperties();
@@ -26,6 +47,8 @@ onMounted(() => {
 function loadProperties() {
   PropertyService.getPropertiesSmall().then((data) => {
     properties.value = data.slice(0, 6);
+    picklistAreas.value = [data, []];
+    orderlistAreas.value = data;
   });
 }
 
@@ -38,6 +61,7 @@ function toggleAddressVisibility(propertyId) {
 }
 
 function openNew() {
+  // Reiniciar el objeto de propiedad y abrir el diálogo para nueva propiedad
   property.value = { name: '', address: '', user_id: 'abc123', image_url: '' };
   submitted.value = false;
   propertyDialog.value = true;
@@ -53,32 +77,95 @@ async function saveProperty() {
   submitted.value = true;
 
   if (!property.value.name || !property.value.address) {
-    return; // Validación básica de campos
+    return; // Validación básica
   }
 
   if (selectedFile.value) {
-    const imageName = await imageService.uploadImage(selectedFile.value);  // Subir la imagen a Firebase
+    const imageName = await imageService.uploadImage(selectedFile.value); // Subir la imagen a Firebase
 
     if (imageName) {
-      property.value.image_url = imageName;  // Guardar solo el nombre de la imagen en la propiedad
+      property.value.image_url = imageName; // Guardar solo el nombre de la imagen en la propiedad
     } else {
       toast.add({ severity: 'error', summary: 'Error', detail: 'Image upload failed', life: 3000 });
       return;
     }
   }
 
-  PropertyService.createProperty(property.value).then(() => {
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Property Created', life: 3000 });
-    loadProperties();
-    propertyDialog.value = false;
-    property.value = { name: '', image_url: '', address: '', user_id: 'abc123' };
-  }).catch(() => {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to create property', life: 3000 });
-  });
+  if (property.value.id) {
+    // Si existe un id, actualiza la propiedad
+    PropertyService.updateProperty(property.value.id, property.value)
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Property Updated',
+          life: 3000
+        });
+        loadProperties();
+        propertyDialog.value = false;
+        property.value = { id: '', name: '', image_url: '', address: '', user_id: 'abc123' };
+      })
+      .catch(() => {
+        toast.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to update property',
+          life: 3000
+        });
+      });
+  } else {
+    // Si no hay id, crea una nueva propiedad
+    PropertyService.createProperty(property.value)
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Property Created',
+          life: 3000
+        });
+        loadProperties();
+        propertyDialog.value = false;
+        property.value = { name: '', image_url: '', address: '', user_id: 'abc123' };
+      })
+      .catch(() => {
+        toast.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to create property',
+          life: 3000
+        });
+      });
+  }
+}
+
+function editProperty(item) {
+  // Copiar la propiedad seleccionada y abrir el diálogo de edición
+  property.value = { ...item };
+  propertyDialog.value = true; // Asegurarse de que solo se abre el diálogo de edición
+  src.value = `${storageBaseUrl}${item.image_url}`; // Mostrar la imagen actual en la vista previa
+}
+
+function deleteProperty() {
+  if (propertyToDelete.value) {
+    PropertyService.deleteProperty(propertyToDelete.value.id) // Asumiendo que tienes este método en el servicio
+      .then(() => {
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Property Deleted', life: 3000 });
+        loadProperties(); // Recargar propiedades
+        deleteDialog.value = false; // Cerrar diálogo de eliminación
+      })
+      .catch(() => {
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete property', life: 3000 });
+      });
+  }
+}
+
+function confirmDelete(item) {
+  propertyToDelete.value = item; // Guardar la propiedad a eliminar
+  deleteDialog.value = true; // Abrir diálogo de confirmación
 }
 
 function onFileSelect(event) {
-  selectedFile.value = event.files[0]; 
+  selectedFile.value = event.files[0];
 
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -150,12 +237,13 @@ function onFileSelect(event) {
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
                       <Button icon="pi pi-heart" outlined></Button>
-                      <Button
-                        icon="pi pi-plus"
+                      <SplitButton
                         label="View areas"
+                        dropdownIcon="pi pi-chevron-down"
                         @click="viewMoreAreas(item.id)"
                         class="flex-auto md:flex-initial whitespace-nowrap"
-                      ></Button>
+                        :model="items(item)"
+                      />
                     </div>
                   </div>
                 </div>
@@ -201,12 +289,13 @@ function onFileSelect(event) {
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
                       <Button icon="pi pi-heart" outlined></Button>
-                      <Button
-                        icon="pi pi-plus"
+                      <SplitButton
                         label="View areas"
+                        dropdownIcon="pi pi-chevron-down"
                         @click="viewMoreAreas(item.id)"
                         class="flex-auto md:flex-initial whitespace-nowrap"
-                      ></Button>
+                        :model="items"
+                      />
                     </div>
                   </div>
                 </div>
@@ -217,6 +306,7 @@ function onFileSelect(event) {
       </DataView>
     </div>
 
+    <!-- Diálogo para crear/editar propiedad -->
     <Dialog
       v-model:visible="propertyDialog"
       :style="{ width: '450px' }"
@@ -246,28 +336,45 @@ function onFileSelect(event) {
             :invalid="submitted && !property.address"
             fluid
           />
-          <small v-if="submitted && !property.address" class="text-red-500">Address is required.</small>
+          <small v-if="submitted && !property.address" class="text-red-500"
+            >Address is required.</small
+          >
         </div>
         <div>
           <label for="image" class="block font-bold mb-3">Image</label>
           <div class="card flex flex-col items-center gap-6">
-            <FileUpload 
-            mode="basic"
-            accept="image/*"
-            @select="onFileSelect"
-            customUpload
-            auto
-            severity="secondary"
-            class="p-button-outlined"
-          />
-          <img v-if="src" :src="src" alt="image" class="shadow-md rounded-xl w-full sm:w-64" />
-          </div>          
+            <FileUpload
+              mode="basic"
+              accept="image/*"
+              @select="onFileSelect"
+              customUpload
+              auto
+              severity="secondary"
+              class="p-button-outlined"
+            />
+            <img v-if="src" :src="src" alt="image" class="shadow-md rounded-xl w-full sm:w-64" />
+          </div>
         </div>
       </div>
 
       <template #footer>
         <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="saveProperty" />
+        <Button label="Save" icon="pi pi-check" text @click="saveProperty" />
+      </template>
+    </Dialog>
+
+    <!-- Diálogo para confirmar eliminación -->
+    <Dialog
+      header="Confirm"
+      :visible="deleteDialog"
+      modal
+      @hide="deleteDialog = false"
+      footer="footer"
+    >
+      <div>Are you sure you want to delete <b>{{ propertyToDelete?.name }}</b>?</div>
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" @click="deleteDialog = false" class="p-button-text" />
+        <Button label="Yes" icon="pi pi-check" @click="deleteProperty" autoFocus />
       </template>
     </Dialog>
   </div>

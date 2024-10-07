@@ -1,4 +1,4 @@
-import { computed, reactive, readonly } from 'vue'
+import { computed, reactive, readonly } from 'vue';
 
 const layoutConfig = reactive({
   preset: 'Aura',
@@ -6,7 +6,7 @@ const layoutConfig = reactive({
   surface: null,
   darkTheme: false,
   menuMode: 'static'
-})
+});
 
 const layoutState = reactive({
   staticMenuDesktopInactive: false,
@@ -16,61 +16,60 @@ const layoutState = reactive({
   staticMenuMobileActive: false,
   menuHoverActive: false,
   activeMenuItem: null
-})
+});
 
 export function useLayout() {
   const setPrimary = (value: string) => {
-    layoutConfig.primary = value
-  }
+    layoutConfig.primary = value;
+  };
 
   const setActiveMenuItem = (item: any) => {
-    layoutState.activeMenuItem = item.value || item
-  }
+    layoutState.activeMenuItem = item.value || item;
+  };
 
   const toggleDarkMode = () => {
-    //@ts-expect-error idk why this is an error
     if (!document.startViewTransition) {
-      executeDarkModeToggle()
+      executeDarkModeToggle();
 
-      return
+      return;
     }
 
     //@ts-expect-error idk why this is an error
-    document.startViewTransition(() => executeDarkModeToggle(event))
-  }
+    document.startViewTransition(() => executeDarkModeToggle(event));
+  };
 
   const executeDarkModeToggle = () => {
-    layoutConfig.darkTheme = !layoutConfig.darkTheme
-    document.documentElement.classList.toggle('app-dark')
-  }
+    layoutConfig.darkTheme = !layoutConfig.darkTheme;
+    document.documentElement.classList.toggle('app-dark');
+  };
 
   const onMenuToggle = () => {
     if (layoutConfig.menuMode === 'overlay') {
-      layoutState.overlayMenuActive = !layoutState.overlayMenuActive
+      layoutState.overlayMenuActive = !layoutState.overlayMenuActive;
     }
 
     if (window.innerWidth > 991) {
-      layoutState.staticMenuDesktopInactive = !layoutState.staticMenuDesktopInactive
+      layoutState.staticMenuDesktopInactive = !layoutState.staticMenuDesktopInactive;
     } else {
-      layoutState.staticMenuMobileActive = !layoutState.staticMenuMobileActive
+      layoutState.staticMenuMobileActive = !layoutState.staticMenuMobileActive;
     }
-  }
+  };
 
   const resetMenu = () => {
-    layoutState.overlayMenuActive = false
-    layoutState.staticMenuMobileActive = false
-    layoutState.menuHoverActive = false
-  }
+    layoutState.overlayMenuActive = false;
+    layoutState.staticMenuMobileActive = false;
+    layoutState.menuHoverActive = false;
+  };
 
   const isSidebarActive = computed(
     () => layoutState.overlayMenuActive || layoutState.staticMenuMobileActive
-  )
+  );
 
-  const isDarkTheme = computed(() => layoutConfig.darkTheme)
+  const isDarkTheme = computed(() => layoutConfig.darkTheme);
 
-  const getPrimary = computed(() => layoutConfig.primary)
+  const getPrimary = computed(() => layoutConfig.primary);
 
-  const getSurface = computed(() => layoutConfig.surface)
+  const getSurface = computed(() => layoutConfig.surface);
 
   return {
     layoutConfig: readonly(layoutConfig),
@@ -83,6 +82,6 @@ export function useLayout() {
     setActiveMenuItem,
     toggleDarkMode,
     setPrimary,
-    resetMenu,
-  }
+    resetMenu
+  };
 }
