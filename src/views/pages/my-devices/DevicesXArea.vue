@@ -9,13 +9,14 @@
   const visible = ref(false);
   const selectedDevice = ref(null);
   const areaId = route.params.area_id;
+  const propertyId = route.params.property_id;
   const areaName = ref('');
   const picklistAreas = ref(null);
   const orderlistAreas = ref(null);
   const layout = ref('grid');
   
   onMounted(() => {
-    DeviceService.getDevicesByAreaId(areaId).then((data) => {
+    DeviceService.getDevicesByAreaId_PropertyId(areaId, propertyId).then((data) => {
       devices.value = data.slice(0, 6);
       picklistAreas.value = [data, []];
       orderlistAreas.value = data;
@@ -39,7 +40,7 @@
           <template #header></template>  
           
           <template #grid="slotProps">
-            <div class="grid grid-cols-12 gap-4">
+            <div class="grid grid-cols-12 gap-4 mt-6">
               <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 lg:col-span-4 p-2">
                 <div class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col">
                   <div class="pt-6">
@@ -49,11 +50,11 @@
                         <div class="text-lg font-medium mt-1">{{ item.name }}</div>
                       </div>
                     </div>
-                    <div class="flex flex-col gap-6 mt-6">
+                    <div class="flex flex-col md:items-end gap-8">
                       <p class="text-s font-light">{{ item.description }}</p>
-                      <div class="flex gap-2">
+                      <div class="flex flex-row-reverse md:flex-row gap-2">
+                        <!-- <Button icon="pi pi-heart" outlined></Button> -->
                         <Button icon="pi pi-plus" label="View more" @click="showDeviceSpecs(item)" class="flex-auto whitespace-nowrap"></Button>
-                        <Button icon="pi pi-heart" outlined></Button>
                       </div>
                     </div>
                   </div>

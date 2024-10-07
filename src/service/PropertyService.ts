@@ -1,4 +1,6 @@
 import { httpClient } from '@/config/httpClient';
+import { storage } from '@/config/firebaseConfig';
+import { deleteObject, ref } from 'firebase/storage';
 import { type IProperty } from '@/interfaces/properties';
 
 const serviceName = '/properties';
@@ -19,8 +21,8 @@ export const PropertyService = {
     return response.data.slice(0, 10);
   },
 
-  async getPropertyById(propertyId: string): Promise<IProperty> {
-    const response = await httpClient.get<IProperty>(`${serviceName}/?id=${propertyId}`);
+  async getPropertyById(propertyId: string): Promise<IProperty[]> {
+    const response = await httpClient.get<IProperty[]>(`${serviceName}/?id=${propertyId}`);
     return response.data;
   },
 
@@ -39,6 +41,14 @@ export const PropertyService = {
   },
 
   async deleteProperty(propertyId: string): Promise<void> {
+    const properties = await this.getPropertyById(propertyId);
+    const property = properties[0];
+
+    if (property && property.image_url) {
+      const imageRef = ref(storage, `images/${property.image_url?.split('?')[0]}`);
+      await deleteObject(imageRef);
+    }
+
     const response = await httpClient.delete<void>(`${serviceName}/${propertyId}`);
     return response.data;
   }
