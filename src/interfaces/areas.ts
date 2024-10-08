@@ -1,6 +1,6 @@
 export interface IArea {
   id: string;
   name: string;
-  icon: string;
-  color: string;
+  icon_id: string;
+  property_id: string;
 }

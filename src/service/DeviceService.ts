@@ -1,4 +1,6 @@
 import { httpClient } from '@/config/httpClient';
+
+import type { IDevice } from '@/interfaces/devices';
 import type { IArea, IDevice, IDeviceCatalog, IProperty } from '@/interfaces/devices';
 
 export const getAvailableDevices = async (): Promise<IDeviceCatalog[]> => {
@@ -223,26 +225,34 @@ export const getAreasByProperty = async (propertyId: string): Promise<IArea[]> =
   }
 };
 
+
 const serviceName = '/devices';
 
 export const DeviceService = {
-  async getDevices() {
-    const response = await httpClient.get(`${serviceName}`);
+  async getDevices(): Promise<IDevice[]> {
+    const response = await httpClient.get<IDevice[]>(`${serviceName}`);
     return response.data;
   },
 
-  async getDevicesByAreaId(areaId: string) {
-    const response = await httpClient.get(`${serviceName}/?area_id=${areaId}`);
+  async getDevicesByAreaId_PropertyId(areaId: string, propertyId: string): Promise<IDevice[]> {
+    const response = await httpClient.get<IDevice[]>(
+      `${serviceName}/?area_id=${areaId}&property_id=${propertyId}`
+    );
     return response.data;
   },
 
-  async getDevicesMiniByAreaId(areaId: string) {
-    const response = await httpClient.get(`${serviceName}/?area_id=${areaId}`);
-    return response.data.slice(0, 5);
+  async createDevice(device: IDevice): Promise<IDevice> {
+    const response = await httpClient.post<IDevice>(`${serviceName}`, device);
+    return response.data;
   },
 
-  async getDevicesSmallByAreaId(areaId: string) {
-    const response = await httpClient.get(`${serviceName}/?area_id=${areaId}`);
-    return response.data.slice(0, 10);
+  async updateDevice(deviceId: string, deviceData: IDevice): Promise<void> {
+    const response = await httpClient.put<void>(`${serviceName}/${deviceId}`, deviceData);
+    return response.data;
+  },
+
+  async deleteDevice(deviceId: string): Promise<void> {
+    const response = await httpClient.delete<void>(`${serviceName}/${deviceId}`);
+    return response.data;
   }
 };
