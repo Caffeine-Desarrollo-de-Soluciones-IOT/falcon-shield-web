@@ -1,43 +1,63 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { useRouter, useRoute } from 'vue-router';
   import { AreaService } from '@/service/AreaService';
   import { DeviceService } from '@/service/DeviceService';
   
   const route = useRoute();
+  const router = useRouter();
   const devices = ref([]);
   const visible = ref(false);
   const selectedDevice = ref(null);
   const areaId = route.params.area_id;
+  const propertyId = route.params.property_id;
   const areaName = ref('');
   const picklistAreas = ref(null);
   const orderlistAreas = ref(null);
   const layout = ref('grid');
-  
-  onMounted(() => {
-    DeviceService.getDevicesByAreaId(areaId).then((data) => {
-      devices.value = data.slice(0, 6);
-      picklistAreas.value = [data, []];
-      orderlistAreas.value = data;
-    });
-    AreaService.getAreaById(areaId).then((area) => {
-        areaName.value = area[0].name;
-    });
-  });
 
-  function showDeviceSpecs(device) {
+onMounted(() => {
+  loadDevices();
+
+  AreaService.getAreaById(areaId).then((area) => {
+    areaName.value = area[0].name;
+  });
+});
+
+function loadDevices() {
+  DeviceService.getDevicesByAreaId_PropertyId(areaId, propertyId).then((data) => {
+    devices.value = data.slice(0, 6);
+    picklistAreas.value = [data, []];
+    orderlistAreas.value = data;
+  });
+}
+
+function showDeviceSpecs(device) {
   selectedDevice.value = device;
   visible.value = true;
 }
-  </script>
+
+function redirectToDevicesList() {
+  router.push(`/my-devices`);
+}
+</script>
 
 <template>
     <div class="flex flex-col">
       <div class="card">
-        <div class="font-semibold text-xl">Devices for {{ areaName }}</div>
-        <DataView :value="devices" :layout="layout">
-          <template #header></template>  
-          
+        <div class="font-semibold text-xl mb-6">Devices for {{ areaName }}</div>
+        <Toolbar class="mb-6">
+        <template #start>
+          <Button
+            label="View All"
+            icon="pi pi-external-link"
+            severity="secondary"
+            class="mr-2"
+            @click="redirectToDevicesList"
+          />
+        </template>
+      </Toolbar>
+        <DataView :value="devices" :layout="layout">          
           <template #grid="slotProps">
             <div class="grid grid-cols-12 gap-4">
               <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 lg:col-span-4 p-2">
@@ -49,11 +69,11 @@
                         <div class="text-lg font-medium mt-1">{{ item.name }}</div>
                       </div>
                     </div>
-                    <div class="flex flex-col gap-6 mt-6">
+                    <div class="flex flex-col md:items-end gap-8">
                       <p class="text-s font-light">{{ item.description }}</p>
-                      <div class="flex gap-2">
+                      <div class="flex flex-row-reverse md:flex-row gap-2">
                         <Button icon="pi pi-plus" label="View more" @click="showDeviceSpecs(item)" class="flex-auto whitespace-nowrap"></Button>
-                        <Button icon="pi pi-heart" outlined></Button>
+                        <!-- <Button icon="pi pi-heart" outlined></Button> -->
                       </div>
                     </div>
                   </div>
@@ -77,4 +97,4 @@
     </div>
     <Button label="Close" @click="visible = false" class="mt-3" />
   </Dialog>
-  </template>  
+  </template>

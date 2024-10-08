@@ -1,5 +1,6 @@
 import { httpClient } from '@/config/httpClient';
 import { type IProperty } from '@/interfaces/properties';
+import { imageService } from '@/service/ImageService';
 
 const serviceName = '/properties';
 
@@ -19,15 +20,15 @@ export const PropertyService = {
     return response.data.slice(0, 10);
   },
 
-  async getPropertyById(propertyId: string): Promise<IProperty> {
-    const response = await httpClient.get<IProperty>(`${serviceName}/?id=${propertyId}`);
+  async getPropertyById(propertyId: string): Promise<IProperty[]> {
+    const response = await httpClient.get<IProperty[]>(`${serviceName}/?id=${propertyId}`);
     return response.data;
   },
 
   async createProperty(property: IProperty): Promise<IProperty> {
     if (!property.image_url) {
       property.image_url =
-        'icons%2Fimage-default.jpg?alt=media&token=ad9f427e-0e10-4921-84b1-def775f541e7'; // Ruta a la imagen por defecto
+        'icons%2Fimage-default.jpg?alt=media&token=ad9f427e-0e10-4921-84b1-def775f541e7';
     }
     const response = await httpClient.post<IProperty>(`${serviceName}`, property);
     return response.data;
@@ -39,6 +40,11 @@ export const PropertyService = {
   },
 
   async deleteProperty(propertyId: string): Promise<void> {
+    const properties = await this.getPropertyById(propertyId);
+    const property = properties[0];
+
+    imageService.deleteImage(property);
+
     const response = await httpClient.delete<void>(`${serviceName}/${propertyId}`);
     return response.data;
   }
