@@ -4,16 +4,17 @@ import { useRouter, useRoute } from 'vue-router';
 import { PropertyService } from '@/service/PropertyService';
 import { AreaService } from '@/service/AreaService';
 import { useToast } from 'primevue/usetoast';
-import { IconService } from '../../../service/IconService';
+import { IconService } from '@/service/IconService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
+import { IArea } from '@/interfaces/areas';
 
 const route = useRoute();
 const router = useRouter();
-const areas = ref(null);
+const areas = ref<IArea[]>([]);
 const propertyId = route.params.property_id;
-const area = ref({ name: '', icon_id: '', property_id: propertyId });
+const area = ref<IArea>({ name: '', icon_id: '', property_id: propertyId });
 const propertyName = ref('');
-const areaToDelete = ref(null);
+const areaToDelete = ref<IArea | null>(null);
 const areaDialog = ref(false);
 const deleteDialog = ref(false);
 const submitted = ref(false);
@@ -112,7 +113,7 @@ function saveArea() {
         });
         loadAreas();
         areaDialog.value = false;
-        area.value = { name: '', icon_id: '', property_id: propertyId };
+        openNew();
       })
       .catch(() => {
         toast.add({
@@ -134,7 +135,7 @@ function saveArea() {
         });
         loadAreas();
         areaDialog.value = false;
-        area.value = { name: '', icon_id: '', property_id: propertyId };
+        openNew();
       })
       .catch(() => {
         toast.add({
@@ -261,7 +262,7 @@ function showIconPopover(event) {
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <Button icon="pi pi-heart" outlined></Button>
+                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
                       <SplitButton
                         label="View devices"
                         dropdownIcon="pi pi-chevron-down"

@@ -5,11 +5,12 @@ import { storageBaseUrl } from '@/config/firebaseConfig';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
+import { IProperty } from '@/interfaces/properties';
 
 const router = useRouter();
-const properties = ref(null);
-const property = ref({ name: '', address: '', user_id: 'abc123', image_url: '' });
-const propertyToDelete = ref(null);
+const properties = ref<IProperty[]>([]);
+const property = ref<IProperty>({ name: '', address: '', user_id: 'abc123', image_url: '' });
+const propertyToDelete = ref<IProperty | null>(null);
 const propertyDialog = ref(false);
 const deleteDialog = ref(false);
 const submitted = ref(false);
@@ -103,7 +104,7 @@ async function saveProperty() {
         });
         loadProperties();
         propertyDialog.value = false;
-        property.value = { id: '', name: '', image_url: '', address: '', user_id: 'abc123' };
+        openNew();
       })
       .catch(() => {
         toast.add({
@@ -125,7 +126,7 @@ async function saveProperty() {
         });
         loadProperties();
         propertyDialog.value = false;
-        property.value = { name: '', image_url: '', address: '', user_id: 'abc123' };
+        openNew();
       })
       .catch(() => {
         toast.add({
@@ -288,7 +289,7 @@ function onFileSelect(event) {
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <Button icon="pi pi-heart" outlined></Button>
+                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
                       <SplitButton
                         label="View areas"
                         dropdownIcon="pi pi-chevron-down"
