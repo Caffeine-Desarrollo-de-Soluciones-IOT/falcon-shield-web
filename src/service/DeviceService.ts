@@ -1,6 +1,4 @@
 import { httpClient } from '@/config/httpClient';
-
-import type { IDevice } from '@/interfaces/devices';
 import type { IArea, IDevice, IDeviceCatalog, IProperty } from '@/interfaces/devices';
 
 export const getAvailableDevices = async (): Promise<IDeviceCatalog[]> => {
