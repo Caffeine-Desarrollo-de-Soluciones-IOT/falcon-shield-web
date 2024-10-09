@@ -1,13 +1,50 @@
 import AppLayout from '@/layout/AppLayout.vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { authService } from '../service/AuthService';
+
+const errorRoutes: RouteRecordRaw[] = [
+  //error
+  {
+    path: '/error',
+    name: 'error',
+    component: () => import('@/views/pages/error/Error.vue')
+  },
+  //403 (access denied)
+  {
+    path: '/access-denied',
+    name: 'accessDenied',
+    component: () => import('@/views/pages/error/Access.vue')
+  },
+  //404 (not found)
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/pages/error/NotFound.vue')
+  }
+];
+
+const publicRoutes: RouteRecordRaw[] = [
+  {
+    path: '/callback',
+    name: 'callback',
+    component: () => import('@/views/pages/auth/Callback.vue'),
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/pages/auth/Login.vue'),
+  }
+];
+
+
 
 const router = createRouter({
-  // history: createWebHistory(import.meta.env.BASE_URL),
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       component: AppLayout,
+      meta: { requiresAuth: true },
       children: [
         {
           path: '',
@@ -128,11 +165,6 @@ const router = createRouter({
         },
         //PAGES
         {
-          path: '/pages/empty',
-          name: 'empty',
-          component: () => import('@/views/pages/Empty.vue')
-        },
-        {
           path: '/pages/crud',
           name: 'crud',
           component: () => import('@/views/pages/Crud.vue')
@@ -144,30 +176,24 @@ const router = createRouter({
       name: 'landing',
       component: () => import('@/views/pages/Landing.vue')
     },
-    {
-      path: '/auth/login',
-      name: 'login',
-      component: () => import('@/views/pages/auth/Login.vue')
-    },
-    //access denied
-    {
-      path: '/auth/access',
-      name: 'accessDenied',
-      component: () => import('@/views/pages/error/Access.vue')
-    },
-    //error
-    {
-      path: '/error',
-      name: 'error',
-      component: () => import('@/views/pages/error/Error.vue')
-    },
-    //404
-    {
-      path: '/:pathMatch(.*)*',
-      name: 'not-found',
-      component: () => import('@/views/pages/error/NotFound.vue')
-    }
+    ...publicRoutes,
+    ...errorRoutes
   ]
+});
+
+//middleware to check if user is authenticated
+router.beforeEach(async (to, from, next) => {
+  const authenticatedUser = await authService.getUser();
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const isPublicRoute = publicRoutes.some((route) => route.path === to.path);
+
+  if (requiresAuth && !authenticatedUser) {
+    next({ path: '/login', query: { then: to.fullPath } });
+  } else if (isPublicRoute && authenticatedUser) {
+    next({ path: '/home' });
+  } else {
+    next();
+  }
 });
 
 export default router;

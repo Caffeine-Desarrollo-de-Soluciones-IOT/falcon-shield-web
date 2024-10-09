@@ -1,9 +1,36 @@
 <script setup lang="ts">
+import { authService } from '@/service/AuthService';
 import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
+const route = useRoute();
 const email = ref('');
 const password = ref('');
 const checked = ref(false);
+const loginError = ref<string>()
+
+async function loginWithGoogle() {
+  try {
+    await authService.loginWithGoogle(route.query.then?.toString());
+  } catch (err) {
+    loginError.value = (err as any).message || 'Error logging in with Google';
+  }
+}
+
+async function login() {
+  try {
+    await authService.loginWithCredentials(email.value, password.value);
+    const redirectTo = route.query.then?.toString() || '/home';
+    router.push(redirectTo);
+  } catch (err) {
+    loginError.value = (err as any).message || 'Error logging in';
+  }
+}
+
+function register() {
+  authService.register();
+}
 </script>
 
 <template>
@@ -29,9 +56,16 @@ const checked = ref(false);
                 />
               </g>
             </svg>
-            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to PrimeLand!</div>
-            <span class="text-muted-color font-medium">Sign in to continue</span>
+            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Falcon Shield!</div>
+            <span class="text-muted-color font-medium">Sign in with</span>
+            <div class="flex justify-center items-center mt-8">
+              <Button icon="pi pi-google" size="large" raised rounded @click="loginWithGoogle()" />
+            </div>
           </div>
+
+          <Divider align="center">
+            <span class="text-muted-color font-medium">Or</span>
+          </Divider>
 
           <div>
             <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
@@ -47,7 +81,10 @@ const checked = ref(false);
               </div>
               <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
             </div>
-            <Button label="Sign In" class="w-full" as="router-link" to="/"></Button>
+
+            <div v-if="loginError" class="text-red-500 text-sm mb-4">{{ loginError }}</div>
+            <Button label="Sign In" class="w-full" @click="login()"></Button>
+            <Button label="Sign Up" outlined class="w-full mt-3" @click="register()"></Button>
           </div>
         </div>
       </div>
