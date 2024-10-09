@@ -1,7 +1,7 @@
 <script setup lang="ts">
-function smoothScroll(id) {
+function smoothScroll(id: string) {
   document.body.click();
-  document.querySelector(id).scrollIntoView({
+  document.querySelector(id)?.scrollIntoView({
     behavior: 'smooth'
   });
 }
