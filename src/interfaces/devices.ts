@@ -5,8 +5,8 @@ export interface IDevice {
   imageUrl: string;
   brand: string;
   model: string;
-  specs: IDeviceSpecs;
   type: keyof typeof EDeviceType;
+  specs: IDeviceSpecs;
 }
 
 export interface IDeviceSpecs {
@@ -22,14 +22,22 @@ export enum EDeviceType {
 }
 
 export interface IDeviceCatalog {
-  categoryName: string;
-  categoryIcon: string;
+  id: string;
+  name: string;
+  icon: string;
   devices: IDevice[];
+}
+
+export interface IRegisteredDevice {
+  id: string;
+  registeredAt: string;
+  device: IDevice;
+  //areaId: string;
 }
 
 export interface IRegisterDeviceRequestDto {
   deviceId: string;
-  code: string;
+  registrationCode: string;
   areaId: string;
 }
 
