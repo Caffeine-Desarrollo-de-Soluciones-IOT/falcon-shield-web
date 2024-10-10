@@ -9,22 +9,30 @@ const email = ref('');
 const password = ref('');
 const checked = ref(false);
 const loginError = ref<string>()
+const loginInProgress = ref(false);
+const googleLoginInProgress = ref(false);
 
 async function loginWithGoogle() {
   try {
+    googleLoginInProgress.value = true;
     await authService.loginWithGoogle(route.query.then?.toString());
   } catch (err) {
     loginError.value = (err as any).message || 'Error logging in with Google';
+  } finally {
+    googleLoginInProgress.value = false;
   }
 }
 
 async function login() {
   try {
+    loginInProgress.value = true;
     await authService.loginWithCredentials(email.value, password.value);
     const redirectTo = route.query.then?.toString() || '/home';
     router.push(redirectTo);
   } catch (err) {
     loginError.value = (err as any).message || 'Error logging in';
+  } finally {
+    loginInProgress.value = false;
   }
 }
 
@@ -59,7 +67,14 @@ function register() {
             <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Falcon Shield!</div>
             <span class="text-muted-color font-medium">Sign in with</span>
             <div class="flex justify-center items-center mt-8">
-              <Button icon="pi pi-google" size="large" raised rounded @click="loginWithGoogle()" />
+              <Button 
+                :icon="googleLoginInProgress ? 'pi pi-spin pi-spinner' : 'pi pi-google'"
+                :disabled="loginInProgress || googleLoginInProgress"
+                size="large" 
+                raised 
+                rounded 
+                @click="loginWithGoogle()" 
+              />
             </div>
           </div>
 
@@ -83,7 +98,12 @@ function register() {
             </div>
 
             <div v-if="loginError" class="text-red-500 text-sm mb-4">{{ loginError }}</div>
-            <Button label="Sign In" class="w-full" @click="login()"></Button>
+            <Button 
+              :label="loginInProgress ? 'Logging in...' : 'Sign In'"
+              :disabled="googleLoginInProgress || loginInProgress"
+              class="w-full" 
+              @click="login()"
+            />
             <Button label="Sign Up" outlined class="w-full mt-3" @click="register()"></Button>
           </div>
         </div>
