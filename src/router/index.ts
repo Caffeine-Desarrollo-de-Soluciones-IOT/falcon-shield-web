@@ -1,6 +1,6 @@
 import AppLayout from '@/layout/AppLayout.vue';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import { authService } from '../service/AuthService';
+import { AuthService } from '../service/AuthService';
 
 const errorRoutes: RouteRecordRaw[] = [
   //error
@@ -183,7 +183,7 @@ const router = createRouter({
 
 //middleware to check if user is authenticated
 router.beforeEach(async (to, from, next) => {
-  const authenticatedUser = await authService.getUser();
+  const authenticatedUser = await AuthService.getUser();
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const isPublicRoute = publicRoutes.some((route) => route.path === to.path);
 

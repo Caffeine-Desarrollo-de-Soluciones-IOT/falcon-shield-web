@@ -1,4 +1,4 @@
-import { authService } from '@/service/AuthService';
+import { AuthService } from '@/service/AuthService';
 import axios, { AxiosError } from 'axios';
 
 export const httpClient = axios.create({
@@ -9,7 +9,7 @@ export const httpClient = axios.create({
 httpClient.interceptors.request.use(
   async (config) => {
     //handle user authentication & token
-    const user = await authService.getUser();
+    const user = await AuthService.getUser();
     if (user) {
       config.headers.Authorization = `Bearer ${user.access_token}`;
     }

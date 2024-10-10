@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { authService } from '@/service/AuthService';
+import { AuthService } from '@/service/AuthService';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -15,7 +15,7 @@ const googleLoginInProgress = ref(false);
 async function loginWithGoogle() {
   try {
     googleLoginInProgress.value = true;
-    await authService.loginWithGoogle(route.query.then?.toString());
+    await AuthService.loginWithGoogle(route.query.then?.toString());
   } catch (err) {
     loginError.value = (err as any).message || 'Error logging in with Google';
   } finally {
@@ -26,7 +26,7 @@ async function loginWithGoogle() {
 async function login() {
   try {
     loginInProgress.value = true;
-    await authService.loginWithCredentials(email.value, password.value);
+    await AuthService.loginWithCredentials(email.value, password.value);
     const redirectTo = route.query.then?.toString() || '/home';
     router.push(redirectTo);
   } catch (err) {
@@ -37,7 +37,7 @@ async function login() {
 }
 
 function register() {
-  authService.register();
+  AuthService.register();
 }
 </script>
 
