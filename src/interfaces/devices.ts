@@ -1,5 +1,5 @@
 export interface IDevice {
-  id: string;
+  id: number;
   name: string;
   description: string;
   imageUrl: string;
@@ -22,25 +22,26 @@ export enum EDeviceType {
 }
 
 export interface IDeviceCatalog {
-  id: string;
+  id: number;
   name: string;
   icon: string;
   devices: IDevice[];
 }
 
 export interface IRegisteredDevice {
-  id: string;
+  id: number;
   registeredAt: string;
   device: IDevice;
   //areaId: string;
 }
 
 export interface IRegisterDeviceRequestDto {
-  deviceId: string;
+  deviceId: number;
   registrationCode: string;
-  areaId: string;
+  areaId: number;
 }
 
+//todo: add the real interfaces for the properties and areas
 export interface IProperty {
   id: string;
   name: string;
