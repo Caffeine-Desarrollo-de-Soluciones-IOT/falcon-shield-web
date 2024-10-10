@@ -5,14 +5,10 @@ import {
   type IDevice,
   type IDeviceCatalog,
   type IProperty,
-  type IRegisterDeviceRequestDto
+  type IRegisterDeviceRequestDto,
+  type IRegisteredDevice
 } from '@/interfaces/devices';
-import {
-  getAreasByProperty,
-  getAvailableDevices,
-  getRegisteredDevices,
-  getUserProperties
-} from '@/service/DeviceService';
+import { DeviceService } from '@/service/DeviceService';
 import { FilterMatchMode } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, ref } from 'vue';
@@ -27,30 +23,24 @@ const filters = ref({
 });
 const submitted = ref(false);
 const deviceCatalog = ref<IDeviceCatalog[]>([]);
-const registeredDevices = ref<IDevice[]>([]);
+const registeredDevices = ref<IRegisteredDevice[]>([]);
 const newDevice = ref<IRegisterDeviceRequestDto>({} as IRegisterDeviceRequestDto);
 const selectedDevice = ref<IDevice>();
 const userProperties = ref<IProperty[]>([]);
 const targetProperty = ref<IProperty>({} as IProperty);
 const propertyAreas = ref<IArea[]>([]);
 const loadingAreas = ref(false);
+const loadingCatalog = ref(false);
+const registeringDevice = ref(false);
 
 //lifecycle
-onMounted(() => {
-  getRegisteredDevices().then((data) => {
-    registeredDevices.value = data;
-  });
-
-  getAvailableDevices().then((data) => {
-    deviceCatalog.value = data;
-  });
-
-  getUserProperties().then((data) => {
-    userProperties.value = data;
-  });
+onMounted(async () => {
+  await fetchRegisteredDevices();
 });
 
 function openNew() {
+  fetchDeviceCatalog();
+  fetchUserProperties();
   newDevice.value = {} as IRegisterDeviceRequestDto;
   submitted.value = false;
   registerDialogVisible.value = true;
@@ -61,30 +51,35 @@ function hideDialog() {
   submitted.value = false;
 }
 
-function registerDevice() {
+async function handleRegisterDevice() {
   submitted.value = true;
 
-  if (newDevice.value.deviceId && newDevice.value.code && newDevice.value.areaId) {
-    registeredDevices.value.push({
-      id: newDevice.value.deviceId,
-      name: 'Nuevooo',
-      imageUrl: 'https://primefaces.org/cdn/primevue/images/product/black-watch.jpg',
-      brand: 'Brandddd',
-      model: 'Modelooo',
-      type: EDeviceType.ACTUATOR,
-      description: 'Descriptionnn',
-      specs: {} as any
-    });
+  if (newDevice.value.deviceId && newDevice.value.registrationCode && newDevice.value.areaId) {
+    try {
+      registeringDevice.value = true;
+      await DeviceService.registerDevice(newDevice.value);
+      toast.add({
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Device registered',
+        life: 3000
+      });
 
-    toast.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Device registered',
-      life: 3000
-    });
+      registerDialogVisible.value = false;
+      newDevice.value = {} as IRegisterDeviceRequestDto;
 
-    registerDialogVisible.value = false;
-    newDevice.value = {} as IRegisterDeviceRequestDto;
+      // refresh registered devices
+      await fetchRegisteredDevices();
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: (error as Error).message || 'Error registering device',
+        life: 3000
+      });
+    } finally {
+      registeringDevice.value = false;
+    }
   }
 }
 
@@ -102,16 +97,65 @@ function deleteDevice() {
   toast.add({ severity: 'success', summary: 'Successful', detail: 'Device deleted', life: 3000 });
 }
 
-function getAreas(propertyId: string) {
-  console.log('propertyId', propertyId);
-  getAreasByProperty(propertyId)
-    .then((data) => {
-      propertyAreas.value = data;
-      loadingAreas.value = false;
-    })
-    .catch(() => {
-      loadingAreas.value = false;
+async function fetchDeviceCatalog() {
+  try {
+    loadingCatalog.value = true;
+    const res = await DeviceService.getDeviceCatalog();
+    deviceCatalog.value = res.data;
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Error fetching device catalog',
+      life: 3000
     });
+  } finally {
+    loadingCatalog.value = false;
+  }
+}
+
+async function fetchRegisteredDevices() {
+  try {
+    const res = await DeviceService.getRegisteredDevices();
+    registeredDevices.value = res.data;
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Error fetching registered devices',
+      life: 3000
+    });
+  }
+}
+
+async function fetchUserProperties() {
+  try {
+    userProperties.value = await DeviceService.getUserProperties();
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Error fetching user properties',
+      life: 3000
+    });
+  }
+}
+
+async function getAreas(propertyId: string) {
+  try {
+    loadingAreas.value = true;
+    const data = await DeviceService.getAreasByProperty(propertyId);
+    propertyAreas.value = data;
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Error fetching areas',
+      life: 3000
+    });
+  } finally {
+    loadingAreas.value = false;
+  }
 }
 
 function getStatusLabel(type: EDeviceType) {
@@ -157,24 +201,30 @@ function getStatusLabel(type: EDeviceType) {
       </template>
 
       <!-- COLUMNS -->
-      <Column field="name" header="Name" style="min-width: 12rem"></Column>
+      <Column field="device.name" header="Device Name" style="min-width: 10rem"></Column>
       <Column header="Image">
         <template #body="slotProps">
           <img
-            :src="`https://primefaces.org/cdn/primevue/images/product/black-watch.jpg`"
-            :alt="slotProps.data.image"
+            :src="slotProps.data.device.imageUrl"
+            :alt="slotProps.data.device.name"
             class="rounded"
             style="width: 64px"
           />
         </template>
       </Column>
-      <Column field="brand" header="Brand" style="min-width: 10rem"></Column>
-      <Column field="model" header="Model" style="min-width: 10rem"></Column>
-      <Column field="type" header="Type" style="min-width: 10rem">
+      <Column field="device.brand" header="Brand" style="min-width: 10rem"></Column>
+      <Column field="device.model" header="Model" style="min-width: 10rem"></Column>
+      <Column field="device.type" header="Type" style="min-width: 10rem">
         <template #body="slotProps">
-          <Tag :value="slotProps.data.type" :severity="getStatusLabel(slotProps.data.type)" />
+          <Tag :value="slotProps.data.device.type" :severity="getStatusLabel(slotProps.data.device.type)" />
         </template>
       </Column>
+      <Column field="registeredAt" header="Registered At" style="min-width: 10rem">
+        <template #body="slotProps">
+          {{ new Date(slotProps.data.registeredAt).toLocaleString() }}
+        </template> 
+      </Column>
+      <!-- <Column field="area.name" header="Area" style="min-width: 10rem"></Column> -->
       <Column header="Actions" style="min-width: 10rem">
         <template #body="slotProps">
           <!-- <Button
@@ -213,19 +263,21 @@ function getStatusLabel(type: EDeviceType) {
             id="deviceSelect"
             v-model="newDevice.deviceId"
             :options="deviceCatalog"
-            optionGroupLabel="categoryName"
+            optionGroupLabel="name"
             optionGroupChildren="devices"
             optionLabel="name"
             optionValue="id"
-            placeholder="Select a device"
             :show-clear="true"
             fluid
             :invalid="submitted && !newDevice?.deviceId"
+            :placeholder="loadingCatalog ? 'Loading device catalog...' : 'Select a Device'"
+            :loading="loadingCatalog"
+            :disabled="loadingCatalog"
           >
             <template #optiongroup="slotProps">
               <div class="flex items-center">
-                <i :class="`mr-2 ${slotProps.option.categoryIcon}`" />
-                <div>{{ slotProps.option.categoryName }}</div>
+                <i :class="`mr-2 ${slotProps.option.icon}`" />
+                <div>{{ slotProps.option.name }}</div>
               </div>
             </template>
           </Select>
@@ -243,16 +295,16 @@ function getStatusLabel(type: EDeviceType) {
       <StepItem value="2">
         <Step>Enter the registration code</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <label for="name" class="block font-bold mb-3">Code</label>
+          <label for="name" class="block font-bold mb-3">Registration Code</label>
           <InputText
             id="name"
-            v-model.trim="newDevice.code"
+            v-model.trim="newDevice.registrationCode"
             required="true"
             autofocus
-            :invalid="submitted && !newDevice?.code"
+            :invalid="submitted && !newDevice?.registrationCode"
             fluid
           />
-          <small v-if="submitted && !newDevice?.code" class="text-red-500">Code is required</small>
+          <small v-if="submitted && !newDevice?.registrationCode" class="text-red-500">Registration Code is required</small>
           <div class="flex py-6 gap-2">
             <Button label="Back" severity="secondary" @click="activateCallback('1')" />
             <Button label="Next" @click="activateCallback('3')" />
@@ -309,7 +361,12 @@ function getStatusLabel(type: EDeviceType) {
 
     <template #footer>
       <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-      <Button label="Register" icon="pi pi-check" @click="registerDevice" />
+      <Button 
+        icon="pi pi-check"
+        :label="registeringDevice ? 'Registering...' : 'Register'"
+        :loading="registeringDevice" 
+        :disabled="registeringDevice"
+        @click="handleRegisterDevice" />
     </template>
   </Dialog>
 
