@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { FalconShieldError } from '@/config/FalconShieldError';
 import {
   EDeviceType,
   type IArea,
-  type IDevice,
   type IDeviceCatalog,
   type IProperty,
   type IRegisterDeviceRequestDto,
@@ -25,13 +25,14 @@ const submitted = ref(false);
 const deviceCatalog = ref<IDeviceCatalog[]>([]);
 const registeredDevices = ref<IRegisteredDevice[]>([]);
 const newDevice = ref<IRegisterDeviceRequestDto>({} as IRegisterDeviceRequestDto);
-const selectedDevice = ref<IDevice>();
+const selectedDeviceRegistration = ref<IRegisteredDevice>();
 const userProperties = ref<IProperty[]>([]);
 const targetProperty = ref<IProperty>({} as IProperty);
 const propertyAreas = ref<IArea[]>([]);
 const loadingAreas = ref(false);
 const loadingCatalog = ref(false);
 const registeringDevice = ref(false);
+const unregisteringDevice = ref(false);
 
 //lifecycle
 onMounted(async () => {
@@ -49,6 +50,8 @@ function openNew() {
 function hideDialog() {
   registerDialogVisible.value = false;
   submitted.value = false;
+  newDevice.value = {} as IRegisterDeviceRequestDto;
+  targetProperty.value = {} as IProperty;
 }
 
 async function handleRegisterDevice() {
@@ -65,16 +68,15 @@ async function handleRegisterDevice() {
         life: 3000
       });
 
-      registerDialogVisible.value = false;
-      newDevice.value = {} as IRegisterDeviceRequestDto;
+      hideDialog();
 
       // refresh registered devices
       await fetchRegisteredDevices();
     } catch (error) {
       toast.add({
         severity: 'error',
-        summary: 'Error',
-        detail: (error as Error).message || 'Error registering device',
+        summary: (error as FalconShieldError).message,
+        detail: (error as FalconShieldError).details,
         life: 3000
       });
     } finally {
@@ -83,18 +85,37 @@ async function handleRegisterDevice() {
   }
 }
 
-function confirmDeleteDevice(dev: IDevice) {
-  selectedDevice.value = dev;
+function confirmDeleteDevice(deviceRegistrationId: IRegisteredDevice) {
+  selectedDeviceRegistration.value = deviceRegistrationId;
   deleteDialogVisible.value = true;
 }
 
-function deleteDevice() {
-  registeredDevices.value = registeredDevices.value.filter(
-    (val) => val.id !== selectedDevice.value?.id
-  );
-  deleteDialogVisible.value = false;
-  selectedDevice.value = {} as IDevice;
-  toast.add({ severity: 'success', summary: 'Successful', detail: 'Device deleted', life: 3000 });
+async function deleteDevice() {
+  try {
+    unregisteringDevice.value = true;
+    await DeviceService.unregisterDevice(selectedDeviceRegistration.value!.id);
+
+    toast.add({ 
+      severity: 'success', 
+      summary: 'Successful',
+      detail: 'Device unregistered', 
+      life: 3000 
+    });
+    deleteDialogVisible.value = false;
+    selectedDeviceRegistration.value = {} as IRegisteredDevice;
+
+    // refresh registered devices
+    await fetchRegisteredDevices();
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: (error as FalconShieldError).message,
+      detail: (error as FalconShieldError).details,
+      life: 3000
+    });
+  } finally {
+    unregisteringDevice.value = false;
+  }
 }
 
 async function fetchDeviceCatalog() {
@@ -379,14 +400,18 @@ function getStatusLabel(type: EDeviceType) {
   >
     <div class="flex items-center gap-4">
       <i class="pi pi-exclamation-triangle !text-3xl" />
-      <span v-if="selectedDevice"
-        >Are you sure you want to delete <b>{{ selectedDevice.name }}</b
-        >?</span
-      >
+      <span v-if="selectedDeviceRegistration">
+        Are you sure you want to unregister <b>{{ selectedDeviceRegistration.device.name }}</b>?
+      </span>
     </div>
     <template #footer>
-      <Button label="No" icon="pi pi-times" text @click="deleteDialogVisible = false" />
-      <Button label="Yes" icon="pi pi-check" @click="deleteDevice" />
+      <Button label="No" icon="pi pi-times" severity="secondary" text @click="deleteDialogVisible = false" />
+      <Button 
+        :label="unregisteringDevice ? 'Unregistering...' : 'Yes'" 
+        icon="pi pi-check" 
+        severity="danger"
+        :loading="unregisteringDevice"
+        @click="deleteDevice()" />
     </template>
   </Dialog>
 </template>

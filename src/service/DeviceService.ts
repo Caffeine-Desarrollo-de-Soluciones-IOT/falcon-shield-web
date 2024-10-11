@@ -18,6 +18,10 @@ export const DeviceService = {
     const res = await httpClient.post<IApiResponse>(`${serviceName}/register`, data);
     return res.data;
   },
+  async unregisterDevice(registrationId: number): Promise<IApiResponse> {
+    const res = await httpClient.delete<IApiResponse>(`${serviceName}/unregister/${registrationId}`);
+    return res.data;
+  },
   //todo: implement the rest of the services
   async getUserProperties(): Promise<IProperty[]> {
     return Promise.resolve([
