@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useLayout } from '@/layout/composables/layout';
-import { authService } from '@/service/AuthService';
+import { AuthService } from '@/service/AuthService';
 import { ProductService } from '@/service/ProductService';
 import { User } from 'oidc-client-ts';
 import { onMounted, ref, watch } from 'vue';
@@ -22,7 +22,7 @@ onMounted(() => {
   ProductService.getProductsSmall().then((data) => (products.value = data));
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
-  authService.getUser().then((data) => (user.value = data));
+  AuthService.getUser().then((data) => (user.value = data));
 });
 
 function setChartData() {

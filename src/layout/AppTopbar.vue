@@ -3,7 +3,7 @@ import { useLayout } from '@/layout/composables/layout';
 import ThemeSelector from './ThemeSelector.vue';
 import { ref } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
-import { authService } from '@/service/AuthService';
+import { AuthService } from '@/service/AuthService';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
 
@@ -12,7 +12,7 @@ const overlayMenuItems = ref<MenuItem[]>([
   {
     label: 'My account',
     icon: 'pi pi-user',
-    url: authService.accountConsoleUrl,
+    url: AuthService.accountConsoleUrl,
     target: '_blank'
   },
   {
@@ -21,7 +21,7 @@ const overlayMenuItems = ref<MenuItem[]>([
   {
     label: 'Logout',
     icon: 'pi pi-power-off',
-    command: () => authService.logout()
+    command: () => AuthService.logout()
   }
 ]);
 

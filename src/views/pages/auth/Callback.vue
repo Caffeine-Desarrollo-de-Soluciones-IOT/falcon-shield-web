@@ -6,14 +6,14 @@
 
 import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { authService } from '../../../service/AuthService';
+import { AuthService } from '../../../service/AuthService';
 
 const router = useRouter();
 const route = useRoute();
 
 onMounted(async () => {
   try {
-    await authService.handleCallback();
+    await AuthService.handleCallback();
 
     //route to redirect to after login (get the value from the query parameter 'then' or default to '/home')
     const redirectTo = route.query.then?.toString() ?? '/home';

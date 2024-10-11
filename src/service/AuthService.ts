@@ -1,6 +1,6 @@
 import { userManager } from '@/config/authConfig';
 
-export const authService = {
+export const AuthService = {
   /**
    * Login with username and password (it's necessary to handle the redirect to the post-login page)
    * @param username Username
