@@ -1,6 +1,7 @@
 import AppLayout from '@/layout/AppLayout.vue';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { AuthService } from '../service/AuthService';
+import { UserProfileService } from '@/service/UserProfileService';
 
 const errorRoutes: RouteRecordRaw[] = [
   //error
@@ -55,6 +56,11 @@ const router = createRouter({
           path: 'home',
           name: 'dashboard',
           component: () => import('@/views/Dashboard.vue')
+        },
+        {
+          path: 'create-user-profile',
+          name: 'create-user-profile',
+          component: () => import('@/views/pages/auth/CreateUserProfile.vue'),
         },
         {
           path: 'my-devices',
@@ -184,13 +190,26 @@ const router = createRouter({
 //middleware to check if user is authenticated
 router.beforeEach(async (to, from, next) => {
   const authenticatedUser = await AuthService.getUser();
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const isAuthRequired = to.matched.some((record) => record.meta.requiresAuth);
   const isPublicRoute = publicRoutes.some((route) => route.path === to.path);
 
-  if (requiresAuth && !authenticatedUser) {
+  if (isAuthRequired && !authenticatedUser) {
     next({ path: '/login', query: { then: to.fullPath } });
-  } else if (isPublicRoute && authenticatedUser) {
-    next({ path: '/home' });
+  } else if (authenticatedUser) {
+    const isUserProfileCreated = await UserProfileService.isUserProfileCreated();
+    
+    //redirect to home if user tries to access /create-user-profile but already has a profile
+    if (isUserProfileCreated && to.name === 'create-user-profile') {
+      next({ path: '/home' });
+    }
+    //redirect to profile creation if user profile is not created
+    else if (!isUserProfileCreated && to.name !== 'create-user-profile') {
+      next({ path: '/create-user-profile' });
+    } else if (isPublicRoute) {
+      next({ path: '/home' });
+    } else {
+      next();
+    }
   } else {
     next();
   }
