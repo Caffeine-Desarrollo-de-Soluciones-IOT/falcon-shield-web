@@ -2,6 +2,7 @@
 import type { FalconShieldError } from '@/config/FalconShieldError';
 import type { IUserProfileRequestDto } from '@/interfaces/userProfile';
 import { UserProfileService } from '@/service/UserProfileService';
+import { useUserProfileStore } from '@/store/userProfileStore';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -18,6 +19,7 @@ const occupations = [
   { label: 'Lessee', value: 'Lessee' },
   { label: 'Other', value: 'Other' }
 ];
+const userProfileStore = useUserProfileStore();
 
 onMounted(() => {
   openDialog();
@@ -30,6 +32,8 @@ async function handleCreateUserProfile() {
     try {
       creatingUserProfile.value = true;
       await UserProfileService.createUserProfile(newUserProfile.value);
+      userProfileStore.setProfileCreated(); //update pinia store
+
       toast.add({
         severity: 'success',
         summary: 'Successful',

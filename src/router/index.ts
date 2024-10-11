@@ -1,7 +1,7 @@
 import AppLayout from '@/layout/AppLayout.vue';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { AuthService } from '../service/AuthService';
-import { UserProfileService } from '@/service/UserProfileService';
+import { useUserProfileStore } from '@/store/userProfileStore';
 
 const errorRoutes: RouteRecordRaw[] = [
   //error
@@ -196,7 +196,8 @@ router.beforeEach(async (to, from, next) => {
   if (isAuthRequired && !authenticatedUser) {
     next({ path: '/login', query: { then: to.fullPath } });
   } else if (authenticatedUser) {
-    const isUserProfileCreated = await UserProfileService.isUserProfileCreated();
+    const userProfileStore = useUserProfileStore();
+    const isUserProfileCreated = await userProfileStore.checkUserProfile();
     
     //redirect to home if user tries to access /create-user-profile but already has a profile
     if (isUserProfileCreated && to.name === 'create-user-profile') {
