@@ -1,5 +1,7 @@
+import type { IApiResponse, IErrorResponse } from '@/interfaces/common';
 import { AuthService } from '@/service/AuthService';
 import axios, { AxiosError } from 'axios';
+import { FalconShieldError } from './FalconShieldError';
 
 export const httpClient = axios.create({
   baseURL: 'http://localhost:8080/api'
@@ -24,37 +26,32 @@ httpClient.interceptors.request.use(
 httpClient.interceptors.response.use(
   (response) => response,
   (err) => {
-    const customError = new Error();
-    const error = err as AxiosError;
+    const customError = new FalconShieldError('Error', 'No details');
+    const error = err as AxiosError<IApiResponse<IErrorResponse>>;
 
     //response error: when the client receives an error response (HTTP 5xx or 4xx status codes)
     if (error.response) {
-      const method = error.response.config.method;
-
-      switch (method) {
-        case 'get':
-          customError.message = "We couldn't retrieve the data, please try again later";
-          break;
-        case 'post':
-        case 'put':
-        case 'patch':
-        case 'delete':
-          customError.message = "We couldn't process your request, please try again later";
-          break;
-        default:
-          customError.message = 'We encountered an error, please try again later';
+      //if error is 400
+      if (error.response.status === 400) {
+        customError.message = 'Bad Request';
+        customError.details = error.response.data.data.toString();
+      } else {
+        customError.message = error.response.data.message;
+        customError.details = error.response.data.data.details;
       }
     }
 
     //request error: when the client never receives a response, or the request never left
     else if (error.request) {
-      customError.message = `It seems that we couldn't establish a connection, please try again later`;
+      customError.message = 'Connection Error';
+      customError.details = `It seems that we couldn't establish a connection, please try again later`;
     }
 
     //other errors
     else {
       console.error(err);
-      customError.message = 'An unexpected error occurred, please try again later';
+      customError.message = 'Unknown Error';
+      customError.details = 'An unexpected error occurred, please try again later';
     }
 
     //return the error

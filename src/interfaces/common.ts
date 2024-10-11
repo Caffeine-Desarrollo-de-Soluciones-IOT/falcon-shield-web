@@ -3,3 +3,9 @@ export interface IApiResponse<T = null> {
   data: T;
   success: boolean;
 }
+
+export interface IErrorResponse {
+  details: string;
+  uri: string;
+  timestamp: string;
+}
