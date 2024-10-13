@@ -2,21 +2,26 @@
 import { useLayout } from '@/layout/composables/layout';
 import ThemeSelector from './ThemeSelector.vue';
 import { ref } from 'vue';
+import type { MenuItem } from 'primevue/menuitem';
+import { AuthService } from '@/service/AuthService';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
 
-const menu = ref(null);
-const overlayMenuItems = ref([
+const menu = ref();
+const overlayMenuItems = ref<MenuItem[]>([
   {
     label: 'My account',
-    icon: 'pi pi-user'
+    icon: 'pi pi-user',
+    url: AuthService.accountConsoleUrl,
+    target: '_blank'
   },
   {
     separator: true
   },
   {
     label: 'Logout',
-    icon: 'pi pi-power-off'
+    icon: 'pi pi-power-off',
+    command: () => AuthService.logout()
   }
 ]);
 
@@ -84,11 +89,11 @@ function toggleMenu(event: MouseEvent) {
             <i class="pi pi-inbox"></i>
             <span>Messages</span>
           </button>
-          <Menu ref="menu" :model="overlayMenuItems" :popup="true" />
           <button type="button" class="layout-topbar-action" @click="toggleMenu">
             <i class="pi pi-user"></i>
             <span>Profile</span>
           </button>
+          <Menu ref="menu" :model="overlayMenuItems" :popup="true" />
         </div>
       </div>
     </div>
