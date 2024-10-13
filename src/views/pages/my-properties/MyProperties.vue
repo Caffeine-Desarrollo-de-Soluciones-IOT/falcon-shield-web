@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { PropertyService } from '@/service/PropertyService';
-import { imageService } from '@/service/ImageService';
+import { ImageService } from '@/service/ImageService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
+import type { IProperty } from '@/interfaces/properties';
 
 const router = useRouter();
-const properties = ref(null);
-const property = ref({ name: '', address: '', user_id: 'abc123', image_url: '' });
-const propertyToDelete = ref(null);
+const properties = ref<IProperty[]>([]);
+const property = ref<IProperty>({ id: '', name: '', address: '', image_url: '', user_id: 'abc123' });
+const propertyToDelete = ref<IProperty | null>(null);
 const propertyDialog = ref(false);
 const deleteDialog = ref(false);
 const submitted = ref(false);
@@ -81,7 +82,7 @@ async function saveProperty() {
   }
 
   if (selectedFile.value) {
-    const imageName = await imageService.uploadImage(selectedFile.value); // Subir la imagen a Firebase
+    const imageName = await ImageService.uploadImage(selectedFile.value); // Subir la imagen a Firebase
 
     if (imageName) {
       property.value.image_url = imageName; // Guardar solo el nombre de la imagen en la propiedad
@@ -102,8 +103,8 @@ async function saveProperty() {
           life: 3000
         });
         loadProperties();
+        openNew();
         propertyDialog.value = false;
-        property.value = { id: '', name: '', image_url: '', address: '', user_id: 'abc123' };
       })
       .catch(() => {
         toast.add({
@@ -124,8 +125,8 @@ async function saveProperty() {
           life: 3000
         });
         loadProperties();
+        openNew();
         propertyDialog.value = false;
-        property.value = { name: '', image_url: '', address: '', user_id: 'abc123' };
       })
       .catch(() => {
         toast.add({

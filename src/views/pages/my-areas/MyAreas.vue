@@ -6,12 +6,13 @@ import { AreaService } from '@/service/AreaService';
 import { useToast } from 'primevue/usetoast';
 import { IconService } from '../../../service/IconService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
+import type { IArea } from '@/interfaces/areas';
 
 const route = useRoute();
 const router = useRouter();
 const areas = ref(null);
 const propertyId = route.params.property_id;
-const area = ref({ name: '', icon_id: '', property_id: propertyId });
+const area = ref<IArea>({ id: '', name: '', icon_id: '', property_id: propertyId.toString() });
 const propertyName = ref('');
 const areaToDelete = ref(null);
 const areaDialog = ref(false);
@@ -111,8 +112,8 @@ function saveArea() {
           life: 3000
         });
         loadAreas();
+        openNew();
         areaDialog.value = false;
-        area.value = { name: '', icon_id: '', property_id: propertyId };
       })
       .catch(() => {
         toast.add({
@@ -133,8 +134,8 @@ function saveArea() {
           life: 3000
         });
         loadAreas();
+        openNew();
         areaDialog.value = false;
-        area.value = { name: '', icon_id: '', property_id: propertyId };
       })
       .catch(() => {
         toast.add({

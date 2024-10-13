@@ -1,5 +1,7 @@
 import { httpClient } from '@/config/httpClient';
 import { type IProperty } from '@/interfaces/properties';
+import { ImageService } from '@/service/ImageService';
+import { AreaService } from './AreaService';
 
 const serviceName = '/properties';
 
@@ -34,11 +36,30 @@ export const PropertyService = {
   },
 
   async updateProperty(propertyId: string, propertyData: IProperty): Promise<void> {
+    // TODO: If the image is edited, the previous image must be deleted
+
     const response = await httpClient.put<void>(`${serviceName}/${propertyId}`, propertyData);
     return response.data;
   },
 
   async deleteProperty(propertyId: string): Promise<void> {
+    // Obtener todas las áreas asociadas a la propiedad
+    const areas = await AreaService.getAreasByPropertyId(propertyId);
+
+    // Eliminar cada área
+    if (areas.length > 0) {
+      await Promise.all(
+        areas.map(async (area) => {
+          await AreaService.deleteArea(area.id);
+        })
+      );
+    }
+
+    // Eliminar imagen de propiedad de firebase
+    const properties = await this.getPropertyById(propertyId);
+    const property = properties[0];
+    ImageService.deleteImage(property);
+
     const response = await httpClient.delete<void>(`${serviceName}/${propertyId}`);
     return response.data;
   }

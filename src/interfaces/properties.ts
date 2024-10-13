@@ -3,4 +3,5 @@ export interface IProperty {
   name: string;
   address: string;
   image_url?: string;
+  user_id: string;
 }
