@@ -1,6 +1,13 @@
 import { httpClient } from '@/config/httpClient';
 import type { IApiResponse } from '@/interfaces/common';
-import type { IArea, IDevice, IDeviceCatalog, IProperty, IRegisterDeviceRequestDto, IRegisteredDevice } from '@/interfaces/devices';
+import type {
+  IArea,
+  IDevice,
+  IDeviceCatalog,
+  IProperty,
+  IRegisterDeviceRequestDto,
+  IRegisteredDevice
+} from '@/interfaces/devices';
 
 const serviceName = '/devices';
 
@@ -11,7 +18,9 @@ export const DeviceService = {
     return res.data;
   },
   async getRegisteredDevices(): Promise<IApiResponse<IRegisteredDevice[]>> {
-    const res = await httpClient.get<IApiResponse<IRegisteredDevice[]>>(`${serviceName}/registered`);
+    const res = await httpClient.get<IApiResponse<IRegisteredDevice[]>>(
+      `${serviceName}/registered`
+    );
     return res.data;
   },
   async registerDevice(data: IRegisterDeviceRequestDto): Promise<IApiResponse> {
@@ -19,7 +28,9 @@ export const DeviceService = {
     return res.data;
   },
   async unregisterDevice(registrationId: number): Promise<IApiResponse> {
-    const res = await httpClient.delete<IApiResponse>(`${serviceName}/unregister/${registrationId}`);
+    const res = await httpClient.delete<IApiResponse>(
+      `${serviceName}/unregister/${registrationId}`
+    );
     return res.data;
   },
   //todo: implement the rest of the services
@@ -77,7 +88,7 @@ export const DeviceService = {
         }
       ]);
     } else {
-      return Promise.resolve([]);  
+      return Promise.resolve([]);
     }
   },
 
