@@ -4,17 +4,18 @@ import { useRouter, useRoute } from 'vue-router';
 import { PropertyService } from '@/service/PropertyService';
 import { AreaService } from '@/service/AreaService';
 import { useToast } from 'primevue/usetoast';
-import { IconService } from '../../../service/IconService';
+import { IconService } from '@/service/IconService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
 import type { IArea } from '@/interfaces/areas';
 
+
 const route = useRoute();
 const router = useRouter();
-const areas = ref(null);
+const areas = ref<IArea[]>([]);
 const propertyId = route.params.property_id;
 const area = ref<IArea>({ id: '', name: '', icon_id: '', property_id: propertyId.toString() });
 const propertyName = ref('');
-const areaToDelete = ref(null);
+const areaToDelete = ref<IArea | null>(null);
 const areaDialog = ref(false);
 const deleteDialog = ref(false);
 const submitted = ref(false);
@@ -215,7 +216,7 @@ function showIconPopover(event) {
 <template>
   <div class="flex flex-col">
     <div class="card">
-      <div class="font-semibold text-xl">Areas for {{ propertyName }}</div>
+      <div class="font-semibold text-xl mb-6">Areas for {{ propertyName }}</div>
       <Toolbar class="mb-6">
         <template #start>
           <Button
@@ -262,7 +263,7 @@ function showIconPopover(event) {
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <Button icon="pi pi-heart" outlined></Button>
+                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
                       <SplitButton
                         label="View devices"
                         dropdownIcon="pi pi-chevron-down"
@@ -280,14 +281,8 @@ function showIconPopover(event) {
 
         <template #grid="slotProps">
           <div class="grid grid-cols-12 gap-4">
-            <div
-              v-for="(item, index) in slotProps.items"
-              :key="index"
-              class="col-span-12 sm:col-span-6 lg:col-span-4 p-2"
-            >
-              <div
-                class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
-              >
+            <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 lg:col-span-4 p-2">
+              <div class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col">
                 <div class="bg-surface-50 flex justify-center rounded p-4">
                   <div class="relative mx-auto">
                     <img
@@ -305,11 +300,12 @@ function showIconPopover(event) {
                       <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
                         mapAreaTypeToName(item.icon_id)
                       }}</span>
+                      <div class="text-lg font-medium mt-1">{{ item.name }}</div>
                     </div>
                   </div>
-                  <div class="flex flex-col gap-6 mt-6">
-                    <span class="text-2xl font-semibold">{{ item.name }}</span>
-                    <div class="flex gap-2">
+                  <div class="flex flex-col md:items-end gap-8">
+                    <div class="flex flex-row-reverse md:flex-row gap-2">
+                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
                       <SplitButton
                         label="View devices"
                         dropdownIcon="pi pi-chevron-down"
@@ -317,7 +313,6 @@ function showIconPopover(event) {
                         class="flex-auto md:flex-initial whitespace-nowrap"
                         :model="items(item)"
                       />
-                      <Button icon="pi pi-heart" outlined></Button>
                     </div>
                   </div>
                 </div>

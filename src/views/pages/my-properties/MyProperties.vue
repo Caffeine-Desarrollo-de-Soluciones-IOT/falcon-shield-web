@@ -237,7 +237,7 @@ function onFileSelect(event) {
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <Button icon="pi pi-heart" outlined></Button>
+                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
                       <SplitButton
                         label="View areas"
                         dropdownIcon="pi pi-chevron-down"
@@ -289,7 +289,7 @@ function onFileSelect(event) {
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <Button icon="pi pi-heart" outlined></Button>
+                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
                       <SplitButton
                         label="View areas"
                         dropdownIcon="pi pi-chevron-down"
