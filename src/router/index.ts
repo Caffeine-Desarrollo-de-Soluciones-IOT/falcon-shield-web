@@ -34,6 +34,16 @@ const router = createRouter({
           name: 'events',
           component: () => import('@/views/pages/events/Events.vue')
         },
+        {
+          path: 'help',
+          name: 'help',
+          component: () => import('@/views/pages/assistance/Assistance.vue')
+        },
+        {
+          path: 'contact',
+          name: 'contact',
+          component: () => import('@/views/pages/contact/Contact.vue')
+        },
 
         //UI KIT
         {
