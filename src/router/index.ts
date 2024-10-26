@@ -1,13 +1,51 @@
-import AppLayout from '@/layout/AppLayout.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import AppLayout from '@/layout/AppLayout.vue';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { AuthService } from '../service/AuthService';
+import { useUserProfileStore } from '@/store/userProfileStore';
+
+const errorRoutes: RouteRecordRaw[] = [
+  //error
+  {
+    path: '/error',
+    name: 'error',
+    component: () => import('@/views/pages/error/Error.vue')
+  },
+  //403 (access denied)
+  {
+    path: '/access-denied',
+    name: 'accessDenied',
+    component: () => import('@/views/pages/error/Access.vue')
+  },
+  //404 (not found)
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/pages/error/NotFound.vue')
+  }
+];
+
+const publicRoutes: RouteRecordRaw[] = [
+  {
+    path: '/callback',
+    name: 'callback',
+    component: () => import('@/views/pages/auth/Callback.vue'),
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/pages/auth/Login.vue'),
+  }
+];
+
+
 
 const router = createRouter({
-  // history: createWebHistory(import.meta.env.BASE_URL),
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       component: AppLayout,
+      meta: { requiresAuth: true },
       children: [
         {
           path: '',
@@ -20,6 +58,11 @@ const router = createRouter({
           component: () => import('@/views/Dashboard.vue')
         },
         {
+          path: 'create-user-profile',
+          name: 'create-user-profile',
+          component: () => import('@/views/pages/auth/CreateUserProfile.vue'),
+        },
+        {
           path: 'my-devices',
           name: 'my-devices',
           component: () => import('@/views/pages/my-devices/MyDevices.vue')
@@ -28,6 +71,16 @@ const router = createRouter({
           path: 'my-properties',
           name: 'my-properties',
           component: () => import('@/views/pages/my-properties/MyProperties.vue')
+        },
+        {
+          path: '/my-properties/:property_id/my-areas',
+          name: 'my-areas',
+          component: () => import('@/views/pages/my-areas/MyAreas.vue')
+        },
+        {
+          path: '/my-properties/:property_id/my-areas/:area_id/devices',
+          name: 'devices',
+          component: () => import('@/views/pages/my-devices/DevicesXArea.vue')
         },
         {
           path: 'events',
@@ -129,11 +182,6 @@ const router = createRouter({
         },
         //PAGES
         {
-          path: '/pages/empty',
-          name: 'empty',
-          component: () => import('@/views/pages/Empty.vue')
-        },
-        {
           path: '/pages/crud',
           name: 'crud',
           component: () => import('@/views/pages/Crud.vue')
@@ -145,29 +193,38 @@ const router = createRouter({
       name: 'landing',
       component: () => import('@/views/pages/Landing.vue')
     },
-    {
-      path: '/auth/login',
-      name: 'login',
-      component: () => import('@/views/pages/auth/Login.vue')
-    },
-    {
-      path: '/auth/access',
-      name: 'accessDenied',
-      component: () => import('@/views/pages/error/Access.vue')
-    },
-    //error
-    {
-      path: '/error',
-      name: 'error',
-      component: () => import('@/views/pages/error/Error.vue')
-    },
-    //404
-    {
-      path: '/:pathMatch(.*)*',
-      name: 'not-found',
-      component: () => import('@/views/pages/error/NotFound.vue')
-    }
+    ...publicRoutes,
+    ...errorRoutes
   ]
-})
+});
 
-export default router
+//middleware to check if user is authenticated
+router.beforeEach(async (to, from, next) => {
+  const authenticatedUser = await AuthService.getUser();
+  const isAuthRequired = to.matched.some((record) => record.meta.requiresAuth);
+  const isPublicRoute = publicRoutes.some((route) => route.path === to.path);
+
+  if (isAuthRequired && !authenticatedUser) {
+    next({ path: '/login', query: { then: to.fullPath } });
+  } else if (authenticatedUser) {
+    const userProfileStore = useUserProfileStore();
+    const isUserProfileCreated = await userProfileStore.checkUserProfile();
+    
+    //redirect to home if user tries to access /create-user-profile but already has a profile
+    if (isUserProfileCreated && to.name === 'create-user-profile') {
+      next({ path: '/home' });
+    }
+    //redirect to profile creation if user profile is not created
+    else if (!isUserProfileCreated && to.name !== 'create-user-profile') {
+      next({ path: '/create-user-profile' });
+    } else if (isPublicRoute) {
+      next({ path: '/home' });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

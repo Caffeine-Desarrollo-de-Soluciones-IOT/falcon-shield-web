@@ -1,23 +1,28 @@
 <script setup lang="ts">
 import { useLayout } from '@/layout/composables/layout';
+import { AuthService } from '@/service/AuthService';
 import { ProductService } from '@/service/ProductService';
+import { User } from 'oidc-client-ts';
 import { onMounted, ref, watch } from 'vue';
 
 const { getPrimary, getSurface, isDarkTheme } = useLayout();
 
-const products = ref(null);
-const chartData = ref(null);
-const chartOptions = ref(null);
+const products = ref<any>(null);
+const chartData = ref<any>(null);
+const chartOptions = ref<any>(null);
 
 const items = ref([
   { label: 'Add New', icon: 'pi pi-fw pi-plus' },
   { label: 'Remove', icon: 'pi pi-fw pi-trash' }
 ]);
 
+const user = ref<User | null>(null);
+
 onMounted(() => {
   ProductService.getProductsSmall().then((data) => (products.value = data));
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
+  AuthService.getUser().then((data) => (user.value = data));
 });
 
 function setChartData() {
@@ -90,9 +95,16 @@ function setChartOptions() {
   };
 }
 
-const formatCurrency = (value) => {
+const formatCurrency = (value: number) => {
   return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
+
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return `Good Morning ${user.value?.profile.name ?? '--'} 🌤️`;
+  if (hour >= 12 && hour < 18) return `Good Afternoon ${user.value?.profile.name ?? '--'} ⛅️`
+  return `Good Evening ${user.value?.profile.name ?? '--'} 🌙`;
+}
 
 watch([getPrimary, getSurface, isDarkTheme], () => {
   chartData.value = setChartData();
@@ -101,6 +113,9 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
 </script>
 
 <template>
+  <div className="card">
+    <div class="font-semibold text-xl">{{ getGreeting() }}</div>
+  </div>
   <div class="grid grid-cols-12 gap-8">
     <div class="col-span-12 lg:col-span-6 xl:col-span-3">
       <div class="card mb-0">
@@ -189,7 +204,7 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
         <div class="flex justify-between items-center mb-6">
           <div class="font-semibold text-xl">Best Selling Products</div>
           <div>
-            <Button icon="pi pi-ellipsis-v" class="p-button-text p-button-plain p-button-rounded" @click="$refs.menu2.toggle($event)"></Button>
+            <Button icon="pi pi-ellipsis-v" class="p-button-text p-button-plain p-button-rounded" @click="$refs.menu2?.toggle($event)"></Button>
             <Menu ref="menu2" :popup="true" :model="items" class="!min-w-40"></Menu>
           </div>
         </div>
@@ -278,7 +293,7 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
         <div class="flex items-center justify-between mb-6">
           <div class="font-semibold text-xl">Notifications</div>
           <div>
-            <Button icon="pi pi-ellipsis-v" class="p-button-text p-button-plain p-button-rounded" @click="$refs.menu1.toggle($event)"></Button>
+            <Button icon="pi pi-ellipsis-v" class="p-button-text p-button-plain p-button-rounded" @click="$refs.menu1?.toggle($event)"></Button>
             <Menu ref="menu1" :popup="true" :model="items" class="!min-w-40"></Menu>
           </div>
         </div>

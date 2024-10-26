@@ -64,12 +64,12 @@ const model = ref([
               {
                 label: 'Login',
                 icon: 'pi pi-fw pi-sign-in',
-                to: '/auth/login'
+                to: '/login'
               },
               {
                 label: 'Access Denied',
                 icon: 'pi pi-fw pi-lock',
-                to: '/auth/access'
+                to: '/access-denied'
               }
             ]
           },
@@ -78,11 +78,6 @@ const model = ref([
             icon: 'pi pi-fw pi-pencil',
             to: '/pages/crud'
           },
-          {
-            label: 'Empty',
-            icon: 'pi pi-fw pi-circle-off',
-            to: '/pages/empty'
-          }
         ]
       },
       {
