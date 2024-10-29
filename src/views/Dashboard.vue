@@ -193,14 +193,14 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
             </template>
           </Column>
           <Column field="name" header="Name" :sortable="true" style="width: 35%"></Column>
-          <Column field="price" header="Price" :sortable="true" style="width: 35%">
+          <Column field="price" header="Areas" :sortable="true" style="width: 35%">
             <template #body="slotProps">
               {{ formatCurrency(slotProps.data.price) }}
             </template>
           </Column>
-          <Column style="width: 15%" header="View">
+          <Column style="width: 15%" header="Quantity">
             <template #body>
-              <Button icon="pi pi-search" type="button" class="p-button-text"></Button>
+              <td style="width: 35%;">8</td>
             </template>
           </Column>
         </DataTable>
