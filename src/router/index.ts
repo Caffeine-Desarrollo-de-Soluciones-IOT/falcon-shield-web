@@ -33,7 +33,7 @@ const publicRoutes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/pages/contact/Contact.vue'),
+    component: () => import('@/views/Dashboard.vue'),
   }
 ];
 
