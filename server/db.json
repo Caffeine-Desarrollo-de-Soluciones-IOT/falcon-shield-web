@@ -1,0 +1,183 @@
+{
+  "userProfile": {
+    "account": {
+      "id": "abc123",
+      "username": "svollerei",
+      "firstName": "Seele",
+      "lastName": "Vollerei",
+      "email": "svollerei@gmail.com"
+    },
+    "premium": true
+  },
+  "properties": [
+    {
+      "id": "2",
+      "name": "Lisa's House",
+      "image_url": "84fc9200-09db-416a-b12c-714ca5b4488e.jpeg?alt=media&token=ea98b5c7-4bd0-4eb0-9761-afec0093537a",
+      "address": "456 Maple St",
+      "user_id": "abc123"
+    },
+    {
+      "id": "3",
+      "name": "John's House",
+      "image_url": "51124cf9-3e05-4e48-b4fe-e179c2515af0.jpg?alt=media&token=027bdc76-9803-4fb1-8e9e-6288b1e62126",
+      "address": "456 Maple St",
+      "user_id": "abc123"
+    }
+  ],
+  "areas": [
+    {
+      "id": "3",
+      "name": "Kitchen",
+      "icon_id": "2",
+      "property_id": "2"
+    },
+    {
+      "id": "4",
+      "name": "Garage",
+      "icon_id": "3",
+      "property_id": "3"
+    }
+  ],
+  "devices": [
+    {
+      "id": "4",
+      "name": "Smoke Detector",
+      "description": "Smoke Detector, detects CO2, smoke and fire",
+      "brand": "Nest",
+      "model": "Nest Protect",
+      "specs": {
+        "power": "Battery",
+        "connectivity": "Wi-Fi",
+        "compatibility": "iOS, Android",
+        "warranty": "2 years"
+      },
+      "device_type_id": "1",
+      "area_id": "3",
+      "property_id": "2"
+    },
+    {
+      "id": "5",
+      "name": "Smoke Detector",
+      "description": "Smoke Detector, detects CO2, smoke and fire",
+      "brand": "Nest",
+      "model": "Nest Protect",
+      "specs": {
+        "power": "Battery",
+        "connectivity": "Wi-Fi",
+        "compatibility": "iOS, Android",
+        "warranty": "2 years"
+      },
+      "device_type_id": "1",
+      "area_id": "3",
+      "property_id": "2"
+    },
+    {
+      "id": "6",
+      "name": "Window Sensor",
+      "description": "Window Sensor, detects when a window is opened",
+      "brand": "Ring",
+      "model": "Ring Alarm Contact Sensor",
+      "specs": {
+        "power": "Battery",
+        "connectivity": "Z-Wave",
+        "compatibility": "iOS, Android",
+        "warranty": "1 year"
+      },
+      "device_type_id": "2",
+      "area_id": "4",
+      "property_id": "3"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "4",
+      "title": "Dispositivo Requiere Mantenimiento",
+      "description": "El dipositivo 'Detector de humo' del area 'cocina' requiere mantenimiento",
+      "timestamp": "2024-09-25T08:00:00Z",
+      "event_type": "Mantenimiento"
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "type": "OFFLINE",
+      "content": "Sensor de movimiento apagado en Living Room",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": "2",
+      "type": "ONLINE",
+      "content": "Sensor de movimiento encendido en Living Room",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": "3",
+      "type": "ALERT",
+      "content": "Intento de acceso denegado en la cerradura de la puerta principal",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": "4",
+      "type": "ERROR",
+      "content": "Error en la cerradura de la puerta principal",
+      "timestamp": "2024-09-25T08:00:00Z"
+    },
+    {
+      "id": "5",
+      "type": "UPDATE",
+      "content": "Actualización de software disponible para la cámara de seguridad",
+      "timestamp": "2024-09-25T08:00:00Z"
+    }
+  ],
+  "device_types": [
+    {
+      "id": "1",
+      "name": "Alarm"
+    },
+    {
+      "id": "2",
+      "name": "Sensor"
+    },
+    {
+      "id": "3",
+      "name": "Camera"
+    },
+    {
+      "id": "4",
+      "name": "Lock"
+    }
+  ],
+  "icons": [
+    {
+      "id": "1",
+      "name": "Default",
+      "icon_url": "icons%2Fimage-default.jpg?alt=media&token=05e7a158-6db0-47bc-a8f2-3940efd15889"
+    },
+    {
+      "id": "2",
+      "name": "Kitchen",
+      "icon_url": "icons%2Fkitchen.png?alt=media&token=679fc92b-d32e-49ff-a66f-317e13db1fc7"
+    },
+    {
+      "id": "3",
+      "name": "Garage",
+      "icon_url": "icons%2Fgaraje.png?alt=media&token=bf087276-6c29-43f4-a312-c000d52e81e4"
+    },
+    {
+      "id": "4",
+      "name": "Living Room",
+      "icon_url": "icons%2Fliving-room.png?alt=media&token=3454c0a0-420b-437e-b30a-6305931bee3d"
+    },
+    {
+      "id": "5",
+      "name": "Dining Room",
+      "icon_url": "icons%2Fdining-room.png?alt=media&token=25904132-28f3-4727-92a1-2756fb4a8007"
+    },
+    {
+      "id": "6",
+      "name": "Bedroom",
+      "icon_url": "icons%2Fbedroom.png?alt=media&token=bd351654-9ea6-4802-b362-00896c3d0946"
+    }
+  ]
+}
