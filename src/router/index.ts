@@ -198,6 +198,7 @@ const router = createRouter({
   ]
 });
 
+/*
 //middleware to check if user is authenticated
 router.beforeEach(async (to, from, next) => {
   const authenticatedUser = await AuthService.getUser();
@@ -225,6 +226,6 @@ router.beforeEach(async (to, from, next) => {
   } else {
     next();
   }
-});
+});*/
 
 export default router;
