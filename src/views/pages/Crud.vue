@@ -140,7 +140,8 @@ function getStatusLabel(status) {
       <Toolbar class="mb-6">
         <template #start>
           <Button label="New" icon="pi pi-plus" severity="secondary" class="mr-2" @click="openNew" />
-          <Button label="Delete" icon="pi pi-trash" severity="secondary" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
+          <Button label="Delete" icon="pi pi-trash" severity="secondary" @click="confirmDeleteSelected"
+            :disabled="!selectedProducts || !selectedProducts.length" />
         </template>
 
         <template #end>
@@ -148,18 +149,11 @@ function getStatusLabel(status) {
         </template>
       </Toolbar>
 
-      <DataTable
-        ref="dt"
-        v-model:selection="selectedProducts"
-        :value="products"
-        dataKey="id"
-        :paginator="true"
-        :rows="10"
+      <DataTable ref="dt" v-model:selection="selectedProducts" :value="products" dataKey="id" :paginator="true" :rows="10"
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-      >
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
             <h4 class="m-0">Manage Products</h4>
@@ -177,7 +171,8 @@ function getStatusLabel(status) {
         <Column field="name" header="Name" sortable style="min-width: 16rem"></Column>
         <Column header="Image">
           <template #body="slotProps">
-            <img :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`" :alt="slotProps.data.image" class="rounded" style="width: 64px" />
+            <img :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
+              :alt="slotProps.data.image" class="rounded" style="width: 64px" />
           </template>
         </Column>
         <Column field="price" header="Price" sortable style="min-width: 8rem">
@@ -207,10 +202,12 @@ function getStatusLabel(status) {
 
     <Dialog v-model:visible="productDialog" :style="{ width: '450px' }" header="Product Details" :modal="true">
       <div class="flex flex-col gap-6">
-        <img v-if="product.image" :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`" :alt="product.image" class="block m-auto pb-4" />
+        <img v-if="product.image" :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`"
+          :alt="product.image" class="block m-auto pb-4" />
         <div>
           <label for="name" class="block font-bold mb-3">Name</label>
-          <InputText id="name" v-model.trim="product.name" required="true" autofocus :invalid="submitted && !product.name" fluid />
+          <InputText id="name" v-model.trim="product.name" required="true" autofocus :invalid="submitted && !product.name"
+            fluid />
           <small v-if="submitted && !product.name" class="text-red-500">Name is required.</small>
         </div>
         <div>
@@ -219,7 +216,8 @@ function getStatusLabel(status) {
         </div>
         <div>
           <label for="inventoryStatus" class="block font-bold mb-3">Inventory Status</label>
-          <Select id="inventoryStatus" v-model="product.inventoryStatus" :options="statuses" optionLabel="label" placeholder="Select a Status" fluid></Select>
+          <Select id="inventoryStatus" v-model="product.inventoryStatus" :options="statuses" optionLabel="label"
+            placeholder="Select a Status" fluid></Select>
         </div>
 
         <div>
@@ -265,10 +263,7 @@ function getStatusLabel(status) {
     <Dialog v-model:visible="deleteProductDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="product"
-          >Are you sure you want to delete <b>{{ product.name }}</b
-          >?</span
-        >
+        <span v-if="product">Are you sure you want to delete <b>{{ product.name }}</b>?</span>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" text @click="deleteProductDialog = false" />

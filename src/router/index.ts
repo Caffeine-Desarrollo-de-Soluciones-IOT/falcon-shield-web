@@ -33,7 +33,7 @@ const publicRoutes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/pages/auth/Login.vue'),
+    component: () => import('@/views/Dashboard.vue'),
   }
 ];
 
@@ -87,6 +87,17 @@ const router = createRouter({
           name: 'events',
           component: () => import('@/views/pages/events/Events.vue')
         },
+        {
+          path: 'help',
+          name: 'help',
+          component: () => import('@/views/pages/assistance/Assistance.vue')
+        },
+        {
+          path: 'contact',
+          name: 'contact',
+          component: () => import('@/views/pages/contact/Contact.vue')
+        },
+
         //UI KIT
         {
           path: '/uikit',
