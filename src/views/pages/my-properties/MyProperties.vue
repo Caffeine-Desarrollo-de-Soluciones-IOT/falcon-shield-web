@@ -5,7 +5,7 @@ import { storageBaseUrl } from '@/config/firebaseConfig';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
-import { IRegisteredProperty, IRegisterPropertyRequestDto } from '@/interfaces/properties';
+import { type IRegisteredProperty, type IRegisterPropertyRequestDto } from '@/interfaces/properties';
 
 const toast = useToast();
 const registerDialogVisible = ref(false);
@@ -436,7 +436,7 @@ function onFileSelect(event) {
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="selectedPropertyRegistration"
-          >Are you sure you want to delete <b>{{ selectedPropertyRegistration.name }}</b>?</span>
+          >Are you sure you want to delete <b>{{ selectedPropertyRegistration.property.name }}</b>?</span>
       </div>
       <template #footer>
         <Button
