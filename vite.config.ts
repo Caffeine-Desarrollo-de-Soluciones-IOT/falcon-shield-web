@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -18,6 +18,14 @@ export default defineConfig({
     vueDevTools(),
     Components({
       resolvers: [PrimeVueResolver()]
+    }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'node_modules/pdfjs-dist/build/pdf.worker.min.js',
+          dest: 'js'
+        }
+      ]
     })
   ],
   resolve: {

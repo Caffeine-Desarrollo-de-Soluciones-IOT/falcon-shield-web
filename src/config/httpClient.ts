@@ -32,13 +32,8 @@ httpClient.interceptors.response.use(
     //response error: when the client receives an error response (HTTP 5xx or 4xx status codes)
     if (error.response) {
       //if error is 400
-      if (error.response.status === 400) {
-        customError.message = 'Bad Request';
-        customError.details = error.response.data.data.toString();
-      } else {
-        customError.message = error.response.data.message;
-        customError.details = error.response.data.data.details;
-      }
+      customError.message = error.response.status === 400 ? 'Bad Request' : error.response.data.message;
+      customError.details = error.response.data.data.details;
     }
 
     //request error: when the client never receives a response, or the request never left
