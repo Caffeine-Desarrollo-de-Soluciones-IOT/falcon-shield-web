@@ -1,24 +1,17 @@
 import { httpClient } from '@/config/httpClient';
-import {
-  type IProperty,
-  type IRegisterPropertyRequestDto
-} from '@/interfaces/properties';
+import { type IProperty, type IRegisterPropertyRequestDto } from '@/interfaces/properties';
 import type { IApiResponse } from '@/interfaces/common';
 
 const serviceName = '/properties';
 
 export const PropertyService = {
   async getProperties(): Promise<IApiResponse<IProperty[]>> {
-    const response = await httpClient.get<IApiResponse<IProperty[]>>(
-      `${serviceName}/registered`
-    );
+    const response = await httpClient.get<IApiResponse<IProperty[]>>(`${serviceName}/registered`);
     return response.data;
   },
 
   async getPropertiesMini(): Promise<IApiResponse<IProperty[]>> {
-    const response = await httpClient.get<IApiResponse<IProperty[]>>(
-      `${serviceName}/registered`
-    );
+    const response = await httpClient.get<IApiResponse<IProperty[]>>(`${serviceName}/registered`);
     const dataArray = Object.values(response.data.data);
     return {
       ...response.data,
@@ -27,9 +20,7 @@ export const PropertyService = {
   },
 
   async getPropertiesSmall(): Promise<IApiResponse<IProperty[]>> {
-    const response = await httpClient.get<IApiResponse<IProperty[]>>(
-      `${serviceName}/registered`
-    );
+    const response = await httpClient.get<IApiResponse<IProperty[]>>(`${serviceName}/registered`);
     const dataArray = Object.values(response.data.data);
     return {
       ...response.data,
@@ -38,6 +29,7 @@ export const PropertyService = {
   },
 
   async createProperty(property: IRegisterPropertyRequestDto): Promise<IApiResponse> {
+    console.log(property);
     if (!property.imageUrl) {
       property.imageUrl =
         'icons%2Fimage-default.jpg?alt=media&token=ad9f427e-0e10-4921-84b1-def775f541e7';
