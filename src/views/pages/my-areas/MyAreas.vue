@@ -64,13 +64,13 @@ function loadIcons() {
   });
 }
 
-function getIconUrl(iconId) {
+function getIconUrl(iconId: any) {
   const icon = icons.value.find((icon) => icon.id === iconId);
   const url = icon ? `${storageBaseUrl}${icon.icon_url}` : null;
   return url;
 }
 
-function viewMoreDevices(areaId) {
+function viewMoreDevices(areaId: any) {
   const propertyId = route.params.property_id;
   router.push(`/my-properties/${propertyId}/my-areas/${areaId}/devices`);
 }
@@ -190,13 +190,13 @@ function mapAreaTypeToName(iconId: string) {
   }
 }
 
-function selectIcon(icon) {
+function selectIcon(icon: any) {
   selectedIcon.value = icon;
   area.value.icon_id = icon.id;
   popoverRef.value.hide();
 }
 
-function showIconPopover(event) {
+function showIconPopover(event: any) {
   if (popoverRef.value) {
     popoverRef.value.toggle(event);
   } else {

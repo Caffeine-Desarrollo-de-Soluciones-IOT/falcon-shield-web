@@ -177,12 +177,6 @@ const router = createRouter({
               component: () => import('@/views/uikit/TimelineDoc.vue')
             }
           ]
-        },
-        //PAGES
-        {
-          path: '/pages/crud',
-          name: 'crud',
-          component: () => import('@/views/pages/Crud.vue')
         }
       ]
     },
@@ -195,7 +189,6 @@ const router = createRouter({
     ...errorRoutes
   ]
 });
-
 
 //middleware to check if user is authenticated
 router.beforeEach(async (to, from, next) => {
