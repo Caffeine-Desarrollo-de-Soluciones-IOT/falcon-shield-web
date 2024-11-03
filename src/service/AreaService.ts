@@ -1,49 +1,30 @@
 import { httpClient } from '@/config/httpClient';
-import type { IArea } from '@/interfaces/areas';
+import type { IArea, IRegisterAreaRequestDto } from '@/interfaces/areas';
+import type { IApiResponse } from '../interfaces/common';
 
 const serviceName = '/areas';
 
 export const AreaService = {
-  async getAreas(): Promise<IArea[]> {
-    const response = await httpClient.get<IArea[]>(`${serviceName}`);
+  async getAreasByPropertyId(propertyId: number): Promise<IApiResponse<IArea[]>> {
+    const response = await httpClient.get<IApiResponse<IArea[]>>(`${serviceName}/all/${propertyId}`);
     return response.data;
   },
 
-  async getAreasMiniByPropertyId(propertyId: string): Promise<IArea[]> {
-    const response = await httpClient.get<IArea[]>(`${serviceName}/?property_id=${propertyId}`);
-    return response.data.slice(0, 5);
-  },
-
-  async getAreasSmallByPropertyId(propertyId: string): Promise<IArea[]> {
-    const response = await httpClient.get<IArea[]>(`${serviceName}/?property_id=${propertyId}`);
-    return response.data.slice(0, 10);
-  },
-
-  async getAreaById(areaId: string): Promise<IArea> {
-    const response = await httpClient.get<IArea>(`${serviceName}/?id=${areaId}`);
+  async getAreaById(areaId: number): Promise<IApiResponse<IArea>> {
+    const response = await httpClient.get<IApiResponse<IArea>>(`${serviceName}/${areaId}`);
     return response.data;
   },
 
-  async getAreasByPropertyId(propertyId: string): Promise<IArea[]> {
-    const response = await httpClient.get<IArea[]>(`${serviceName}/?property_id=${propertyId}`);
-    return response.data;
-  },
-
-  async createArea(area: IArea): Promise<IArea> {
-    if (!area.icon_id) {
-      area.icon_id = '1';
+  async createArea(propertyId: number, request: IRegisterAreaRequestDto): Promise<IApiResponse> {
+    if (!request.icon) {
+      request.icon = '1';
     }
-    const response = await httpClient.post<IArea>(`${serviceName}`, area);
+    const response = await httpClient.post<IApiResponse>(`${serviceName}/register/${propertyId}`, request);
     return response.data;
   },
 
-  async updateArea(areaId: string, areaData: IArea): Promise<void> {
-    const response = await httpClient.put<void>(`${serviceName}/${areaId}`, areaData);
-    return response.data;
-  },
-
-  async deleteArea(areaId: string): Promise<void> {
-    const response = await httpClient.delete<void>(`${serviceName}/${areaId}`);
+  async deleteArea(areaId: number): Promise<IApiResponse> {
+    const response = await httpClient.delete<IApiResponse>(`${serviceName}/unregister/${areaId}`);
     return response.data;
   }
 };

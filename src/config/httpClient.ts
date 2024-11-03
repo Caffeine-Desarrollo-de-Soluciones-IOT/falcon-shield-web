@@ -8,6 +8,7 @@ export const httpClient = axios.create({
 });
 
 //request interceptor -> it executes before the request promise is resolved
+//interceptor de solicitud -> se ejecuta antes de cada solicitud
 httpClient.interceptors.request.use(
   async (config) => {
     //handle user authentication & token

@@ -5,31 +5,31 @@ import { storageBaseUrl } from '@/config/firebaseConfig';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
-import { IRegisteredProperty, IRegisterPropertyRequestDto } from '@/interfaces/properties';
+import { type IProperty, type IRegisterPropertyRequestDto } from '@/interfaces/properties';
+import type { FalconShieldError } from '@/config/FalconShieldError';
+import type { MenuItem } from 'primevue/menuitem';
 
 const toast = useToast();
 const registerDialogVisible = ref(false);
 const deleteDialogVisible = ref(false);
 const submitted = ref(false);
-const registeredProperties = ref<IRegisteredProperty[]>([]);
+const registeredProperties = ref<IProperty[]>([]);
 const newProperty = ref<IRegisterPropertyRequestDto>({} as IRegisterPropertyRequestDto);
-const selectedPropertyRegistration = ref<IRegisteredProperty>();
+const selectedPropertyRegistration = ref<IProperty>();
 
 const loadingList = ref(false);
 const registeringProperty = ref(false);
 const unregisteringProperty = ref(false);
 
 const router = useRouter();
-const addressVisibility = ref({});
+const addressVisibility = ref<any>({});
 const selectedFile = ref<File | null>(null);
-const src = ref(null); // Para la vista previa de la imagen
+const src = ref<string | null>(null); // Para la vista previa de la imagen
 
 const options = ref(['grid', 'list']);
-const layout = ref('grid');
-const picklistAreas = ref(null);
-const orderlistAreas = ref(null);
+const layout = ref<'grid' | 'list'>('grid');
 
-const items = (item) => [
+const items = (item: IProperty): MenuItem[] => [
   {
     label: 'Edit',
     icon: 'pi pi-pencil',
@@ -76,7 +76,7 @@ async function saveProperty() {
     const imageName = await ImageService.uploadImage(selectedFile.value); // Subir la imagen a Firebase
 
     if (imageName) {
-      newProperty.value.image_url = imageName; // Guardar solo el nombre de la imagen en la propiedad
+      newProperty.value.imageUrl = imageName; // Guardar solo el nombre de la imagen en la propiedad
     } else {
       toast.add({ severity: 'error', summary: 'Error', detail: 'Image upload failed', life: 3000 });
       return;
@@ -99,7 +99,7 @@ async function saveProperty() {
 
         loadProperties();
       })
-      .catch(() => {
+      .catch((error) => {
         toast.add({
           severity: 'error',
           summary: (error as FalconShieldError).message,
@@ -122,7 +122,7 @@ async function saveProperty() {
 
         loadProperties();
       })
-      .catch(() => {
+      .catch((error) => {
         toast.add({
           severity: 'error',
           summary: (error as FalconShieldError).message,
@@ -136,14 +136,14 @@ async function saveProperty() {
   }
 }
 
-function editProperty(item) {
+function editProperty(item: IProperty) {
   // Copiar la propiedad seleccionada y abrir el diálogo de edición
   newProperty.value = { ...item };
   registeringProperty.value = true; // Asegurarse de que solo se abre el diálogo de edición
-  src.value = `${storageBaseUrl}${item.image_url}`; // Mostrar la imagen actual en la vista previa
+  src.value = `${storageBaseUrl}${item.imageUrl}`; // Mostrar la imagen actual en la vista previa
 }
 
-function confirmDelete(propertyRegistrationId: IRegisteredProperty) {
+function confirmDelete(propertyRegistrationId: IProperty) {
   selectedPropertyRegistration.value = propertyRegistrationId; // Guardar la propiedad a eliminar
   deleteDialogVisible.value = true; // Abrir diálogo de confirmación
 }
@@ -160,7 +160,7 @@ async function deleteProperty() {
       life: 3000
     });
     deleteDialogVisible.value = false;
-    selectedPropertyRegistration.value = {} as IRegistredProperty;
+    selectedPropertyRegistration.value = {} as IProperty;
 
     loadProperties();
   } catch (error) {
@@ -181,8 +181,6 @@ async function loadProperties() {
     const response = await PropertyService.getPropertiesSmall();
     console.log('Fetched properties:', response.data);
     registeredProperties.value = response.data.slice(0, 6);
-    picklistAreas.value = [response, []];
-    orderlistAreas.value = response;
   } catch (error) {
     console.error('Error fetching properties:', error);
     toast.add({
@@ -196,22 +194,25 @@ async function loadProperties() {
   }
 }
 
-function viewMoreAreas(propertyId) {
+function viewMoreAreas(propertyId: number) {
   router.push(`/my-properties/${propertyId}/my-areas`);
 }
 
-function toggleAddressVisibility(propertyId) {
+function toggleAddressVisibility(propertyId: number) {
   addressVisibility.value[propertyId] = !addressVisibility.value[propertyId];
 }
 
-function onFileSelect(event) {
+function onFileSelect(event: any) {
   selectedFile.value = event.files[0];
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    src.value = e.target.result;
+    src.value = e.target?.result as string;
   };
-  reader.readAsDataURL(selectedFile.value);
+
+  if (selectedFile.value) {
+    reader.readAsDataURL(selectedFile.value);
+  }
 }
 </script>
 
@@ -239,7 +240,7 @@ function onFileSelect(event) {
         </template>
       </Toolbar>
 
-      <DataView :value="registeredProperties" :layout="layout">
+      <DataView :value="registeredProperties" :layout="layout" data-key="id">
         <template #grid="slotProps">
           <div class="grid grid-cols-12 gap-4">
             <div
@@ -248,35 +249,35 @@ function onFileSelect(event) {
               class="col-span-12 sm:col-span-6 lg:col-span-4 p-2"
             >
               <div
-                v-if="item && item.property"
+                v-if="item"
                 class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
               >
                 <div class="bg-surface-50 flex justify-center rounded p-4">
                   <img
                     class="rounded w-full"
-                    :src="`${storageBaseUrl}${item.property.imageUrl}`"
-                    :alt="item.property.name"
+                    :src="`${storageBaseUrl}${item.imageUrl}`"
+                    :alt="item.name"
                     style="height: 150px"
                   />
                 </div>
                 <div class="pt-6">
                   <div class="flex flex-row justify-between items-start gap-2">
                     <div>
-                      <div class="text-lg font-medium mt-2">{{ item.property.name }}</div>
+                      <div class="text-lg font-medium mt-2">{{ item.name }}</div>
                       <div class="font-medium text-sm flex items-center gap-2">
-                        <span v-if="addressVisibility[item.property.id]">{{
-                          item.property.address
+                        <span v-if="addressVisibility[item.id]">{{
+                          item.address
                         }}</span>
                         <Button
-                          @click="toggleAddressVisibility(item.property.id)"
+                          @click="toggleAddressVisibility(item.id)"
                           class="p-button-link"
                         >
                           {{
-                            addressVisibility[item.property.id] ? 'Hide address' : 'Show address'
+                            addressVisibility[item.id] ? 'Hide address' : 'Show address'
                           }}
                           <i
                             :class="
-                              addressVisibility[item.property.id] ? 'pi pi-eye-slash' : 'pi pi-eye'
+                              addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'
                             "
                             class="ml-2"
                           />
@@ -290,7 +291,7 @@ function onFileSelect(event) {
                       <SplitButton
                         label="View areas"
                         dropdownIcon="pi pi-chevron-down"
-                        @click="viewMoreAreas(item.property.id)"
+                        @click="viewMoreAreas(item.id)"
                         class="flex-auto md:flex-initial whitespace-nowrap"
                         :model="items(item)"
                       />
@@ -306,15 +307,15 @@ function onFileSelect(event) {
           <div class="flex flex-col">
             <div v-for="(item, index) in slotProps.items" :key="index">
               <div
-                v-if="item && item.property"
+                v-if="item"
                 class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
                 :class="{ 'border-t border-surface': index !== 0 }"
               >
                 <div class="md:w-40 relative">
                   <img
                     class="rounded w-full"
-                    :src="`${storageBaseUrl}${item.property.imageUrl}`"
-                    :alt="item.property.name"
+                    :src="`${storageBaseUrl}${item.imageUrl}`"
+                    :alt="item.name"
                     style="max-width: 300px"
                   />
                 </div>
@@ -322,23 +323,23 @@ function onFileSelect(event) {
                   <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                     <div>
                       <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                        item.property.type
+                        item.type
                       }}</span>
-                      <div class="text-lg font-medium mt-2">{{ item.property.name }}</div>
+                      <div class="text-lg font-medium mt-2">{{ item.name }}</div>
                       <div class="text-surface-900 font-medium text-sm flex items-center gap-2">
-                        <span v-if="addressVisibility[item.property.id]">{{
-                          item.property.address
+                        <span v-if="addressVisibility[item.id]">{{
+                          item.address
                         }}</span>
                         <Button
-                          @click="toggleAddressVisibility(item.property.id)"
+                          @click="toggleAddressVisibility(item.id)"
                           class="p-button-link"
                         >
                           {{
-                            addressVisibility[item.property.id] ? 'Hide address' : 'Show address'
+                            addressVisibility[item.id] ? 'Hide address' : 'Show address'
                           }}
                           <i
                             :class="
-                              addressVisibility[item.property.id] ? 'pi pi-eye-slash' : 'pi pi-eye'
+                              addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'
                             "
                             class="ml-2"
                           />
@@ -352,7 +353,7 @@ function onFileSelect(event) {
                       <SplitButton
                         label="View areas"
                         dropdownIcon="pi pi-chevron-down"
-                        @click="viewMoreAreas(item.property.id)"
+                        @click="viewMoreAreas(item.id)"
                         class="flex-auto md:flex-initial whitespace-nowrap"
                         :model="items(item)"
                       />

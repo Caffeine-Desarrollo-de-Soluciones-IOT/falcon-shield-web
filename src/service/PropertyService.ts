@@ -1,25 +1,22 @@
 import { httpClient } from '@/config/httpClient';
 import {
   type IProperty,
-  type IRegisteredProperty,
   type IRegisterPropertyRequestDto
 } from '@/interfaces/properties';
-import { ImageService } from '@/service/ImageService';
-import { AreaService } from './AreaService';
 import type { IApiResponse } from '@/interfaces/common';
 
 const serviceName = '/properties';
 
 export const PropertyService = {
-  async getProperties(): Promise<IApiResponse<IRegisteredProperty[]>> {
-    const response = await httpClient.get<IApiResponse<IRegisteredProperty[]>>(
+  async getProperties(): Promise<IApiResponse<IProperty[]>> {
+    const response = await httpClient.get<IApiResponse<IProperty[]>>(
       `${serviceName}/registered`
     );
     return response.data;
   },
 
-  async getPropertiesMini(): Promise<IApiResponse<IRegisteredProperty[]>> {
-    const response = await httpClient.get<IApiResponse<IRegisteredProperty[]>>(
+  async getPropertiesMini(): Promise<IApiResponse<IProperty[]>> {
+    const response = await httpClient.get<IApiResponse<IProperty[]>>(
       `${serviceName}/registered`
     );
     const dataArray = Object.values(response.data.data);
@@ -29,8 +26,8 @@ export const PropertyService = {
     };
   },
 
-  async getPropertiesSmall(): Promise<IApiResponse<IRegisteredProperty[]>> {
-    const response = await httpClient.get<IApiResponse<IRegisteredProperty[]>>(
+  async getPropertiesSmall(): Promise<IApiResponse<IProperty[]>> {
+    const response = await httpClient.get<IApiResponse<IProperty[]>>(
       `${serviceName}/registered`
     );
     const dataArray = Object.values(response.data.data);
