@@ -60,6 +60,8 @@ function toggleMenu(event: MouseEvent) {
     </div>
 
     <div class="layout-topbar-actions">
+      <!-- <Button label="Go Premium" icon="pi pi-star" severity="warn" v-on:click="openDialog" /> -->
+
       <div class="layout-config-menu">
         <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
           <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
