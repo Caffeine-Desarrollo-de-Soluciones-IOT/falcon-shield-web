@@ -7,12 +7,13 @@ import { useToast } from 'primevue/usetoast';
 import { IconService } from '@/service/IconService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
 import type { IArea } from '@/interfaces/areas';
+import type { MenuItem } from 'primevue/menuitem';
 
 
 const route = useRoute();
 const router = useRouter();
 const areas = ref<IArea[]>([]);
-const propertyId = route.params.property_id;
+const propertyId = Number(route.params.property_id);
 const area = ref<IArea>({ id: '', name: '', icon_id: '', property_id: propertyId.toString() });
 const propertyName = ref('');
 const areaToDelete = ref<IArea | null>(null);
@@ -22,16 +23,14 @@ const submitted = ref(false);
 const toast = useToast();
 
 const options = ref(['grid', 'list']);
-const layout = ref('grid');
-const picklistAreas = ref(null);
-const orderlistAreas = ref(null);
+const layout = ref<'grid' | 'list'>('grid');
 
 // Para los íconos
 const icons = ref([]);
 const selectedIcon = ref(null);
 const popoverRef = ref(null);
 
-const items = (item) => [
+const items = (item: IArea): MenuItem[] => [
   {
     label: 'Edit',
     icon: 'pi pi-pencil',
@@ -50,19 +49,12 @@ const items = (item) => [
 
 onMounted(() => {
   loadAreas();
-
-  PropertyService.getPropertyById(propertyId).then((property) => {
-    propertyName.value = property[0].name;
-  });
-
   loadIcons();
 });
 
 function loadAreas() {
-  AreaService.getAreasSmallByPropertyId(propertyId).then((data) => {
-    areas.value = data.slice(0, 6);
-    picklistAreas.value = [data, []];
-    orderlistAreas.value = data;
+  AreaService.getAreasByPropertyId(propertyId).then((data) => {
+    areas.value = data.data.slice(0, 6);
   });
 }
 
@@ -104,29 +96,29 @@ function saveArea() {
 
   if (area.value.id) {
     // Si existe un id, actualiza el area
-    AreaService.updateArea(area.value.id, area.value)
-      .then(() => {
-        toast.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Area updated',
-          life: 3000
-        });
-        loadAreas();
-        openNew();
-        areaDialog.value = false;
-      })
-      .catch(() => {
-        toast.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to update area',
-          life: 3000
-        });
-      });
+    // AreaService.updateArea(area.value.id, area.value)
+    //   .then(() => {
+    //     toast.add({
+    //       severity: 'success',
+    //       summary: 'Success',
+    //       detail: 'Area updated',
+    //       life: 3000
+    //     });
+    //     loadAreas();
+    //     openNew();
+    //     areaDialog.value = false;
+    //   })
+    //   .catch(() => {
+    //     toast.add({
+    //       severity: 'error',
+    //       summary: 'Error',
+    //       detail: 'Failed to update area',
+    //       life: 3000
+    //     });
+    //   });
   } else {
     // Si no hay id, crea una nueva area
-    AreaService.createArea(area.value)
+    AreaService.createArea(propertyId, area.value)
       .then(() => {
         toast.add({
           severity: 'success',
@@ -149,7 +141,7 @@ function saveArea() {
   }
 }
 
-function editArea(item) {
+function editArea(item: IArea) {
   // Copiar el area seleccionada y abrir el diálogo de edición
   area.value = { ...item };
   areaDialog.value = true; // Asegurarse de que solo se abre el diálogo de edición
@@ -174,7 +166,7 @@ function deleteArea() {
   }
 }
 
-function confirmDelete(item) {
+function confirmDelete(item: IArea) {
   areaToDelete.value = item; // Guardar la area a eliminar
   deleteDialog.value = true; // Abrir diálogo de confirmación
 }

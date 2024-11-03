@@ -1,6 +1,13 @@
 export interface IArea {
-  id: string;
+  id: number;
   name: string;
-  icon_id: string;
-  property_id: string;
+  icon: string;
+  color: string;
+  registeredAt: string;
+}
+
+export interface IRegisterAreaRequestDto {
+  name: string;
+  icon: string;
+  color: string;
 }
