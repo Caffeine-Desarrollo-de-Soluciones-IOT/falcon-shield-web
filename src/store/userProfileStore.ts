@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { UserProfileService } from '@/service/UserProfileService';
+import { ResponseError } from '@/config/errors';
 
 export const useUserProfileStore = defineStore('userProfile', {
   state: () => ({
@@ -7,10 +8,18 @@ export const useUserProfileStore = defineStore('userProfile', {
   }),
   actions: {
     async checkUserProfile() {
-      if (this.isProfileCreated === null) {
-        this.isProfileCreated = await UserProfileService.isUserProfileCreated();
+      try {
+        await UserProfileService.getUserProfile();
+        this.setProfileCreated();
+
+      } catch (error) {
+        //if the error is a 404, the user profile is not created
+        if (error instanceof ResponseError && error.code === 404) {
+          this.isProfileCreated = false;
+        } else {
+          this.isProfileCreated = null;
+        }
       }
-      return this.isProfileCreated;
     },
     setProfileCreated() {
       this.isProfileCreated = true;

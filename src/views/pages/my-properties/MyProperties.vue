@@ -6,7 +6,6 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { type IProperty, type IRegisterPropertyRequestDto } from '@/interfaces/properties';
-import type { FalconShieldError } from '@/config/FalconShieldError';
 import type { MenuItem } from 'primevue/menuitem';
 
 const toast = useToast();
@@ -102,8 +101,8 @@ async function saveProperty() {
       .catch((error) => {
         toast.add({
           severity: 'error',
-          summary: (error as FalconShieldError).message,
-          detail: (error as FalconShieldError).details,
+          summary: 'Error',
+          detail: (error as Error).message,
           life: 3000
         });
       });
@@ -125,8 +124,8 @@ async function saveProperty() {
       .catch((error) => {
         toast.add({
           severity: 'error',
-          summary: (error as FalconShieldError).message,
-          detail: (error as FalconShieldError).details,
+          summary: 'Error',
+          detail: (error as Error).message,
           life: 3000
         });
       })
@@ -166,8 +165,8 @@ async function deleteProperty() {
   } catch (error) {
     toast.add({
       severity: 'error',
-      summary: (error as FalconShieldError).message,
-      detail: (error as FalconShieldError).details,
+      summary: 'Error',
+      detail: (error as Error).message,
       life: 3000
     });
   } finally {
@@ -182,11 +181,10 @@ async function loadProperties() {
     console.log('Fetched properties:', response.data);
     registeredProperties.value = response.data.slice(0, 6);
   } catch (error) {
-    console.error('Error fetching properties:', error);
     toast.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Error fetching registered devices',
+      detail: 'Error fetching properties',
       life: 3000
     });
   } finally {

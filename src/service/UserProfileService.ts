@@ -13,12 +13,4 @@ export const UserProfileService = {
     const response = await httpClient.post<IApiResponse>(`${serviceName}/create`, request);
     return response.data;
   },
-  async isUserProfileCreated(): Promise<boolean> {
-    try {
-      await this.getUserProfile();
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
 };

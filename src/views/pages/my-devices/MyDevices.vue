@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { FalconShieldError } from '@/config/FalconShieldError';
 import {
   EDeviceType,
   type IArea,
@@ -75,8 +74,8 @@ async function handleRegisterDevice() {
     } catch (error) {
       toast.add({
         severity: 'error',
-        summary: (error as FalconShieldError).message,
-        detail: (error as FalconShieldError).details,
+        summary: 'Error',
+        detail: (error as Error).message,
         life: 3000
       });
     } finally {
@@ -109,8 +108,8 @@ async function deleteDevice() {
   } catch (error) {
     toast.add({
       severity: 'error',
-      summary: (error as FalconShieldError).message,
-      detail: (error as FalconShieldError).details,
+      summary: 'Error',
+      detail: (error as Error).message,
       life: 3000
     });
   } finally {

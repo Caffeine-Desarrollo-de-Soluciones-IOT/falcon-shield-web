@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { AuthService } from '@/service/AuthService';
+import { useUserProfileStore } from '@/store/userProfileStore';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
+const userProfileStore = useUserProfileStore();
 const email = ref('');
 const password = ref('');
 const checked = ref(false);
@@ -27,6 +29,11 @@ async function login() {
   try {
     loginInProgress.value = true;
     await AuthService.loginWithCredentials(email.value, password.value);
+
+    //verify if the user has a user profile
+    userProfileStore.checkUserProfile(); 
+
+    //handle redirect after login
     const redirectTo = route.query.then?.toString() || '/home';
     router.push(redirectTo);
   } catch (err) {

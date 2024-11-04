@@ -192,6 +192,7 @@ const router = createRouter({
 
 //middleware to check if user is authenticated
 router.beforeEach(async (to, from, next) => {
+  const { isProfileCreated } = useUserProfileStore();
   const authenticatedUser = await AuthService.getUser();
   const isAuthRequired = to.matched.some((record) => record.meta.requiresAuth);
   const isPublicRoute = publicRoutes.some((route) => route.path === to.path);
@@ -199,15 +200,12 @@ router.beforeEach(async (to, from, next) => {
   if (isAuthRequired && !authenticatedUser) {
     next({ path: '/login', query: { then: to.fullPath } });
   } else if (authenticatedUser) {
-    const userProfileStore = useUserProfileStore();
-    const isUserProfileCreated = await userProfileStore.checkUserProfile();
-
     //redirect to home if user tries to access /create-user-profile but already has a profile
-    if (isUserProfileCreated && to.name === 'create-user-profile') {
+    if (isProfileCreated && to.name === 'create-user-profile') {
       next({ path: '/home' });
     }
     //redirect to profile creation if user profile is not created
-    else if (!isUserProfileCreated && to.name !== 'create-user-profile') {
+    else if (isProfileCreated === false && to.name !== 'create-user-profile') {
       next({ path: '/create-user-profile' });
     } else if (isPublicRoute) {
       next({ path: '/home' });
