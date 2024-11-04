@@ -1,7 +1,7 @@
 import type { IApiResponse, IErrorResponse } from '@/interfaces/common';
 import { AuthService } from '@/service/AuthService';
 import axios, { AxiosError } from 'axios';
-import { FalconShieldError } from './FalconShieldError';
+import { ConnectionError, ResponseError, UnexpectedError } from './errors';
 
 export const httpClient = axios.create({
   baseURL: 'http://localhost:8080/api'
@@ -27,27 +27,26 @@ httpClient.interceptors.request.use(
 httpClient.interceptors.response.use(
   (response) => response,
   (err) => {
-    const customError = new FalconShieldError('Error', 'No details');
     const error = err as AxiosError<IApiResponse<IErrorResponse>>;
+    let customError: Error;
 
     //response error: when the client receives an error response (HTTP 5xx or 4xx status codes)
     if (error.response) {
-      //if error is 400
-      customError.message = error.response.status === 400 ? 'Bad Request' : error.response.data.message;
-      customError.details = error.response.data.data.details;
+      if (error.response.status === 400) {
+        customError = new ResponseError(error.response.data.data.details, error.response.status);
+      } else {
+        customError = new ResponseError(error.response.data.message, error.response.status);
+      }
     }
 
     //request error: when the client never receives a response, or the request never left
     else if (error.request) {
-      customError.message = 'Connection Error';
-      customError.details = `It seems that we couldn't establish a connection, please try again later`;
+      customError = new ConnectionError();
     }
 
     //other errors
     else {
-      console.error(err);
-      customError.message = 'Unknown Error';
-      customError.details = 'An unexpected error occurred, please try again later';
+      customError = new UnexpectedError(err);
     }
 
     //return the error
