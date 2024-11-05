@@ -38,7 +38,7 @@ export const PropertyService = {
     return response.data;
   },
 
-  async deleteProperty(propertyId: string): Promise<IApiResponse> {
+  async deleteProperty(propertyId: number): Promise<IApiResponse> {
     /* Obtener todas las áreas asociadas a la propiedad
     const areas = await AreaService.getAreasByPropertyId(propertyId);
 

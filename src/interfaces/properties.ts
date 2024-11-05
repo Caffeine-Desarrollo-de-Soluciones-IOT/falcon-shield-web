@@ -1,5 +1,5 @@
 export interface IProperty {
-  id: string;
+  id: number;
   name: string;
   address: string;
   imageUrl?: string;
