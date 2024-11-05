@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import type { IArea } from '@/interfaces/areas';
 import {
   EDeviceType,
-  type IArea,
   type IDeviceCatalog,
-  type IProperty,
   type IRegisterDeviceRequestDto,
   type IRegisteredDevice
 } from '@/interfaces/devices';
+import type { IProperty } from '@/interfaces/properties';
+import { AreaService } from '@/service/AreaService';
 import { DeviceService } from '@/service/DeviceService';
+import { PropertyService } from '@/service/PropertyService';
 import { FilterMatchMode } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, ref } from 'vue';
@@ -150,7 +152,8 @@ async function fetchRegisteredDevices() {
 
 async function fetchUserProperties() {
   try {
-    userProperties.value = await DeviceService.getUserProperties();
+    const res = await PropertyService.getProperties();
+    userProperties.value = res.data;
   } catch (error) {
     toast.add({
       severity: 'error',
@@ -161,11 +164,11 @@ async function fetchUserProperties() {
   }
 }
 
-async function getAreas(propertyId: string) {
+async function getAreas(propertyId: number) {
   try {
     loadingAreas.value = true;
-    const data = await DeviceService.getAreasByProperty(propertyId);
-    propertyAreas.value = data;
+    const res = await AreaService.getAreasByPropertyId(propertyId);
+    propertyAreas.value = res.data;
   } catch (error) {
     toast.add({
       severity: 'error',
