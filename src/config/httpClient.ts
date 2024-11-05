@@ -1,10 +1,10 @@
-import type { IApiResponse, IErrorResponse } from '@/interfaces/common';
+import type { IProblemDetails } from '@/interfaces/common';
 import { AuthService } from '@/service/AuthService';
 import axios, { AxiosError } from 'axios';
 import { ConnectionError, ResponseError, UnexpectedError } from './errors';
 
 export const httpClient = axios.create({
-  baseURL: 'http://localhost:8080/api'
+  baseURL: 'https://falconshield.onrender.com/api'
 });
 
 //request interceptor -> it executes before the request promise is resolved
@@ -27,15 +27,18 @@ httpClient.interceptors.request.use(
 httpClient.interceptors.response.use(
   (response) => response,
   (err) => {
-    const error = err as AxiosError<IApiResponse<IErrorResponse>>;
+    const error = err as AxiosError<IProblemDetails>;
     let customError: Error;
 
     //response error: when the client receives an error response (HTTP 5xx or 4xx status codes)
     if (error.response) {
       if (error.response.status === 400) {
-        customError = new ResponseError(error.response.data.data.details, error.response.status);
+        customError = new ResponseError(
+          error.response.data.errors?.join(', ') || error.response.data.detail,
+          error.response.status
+        );
       } else {
-        customError = new ResponseError(error.response.data.message, error.response.status);
+        customError = new ResponseError(error.response.data.detail, error.response.status);
       }
     }
 

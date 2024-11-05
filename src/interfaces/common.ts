@@ -4,8 +4,11 @@ export interface IApiResponse<T = null> {
   success: boolean;
 }
 
-export interface IErrorResponse {
-  details: string;
-  uri: string;
-  timestamp: string;
+export interface IProblemDetails {
+  type: string;
+  status: number;
+  title: string;
+  detail: string;
+  instance: string;
+  errors?: string[];
 }
