@@ -35,8 +35,10 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1 class="text-center">Eventos de Dispositivos</h1>
+  <div className="card">
+    <div class="font-semibold text-xl mb-4">Device Events</div>
+    <p>Review the events of your devices</p>
+
     <div v-if="loading" class="text-center">Cargando eventos...</div> 
     <DataTable
       v-else

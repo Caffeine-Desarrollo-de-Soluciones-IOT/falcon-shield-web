@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { FalconShieldError } from '@/config/FalconShieldError';
 import type { IUserProfileRequestDto } from '@/interfaces/userProfile';
 import { UserProfileService } from '@/service/UserProfileService';
 import { useUserProfileStore } from '@/store/userProfileStore';
@@ -46,8 +45,8 @@ async function handleCreateUserProfile() {
     } catch (error) {
       toast.add({
         severity: 'error',
-        summary: (error as FalconShieldError).message,
-        detail: (error as FalconShieldError).details,
+        summary: 'Error',
+        detail: (error as Error).message,
         life: 3000
       });
     } finally {

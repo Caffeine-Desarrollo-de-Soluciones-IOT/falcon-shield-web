@@ -40,17 +40,3 @@ export interface IRegisterDeviceRequestDto {
   registrationCode: string;
   areaId: number;
 }
-
-//todo: add the real interfaces for the properties and areas
-export interface IProperty {
-  id: string;
-  name: string;
-  imageUrl: string;
-  userId: string;
-}
-
-export interface IArea {
-  id: string;
-  name: string;
-  propertyId: string;
-}
