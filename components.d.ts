@@ -97,6 +97,7 @@ declare module 'vue' {
     TreeTable: typeof import('primevue/treetable')['default']
   }
   export interface ComponentCustomProperties {
+    Ripple: typeof import('primevue/ripple')['default']
     StyleClass: typeof import('primevue/styleclass')['default']
     Tooltip: typeof import('primevue/tooltip')['default']
   }
