@@ -32,6 +32,7 @@ const targetProperty = ref<IProperty>({} as IProperty);
 const propertyAreas = ref<IArea[]>([]);
 const loadingAreas = ref(false);
 const loadingCatalog = ref(false);
+const loading = ref(false);
 const registeringDevice = ref(false);
 const unregisteringDevice = ref(false);
 
@@ -96,11 +97,11 @@ async function deleteDevice() {
     unregisteringDevice.value = true;
     await DeviceService.unregisterDevice(selectedDeviceRegistration.value!.id);
 
-    toast.add({ 
-      severity: 'success', 
+    toast.add({
+      severity: 'success',
       summary: 'Successful',
-      detail: 'Device unregistered', 
-      life: 3000 
+      detail: 'Device unregistered',
+      life: 3000
     });
     deleteDialogVisible.value = false;
     selectedDeviceRegistration.value = {} as IRegisteredDevice;
@@ -138,6 +139,7 @@ async function fetchDeviceCatalog() {
 
 async function fetchRegisteredDevices() {
   try {
+    loading.value = true;
     const res = await DeviceService.getRegisteredDevices();
     registeredDevices.value = res.data;
   } catch (error) {
@@ -147,6 +149,8 @@ async function fetchRegisteredDevices() {
       detail: 'Error fetching registered devices',
       life: 3000
     });
+  } finally {
+    loading.value = false;
   }
 }
 
@@ -198,6 +202,19 @@ function getStatusLabel(type: EDeviceType) {
     <div class="font-semibold text-xl mb-4">My devices</div>
     <p>Add or manage your devices</p>
 
+    <Menubar class="mt-6">
+      <template #start>
+        <Button label="Register a device" icon="pi pi-plus" @click="openNew" />
+      </template>
+
+      <template #end>
+        <IconField iconPosition="left">
+          <InputIcon class="pi pi-search" />
+          <InputText v-model="filters['global'].value" placeholder="Search..." />
+        </IconField>
+      </template>
+    </Menubar>
+
     <DataTable
       class="mt-6"
       ref="dt"
@@ -206,22 +223,13 @@ function getStatusLabel(type: EDeviceType) {
       :paginator="true"
       :rows="10"
       :filters="filters"
+      :loading="loading"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rowsPerPageOptions="[5, 10, 25]"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registered devices"
     >
-      <!-- HEADER -->
-      <template #header>
-        <div class="flex flex-wrap gap-2 items-center justify-between">
-          <Button label="Register a device" icon="pi pi-plus" @click="openNew" raised />
-          <IconField>
-            <InputIcon>
-              <i class="pi pi-search" />
-            </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Search..." />
-          </IconField>
-        </div>
-      </template>
+      <template #empty> No devices found </template>
+      <template #loading> Loading devices data. Please wait... </template>
 
       <!-- COLUMNS -->
       <Column field="device.name" header="Device Name" style="min-width: 10rem"></Column>
@@ -245,7 +253,7 @@ function getStatusLabel(type: EDeviceType) {
       <Column field="registeredAt" header="Registered At" style="min-width: 10rem">
         <template #body="slotProps">
           {{ new Date(slotProps.data.registeredAt).toLocaleString() }}
-        </template> 
+        </template>
       </Column>
       <!-- <Column field="area.name" header="Area" style="min-width: 10rem"></Column> -->
       <Column header="Actions" style="min-width: 10rem">
@@ -384,10 +392,10 @@ function getStatusLabel(type: EDeviceType) {
 
     <template #footer>
       <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-      <Button 
+      <Button
         icon="pi pi-check"
         :label="registeringDevice ? 'Registering...' : 'Register'"
-        :loading="registeringDevice" 
+        :loading="registeringDevice"
         :disabled="registeringDevice"
         @click="handleRegisterDevice" />
     </template>
@@ -408,9 +416,9 @@ function getStatusLabel(type: EDeviceType) {
     </div>
     <template #footer>
       <Button label="No" icon="pi pi-times" severity="secondary" text @click="deleteDialogVisible = false" />
-      <Button 
-        :label="unregisteringDevice ? 'Unregistering...' : 'Yes'" 
-        icon="pi pi-check" 
+      <Button
+        :label="unregisteringDevice ? 'Unregistering...' : 'Yes'"
+        icon="pi pi-check"
         severity="danger"
         :loading="unregisteringDevice"
         @click="deleteDevice()" />
