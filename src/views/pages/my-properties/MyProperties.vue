@@ -44,7 +44,6 @@ const menuItems = (item: IProperty): MenuItem[] => [
 ];
 
 onMounted(async () => {
-  console.log('Component mounted');
   await loadProperties();
 });
 
@@ -199,27 +198,25 @@ function toggleMenu(event: any, index: number) {
     <div class="font-semibold text-xl mb-4">My Properties</div>
     <p>Manage your properties & areas</p>
 
-    <DataView class="mt-6" :value="registeredProperties" :layout="layout" data-key="id">
-      <!-- HEADER -->
-      <template #header>
-        <div class="flex flex-wrap gap-2 items-center justify-between">
-          <Button label="Register property" icon="pi pi-plus" @click="openNew" raised />
-
-          <IconField>
-            <InputIcon>
-              <i class="pi pi-search" />
-            </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Search..." />
-          </IconField>
-
-          <SelectButton v-model="layout" :options="options" :allowEmpty="false">
-            <template #option="{ option }">
-              <i :class="[option === 'list' ? 'pi pi-bars' : 'pi pi-table']" />
-            </template>
-          </SelectButton>
-        </div>
+    <Menubar class="mt-6">
+      <template #start>
+        <Button label="Register property" icon="pi pi-plus" @click="openNew" />
+        <SelectButton class="ml-4" v-model="layout" :options="options" :allowEmpty="false">
+          <template #option="{ option }">
+            <i :class="[option === 'list' ? 'pi pi-bars' : 'pi pi-table']" />
+            {{ option.charAt(0).toUpperCase() + option.slice(1) }}
+          </template>
+        </SelectButton>
       </template>
+      <template #end>
+        <IconField iconPosition="left">
+          <InputIcon class="pi pi-search" />
+          <InputText v-model="filters['global'].value" placeholder="Search..." />
+        </IconField>
+      </template>
+    </Menubar>
 
+    <DataView class="mt-6" :value="registeredProperties" :layout="layout" data-key="id">
       <!-- GRID VIEW -->
       <template #grid="slotProps">
         <div class="grid grid-cols-12 gap-4">
