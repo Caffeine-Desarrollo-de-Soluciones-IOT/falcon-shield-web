@@ -4,7 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { ConnectionError, ResponseError, UnexpectedError } from './errors';
 
 export const httpClient = axios.create({
-  baseURL: 'https://falconshield.onrender.com/api'
+  baseURL: 'https://api.falcon-shield.tech/api'
 });
 
 //request interceptor -> it executes before the request promise is resolved
