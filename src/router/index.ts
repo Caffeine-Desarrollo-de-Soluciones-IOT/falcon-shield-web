@@ -95,6 +95,11 @@ const router = createRouter({
           name: 'contact',
           component: () => import('@/views/pages/contact/Contact.vue')
         },
+        {
+          path: 'pricing',
+          name: 'pricing',
+          component: () => import('@/views/pages/pricing/Pricing.vue')
+        },
 
         //UI KIT
         {
