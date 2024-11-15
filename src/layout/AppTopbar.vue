@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useLayout } from '@/layout/composables/layout';
-import ThemeSelector from './ThemeSelector.vue';
 import { ref } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
 import { AuthService } from '@/service/AuthService';
@@ -49,7 +48,7 @@ function toggleMenu(event: MouseEvent) {
         <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
           <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
         </button>
-        <div class="relative">
+        <!-- <div class="relative">
           <button
             v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
             type="button"
@@ -58,7 +57,7 @@ function toggleMenu(event: MouseEvent) {
             <i class="pi pi-palette"></i>
           </button>
           <ThemeSelector />
-        </div>
+        </div> -->
       </div>
 
       <button
