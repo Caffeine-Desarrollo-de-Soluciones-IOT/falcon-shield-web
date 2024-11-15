@@ -53,7 +53,7 @@ const router = createRouter({
         {
           path: 'home',
           name: 'dashboard',
-          component: () => import('@/views/Dashboard.vue')
+          component: () => import('@/views/pages/Dashboard.vue')
         },
         {
           path: 'create-user-profile',
