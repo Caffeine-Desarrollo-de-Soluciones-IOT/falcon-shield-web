@@ -17,7 +17,7 @@ export const AuthService = {
     const then = postLoginRedirectRoute ? `?then=${postLoginRedirectRoute}` : '';
     return userManager.signinRedirect({
       redirect_uri: `${window.location.origin}/callback${then}`,
-      extraQueryParams: { kc_idp_hint: 'google' } 
+      extraQueryParams: { kc_idp_hint: 'google' }
     });
   },
   /**
@@ -31,9 +31,6 @@ export const AuthService = {
    */
   handleCallback() {
     return userManager.signinCallback();
-  },
-  renewToken() {
-    return userManager.signinSilentCallback();
   },
   /**
    * Logout the user
