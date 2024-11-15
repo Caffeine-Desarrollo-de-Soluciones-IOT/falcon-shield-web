@@ -6,6 +6,12 @@ import { AuthService } from '@/service/AuthService';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
 
+const currentLanguage = ref({ name: 'English', code: 'UK' });
+const languages = ref([
+  { name: 'English', code: 'UK' },
+  { name: 'Español', code: 'ES' },
+  { name: 'Français', code: 'FR' }
+]);
 const menu = ref();
 const overlayMenuItems = ref<MenuItem[]>([
   {
@@ -42,7 +48,32 @@ function toggleMenu(event: MouseEvent) {
     </div>
 
     <div class="layout-topbar-actions">
-      <Button as="router-link" label="Go Premium" icon="pi pi-star" class="p-button-rounded border-0 ml-4 font-light leading-tight custom-button" to="/pricing" />
+      <Button as="router-link" label="Go Premium" icon="pi pi-star"
+        class="p-button-rounded border-0 ml-4 font-light leading-tight custom-button" to="/pricing" />
+
+      <Select v-model="currentLanguage" :options="languages" optionLabel="name" checkmark>
+        <template #value="slotProps">
+          <div v-if="slotProps.value" class="flex items-center">
+            <img :alt="slotProps.value.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+              :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`" style="width: 18px" />
+            <div>{{ slotProps.value.code }}</div>
+          </div>
+          <span v-else>
+            {{ slotProps.placeholder }}
+          </span>
+        </template>
+        <template #option="slotProps">
+          <div class="flex items-center">
+            <img :alt="slotProps.option.label"
+              src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+              :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`" style="width: 18px" />
+            <div>{{ slotProps.option.name }}</div>
+          </div>
+        </template>
+        <template #dropdownicon>
+          <i class="pi pi-globe" />
+        </template>
+      </Select>
 
       <div class="layout-config-menu">
         <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
@@ -60,10 +91,8 @@ function toggleMenu(event: MouseEvent) {
         </div> -->
       </div>
 
-      <button
-        class="layout-topbar-menu-button layout-topbar-action"
-        v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
-      >
+      <button class="layout-topbar-menu-button layout-topbar-action"
+        v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }">
         <i class="pi pi-ellipsis-v"></i>
       </button>
 
