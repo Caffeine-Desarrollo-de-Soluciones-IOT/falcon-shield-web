@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { CountryService } from '@/service/CountryService';
-import { NodeService } from '@/service/NodeService';
 import { onMounted, ref } from 'vue';
 
 const floatValue = ref(null);
@@ -50,12 +49,9 @@ const selectButtonValue = ref(null);
 const selectButtonValues = ref([{ name: 'Option 1' }, { name: 'Option 2' }, { name: 'Option 3' }]);
 const knobValue = ref(50);
 const inputGroupValue = ref(false);
-const treeSelectNodes = ref(null);
-const selectedNode = ref(null);
 
 onMounted(() => {
   CountryService.getCountries().then((data) => (autoValue.value = data));
-  NodeService.getTreeNodes().then((data) => (treeSelectNodes.value = data));
 });
 
 function searchCountry(event) {
@@ -194,9 +190,6 @@ function searchCountry(event) {
             </div>
           </template>
         </MultiSelect>
-
-        <div class="font-semibold text-xl">TreeSelect</div>
-        <TreeSelect v-model="selectedNode" :options="treeSelectNodes" placeholder="Select Item"></TreeSelect>
       </div>
 
       <div class="card flex flex-col gap-4">
