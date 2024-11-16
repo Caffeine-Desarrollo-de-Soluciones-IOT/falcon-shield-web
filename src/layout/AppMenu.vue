@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AppMenuItem from './AppMenuItem.vue'
 
 const { t } = useI18n()
 
-const model = ref([
+//reactive translation with computed that triggers when locale changes
+const model = computed(() => [
   {
     label: t('menu.principal'),
     items: [
