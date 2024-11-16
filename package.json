@@ -27,11 +27,12 @@
     "uuid": "^10.0.0",
     "vue": "^3.4.29",
     "vue-axios": "^3.5.2",
-    "vue-i18n": "^11.0.0-beta.0",
+    "vue-i18n": "^10.0.4",
     "vue-router": "^4.3.3",
     "vue3-pdf": "^4.2.6"
   },
   "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^6.0.0",
     "@primevue/auto-import-resolver": "^4.0.1",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
