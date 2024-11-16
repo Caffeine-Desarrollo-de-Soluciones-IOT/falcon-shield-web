@@ -1,0 +1,184 @@
+{
+  "menu": {
+    "principal": "Principal",
+    "home": "Inicio",
+    "myDevices": "Mis dispositivos",
+    "myProperties": "Mis propiedades",
+    "events": "Eventos",
+    "helpAndSupport": "Ayuda y soporte",
+    "assistance": "Asistencia",
+    "contact": "Contacto"
+  },
+  "myDevices": {
+    "title": "Mis Dispositivos",
+    "subtitle": "Agrega o administra tus dispositivos",
+    "registerDevice": "Registrar un dispositivo",
+    "searchPlaceholder": "Buscar...",
+    "table": {
+      "deviceName": "Nombre del dispositivo",
+      "image": "Imagen",
+      "brand": "Marca",
+      "model": "Modelo",
+      "type": "Tipo",
+      "registeredAt": "Registrado el",
+      "actions": "Acciones",
+      "noDevices": "No se encontraron dispositivos",
+      "loading": "Cargando datos de dispositivos. Por favor, espera..."
+    },
+    "dialogs": {
+      "register": {
+        "title": "Registrar un nuevo dispositivo",
+        "step1": "Selecciona el tipo de dispositivo",
+        "step2": "Ingresa el código de registro",
+        "step3": "Asigna a una propiedad y área",
+        "labels": {
+          "device": "Dispositivo",
+          "registrationCode": "Código de Registro",
+          "property": "Selecciona una Propiedad",
+          "area": "Selecciona un Área"
+        },
+        "placeholders": {
+          "selectDevice": "Selecciona un Dispositivo",
+          "loadingDeviceCatalog": "Cargando catálogo de dispositivos...",
+          "selectProperty": "Selecciona una Propiedad",
+          "selectArea": "Selecciona un Área",
+          "loadingAreas": "Cargando áreas..."
+        },
+        "errors": {
+          "requiredDevice": "Elige un dispositivo",
+          "requiredRegistrationCode": "El Código de Registro es obligatorio"
+        },
+        "buttons": {
+          "next": "Siguiente",
+          "back": "Atrás",
+          "cancel": "Cancelar",
+          "register": "Registrar",
+          "registering": "Registrando..."
+        }
+      },
+      "delete": {
+        "title": "Confirmar",
+        "message": "¿Estás seguro de que deseas desregistrar {deviceName}?",
+        "buttons": {
+          "no": "No",
+          "yes": "Sí",
+          "unregistering": "Desregistrando..."
+        }
+      }
+    },
+    "notifications": {
+      "success": {
+        "registered": "Dispositivo registrado",
+        "unregistered": "Dispositivo desregistrado"
+      },
+      "error": {
+        "fetchCatalog": "Error al obtener el catálogo de dispositivos",
+        "fetchDevices": "Error al obtener los dispositivos registrados",
+        "fetchProperties": "Error al obtener las propiedades del usuario",
+        "fetchAreas": "Error al obtener las áreas",
+        "register": "Error al registrar el dispositivo",
+        "unregister": "Error al desregistrar el dispositivo"
+      }
+    }
+  },
+  "events": {
+    "title": "Eventos de Dispositivos",
+    "description": "Revisa los eventos de tus dispositivos",
+    "exportCSV": "Exportar a .csv",
+    "selectProperty": "Seleccionar una propiedad",
+    "search": "Buscar...",
+    "table": {
+      "emptyMessage": "No se encontraron eventos",
+      "loadingMessage": "Cargando datos de eventos. Por favor espera...",
+      "paginatorReport": "Mostrando {first} a {last} de {totalRecords} eventos",
+      "rowsPerPageOptions": [5, 10, 25],
+      "columns": {
+        "title": "Título",
+        "description": "Descripción",
+        "type": "Tipo",
+        "timestamp": "Marca de tiempo"
+      },
+      "statusLabels": {
+        "ONLINE": "Activo",
+        "ALERT": "Alerta",
+        "OFFLINE": "Inactivo",
+        "ERROR": "Error",
+        "WARNING": "Advertencia"
+      }
+    },
+    "toast": {
+      "errorFetchingEvents": "Error al obtener los eventos",
+      "errorFetchingProperties": "Error al obtener las propiedades del usuario"
+    }
+  },
+  "assistance": {
+    "title": "Asistencia",
+    "description": "Encuentra las respuestas a tus preguntas o contacta con nuestro equipo de soporte.",
+    "faqs": "Preguntas Frecuentes (FAQs)",
+    "faq1": "¿Cómo instalo los dispositivos de seguridad?",
+    "faq1Answer": "Para instalar los dispositivos de seguridad, sigue los pasos descritos en el manual que viene con tu dispositivo. Si necesitas ayuda adicional, consulta nuestras guías de instalación o contáctanos.",
+    "faq2": "¿Cómo configuro las alertas en tiempo real?",
+    "faq2Answer": "Para configurar las alertas, ve a la sección de 'Mis dispositivos', selecciona el dispositivo que deseas monitorear y ajusta las notificaciones según tus preferencias.",
+    "faq3": "¿Cómo conecto mis dispositivos al panel de control?",
+    "faq3Answer": "Conectar tus dispositivos es fácil. Solo asegúrate de que estén en la misma red Wi-Fi y sigue las instrucciones en la aplicación para vincularlos a tu cuenta.",
+    "guidesAndTutorials": "Guías y Tutoriales",
+    "guide1": "Guía de Instalación Rápida",
+    "guide2": "Cómo Configurar Alertas de Movimiento",
+    "guide3": "Cómo Agregar Nuevos Dispositivos al Sistema",
+    "support": "Soporte Técnico",
+    "contactSupport": "Contactar Soporte"
+  },
+  "contact": {
+    "team": "Nuestro Equipo",
+    "description": "Para cualquier consulta, no dudes en ponerte en contacto con nuestro equipo de soporte:",
+    "fullname": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "type": "Tipo",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "sendMessage": "Enviar Mensaje",
+    "teamMembers": [
+      {
+        "name": "Elvia Guadalupe Arteaga Cruz",
+        "role": "Líder de Soporte Técnico",
+        "email": "{'u201616507@upc.edu.pe'}",
+        "schedule": "Lunes a Viernes, 9:00 AM - 5:00 PM",
+        "description": "Supervisión de soporte técnico y escalación de problemas críticos."
+      },
+      {
+        "name": "Dennis Piero Quevedo Yucra",
+        "role": "Especialista en Configuración y Dispositivos",
+        "email": "{'u201619823@upc.edu.pe'}",
+        "schedule": "Lunes a Viernes, 10:00 AM - 6:00 PM",
+        "description": "Asistencia en la configuración e instalación de dispositivos de seguridad."
+      },
+      {
+        "name": "Jamutaq Piero Ortega Vélez",
+        "role": "Especialista en Plataforma Web y App",
+        "email": "{'u201911703@upc.edu.pe'}",
+        "schedule": "Lunes a Viernes, 9:00 AM - 5:00 PM",
+        "description": "Soporte técnico para el uso de la plataforma y la app móvil."
+      },
+      {
+        "name": "Max Dayson Sabino Arostegui",
+        "role": "Asesor de Ventas y Atención al Cliente",
+        "email": "{'u20201a991@upc.edu.pe'}",
+        "schedule": "Lunes a Viernes, 8:00 AM - 4:00 PM",
+        "description": "Consulta de planes de suscripción y servicios adicionales."
+      },
+      {
+        "name": "Gabriela Soledad Nomberto Ramos",
+        "role": "Coordinador de Escalación y Calidad",
+        "email": "{'u202113876@upc.edu.pe'}",
+        "schedule": "Lunes a Viernes, 11:00 AM - 7:00 PM",
+        "description": "Coordinación y calidad en respuestas de soporte técnico."
+      }
+    ],
+    "toast": {
+      "successMessage": "Mensaje Enviado",
+      "successDetail": "Nos pondremos en contacto contigo pronto.",
+      "errorMessage": "Campos incompletos",
+      "errorDetail": "Por favor, completa todos los campos del formulario."
+    }
+  }
+}

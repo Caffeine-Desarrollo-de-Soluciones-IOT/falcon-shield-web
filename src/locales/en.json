@@ -1,0 +1,184 @@
+{
+  "menu": {
+    "principal": "Main",
+    "home": "Home",
+    "myDevices": "My devices",
+    "myProperties": "My properties",
+    "events": "Events",
+    "helpAndSupport": "Help & Support",
+    "assistance": "Assistance",
+    "contact": "Contact"
+  },
+  "myDevices": {
+    "title": "My Devices",
+    "subtitle": "Add or manage your devices",
+    "registerDevice": "Register a device",
+    "searchPlaceholder": "Search...",
+    "table": {
+      "deviceName": "Device Name",
+      "image": "Image",
+      "brand": "Brand",
+      "model": "Model",
+      "type": "Type",
+      "registeredAt": "Registered At",
+      "actions": "Actions",
+      "noDevices": "No devices found",
+      "loading": "Loading devices data. Please wait..."
+    },
+    "dialogs": {
+      "register": {
+        "title": "Register a new device",
+        "step1": "Select the device type",
+        "step2": "Enter the registration code",
+        "step3": "Assign to a property & area",
+        "labels": {
+          "device": "Device",
+          "registrationCode": "Registration Code",
+          "property": "Select a Property",
+          "area": "Select an Area"
+        },
+        "placeholders": {
+          "selectDevice": "Select a Device",
+          "loadingDeviceCatalog": "Loading device catalog...",
+          "selectProperty": "Select a Property",
+          "selectArea": "Select an Area",
+          "loadingAreas": "Loading areas..."
+        },
+        "errors": {
+          "requiredDevice": "Choose a device",
+          "requiredRegistrationCode": "Registration Code is required"
+        },
+        "buttons": {
+          "next": "Next",
+          "back": "Back",
+          "cancel": "Cancel",
+          "register": "Register",
+          "registering": "Registering..."
+        }
+      },
+      "delete": {
+        "title": "Confirm",
+        "message": "Are you sure you want to unregister {deviceName}?",
+        "buttons": {
+          "no": "No",
+          "yes": "Yes",
+          "unregistering": "Unregistering..."
+        }
+      }
+    },
+    "notifications": {
+      "success": {
+        "registered": "Device registered",
+        "unregistered": "Device unregistered"
+      },
+      "error": {
+        "fetchCatalog": "Error fetching device catalog",
+        "fetchDevices": "Error fetching registered devices",
+        "fetchProperties": "Error fetching user properties",
+        "fetchAreas": "Error fetching areas",
+        "register": "Error registering device",
+        "unregister": "Error unregistering device"
+      }
+    }
+  },
+  "events": {
+    "title": "Device Events",
+    "description": "Review the events of your devices",
+    "exportCSV": "Export to .csv",
+    "selectProperty": "Select a Property",
+    "search": "Search...",
+    "table": {
+      "emptyMessage": "No events found",
+      "loadingMessage": "Loading events data. Please wait...",
+      "paginatorReport": "Showing {first} to {last} of {totalRecords} events",
+      "rowsPerPageOptions": [5, 10, 25],
+      "columns": {
+        "title": "Title",
+        "description": "Description",
+        "type": "Type",
+        "timestamp": "Timestamp"
+      },
+      "statusLabels": {
+        "ONLINE": "Active",
+        "ALERT": "Alert",
+        "OFFLINE": "Inactive",
+        "ERROR": "Error",
+        "WARNING": "Warning"
+      }
+    },
+    "toast": {
+      "errorFetchingEvents": "Error fetching events",
+      "errorFetchingProperties": "Error fetching user properties"
+    }
+  },
+  "assistance": {
+    "title": "Assistance",
+    "description": "Find answers to your questions or contact our support team.",
+    "faqs": "Frequently Asked Questions (FAQs)",
+    "faq1": "How do I install the security devices?",
+    "faq1Answer": "To install the security devices, follow the steps described in the manual that comes with your device. If you need further assistance, check out our installation guides or contact us.",
+    "faq2": "How do I set up real-time alerts?",
+    "faq2Answer": "To set up alerts, go to the 'My devices' section, select the device you want to monitor, and adjust the notifications to your preferences.",
+    "faq3": "How do I connect my devices to the control panel?",
+    "faq3Answer": "Connecting your devices is easy. Just make sure they are on the same Wi-Fi network and follow the instructions in the app to link them to your account.",
+    "guidesAndTutorials": "Guides and Tutorials",
+    "guide1": "Quick Installation Guide",
+    "guide2": "How to Set Up Motion Alerts",
+    "guide3": "How to Add New Devices to the System",
+    "support": "Technical Support",
+    "contactSupport": "Contact Support"
+  },
+  "contact": {
+    "team": "Our Team",
+    "description": "For any inquiries, feel free to contact our support team:",
+    "fullname": "Full Name",
+    "email": "Email",
+    "type": "Type",
+    "subject": "Subject",
+    "message": "Message",
+    "sendMessage": "Send Message",
+    "teamMembers": [
+      {
+        "name": "Elvia Guadalupe Arteaga Cruz",
+        "role": "Technical Support Lead",
+        "email": "{'u201616507@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 9:00 AM - 5:00 PM",
+        "description": "Overseeing technical support and escalation of critical issues."
+      },
+      {
+        "name": "Dennis Piero Quevedo Yucra",
+        "role": "Configuration and Device Specialist",
+        "email": "{'u201619823@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 10:00 AM - 6:00 PM",
+        "description": "Assisting with configuration and installation of security devices."
+      },
+      {
+        "name": "Jamutaq Piero Ortega Vélez",
+        "role": "Web and App Platform Specialist",
+        "email": "{'u201911703@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 9:00 AM - 5:00 PM",
+        "description": "Providing technical support for platform and mobile app usage."
+      },
+      {
+        "name": "Max Dayson Sabino Arostegui",
+        "role": "Sales and Customer Service Advisor",
+        "email": "{'u20201a991@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 8:00 AM - 4:00 PM",
+        "description": "Consultation on subscription plans and additional services."
+      },
+      {
+        "name": "Gabriela Soledad Nomberto Ramos",
+        "role": "Escalation and Quality Coordinator",
+        "email": "{'u202113876@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 11:00 AM - 7:00 PM",
+        "description": "Coordination and quality assurance in technical support responses."
+      }
+    ],
+    "toast": {
+      "successMessage": "Message Sent",
+      "successDetail": "We will get in touch with you soon.",
+      "errorMessage": "Incomplete Fields",
+      "errorDetail": "Please fill in all the fields in the form."
+    }
+  }
+}

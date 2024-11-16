@@ -1,0 +1,184 @@
+{
+  "menu": {
+    "principal": "Principal",
+    "home": "Accueil",
+    "myDevices": "Mes appareils",
+    "myProperties": "Mes propriétés",
+    "events": "Événements",
+    "helpAndSupport": "Aide et support",
+    "assistance": "Assistance",
+    "contact": "Contact"
+  },
+  "myDevices": {
+    "title": "Mes appareils",
+    "subtitle": "Ajoutez ou gérez vos appareils",
+    "registerDevice": "Enregistrer un appareil",
+    "searchPlaceholder": "Rechercher...",
+    "table": {
+      "deviceName": "Nom de l'appareil",
+      "image": "Image",
+      "brand": "Marque",
+      "model": "Modèle",
+      "type": "Type",
+      "registeredAt": "Enregistré le",
+      "actions": "Actions",
+      "noDevices": "Aucun appareil trouvé",
+      "loading": "Chargement des données des appareils. Veuillez patienter..."
+    },
+    "dialogs": {
+      "register": {
+        "title": "Enregistrer un nouvel appareil",
+        "step1": "Sélectionnez le type d'appareil",
+        "step2": "Entrez le code de registre",
+        "step3": "Assignez à une propriété et une zone",
+        "labels": {
+          "device": "Appareil",
+          "registrationCode": "Code de registre",
+          "property": "Sélectionnez une propriété",
+          "area": "Sélectionnez une zone"
+        },
+        "placeholders": {
+          "selectDevice": "Sélectionnez un appareil",
+          "loadingDeviceCatalog": "Chargement du catalogue des appareils...",
+          "selectProperty": "Sélectionnez une propriété",
+          "selectArea": "Sélectionnez une zone",
+          "loadingAreas": "Chargement des zones..."
+        },
+        "errors": {
+          "requiredDevice": "Choisissez un appareil",
+          "requiredRegistrationCode": "Le code de registre est obligatoire"
+        },
+        "buttons": {
+          "next": "Suivant",
+          "back": "Retour",
+          "cancel": "Annuler",
+          "register": "Enregistrer",
+          "registering": "Enregistrement..."
+        }
+      },
+      "delete": {
+        "title": "Confirmer",
+        "message": "Êtes-vous sûr de vouloir désenregistrer {deviceName}?",
+        "buttons": {
+          "no": "Non",
+          "yes": "Oui",
+          "unregistering": "Désenregistrement..."
+        }
+      }
+    },
+    "notifications": {
+      "success": {
+        "registered": "Appareil enregistré",
+        "unregistered": "Appareil désenregistré"
+      },
+      "error": {
+        "fetchCatalog": "Erreur lors de la récupération du catalogue d'appareils",
+        "fetchDevices": "Erreur lors de la récupération des appareils enregistrés",
+        "fetchProperties": "Erreur lors de la récupération des propriétés de l'utilisateur",
+        "fetchAreas": "Erreur lors de la récupération des zones",
+        "register": "Erreur lors de l'enregistrement de l'appareil",
+        "unregister": "Erreur lors de la désinscription de l'appareil"
+      }
+    }
+  },
+  "events": {
+    "title": "Événements des Appareils",
+    "description": "Revoir les événements de vos appareils",
+    "exportCSV": "Exporter vers .csv",
+    "selectProperty": "Sélectionner une Propriété",
+    "search": "Rechercher...",
+    "table": {
+      "emptyMessage": "Aucun événement trouvé",
+      "loadingMessage": "Chargement des données des événements. Veuillez patienter...",
+      "paginatorReport": "Affichage de {first} à {last} sur {totalRecords} événements",
+      "rowsPerPageOptions": [5, 10, 25],
+      "columns": {
+        "title": "Titre",
+        "description": "Description",
+        "type": "Type",
+        "timestamp": "Horodatage"
+      },
+      "statusLabels": {
+        "ONLINE": "Actif",
+        "ALERT": "Alerte",
+        "OFFLINE": "Inactif",
+        "ERROR": "Erreur",
+        "WARNING": "Avertissement"
+      }
+    },
+    "toast": {
+      "errorFetchingEvents": "Erreur lors de la récupération des événements",
+      "errorFetchingProperties": "Erreur lors de la récupération des propriétés de l'utilisateur"
+    }
+  },
+  "assistance": {
+    "title": "Assistance",
+    "description": "Trouvez des réponses à vos questions ou contactez notre équipe de support.",
+    "faqs": "Questions fréquemment posées (FAQ)",
+    "faq1": "Comment installer les dispositifs de sécurité ?",
+    "faq1Answer": "Pour installer les dispositifs de sécurité, suivez les étapes décrites dans le manuel fourni avec votre appareil. Si vous avez besoin d\"aide supplémentaire, consultez nos guides d\"installation ou contactez-nous.",
+    "faq2": "Comment configurer les alertes en temps réel ?",
+    "faq2Answer": "Pour configurer les alertes, allez dans la section 'Mes appareils', sélectionnez l\"appareil que vous souhaitez surveiller et ajustez les notifications selon vos préférences.",
+    "faq3": "Comment connecter mes appareils au panneau de contrôle ?",
+    "faq3Answer": "Connecter vos appareils est facile. Assurez-vous qu\"ils sont sur le même réseau Wi-Fi et suivez les instructions dans l\"application pour les lier à votre compte.",
+    "guidesAndTutorials": "Guides et tutoriels",
+    "guide1": "Guide d\"installation rapide",
+    "guide2": "Comment configurer les alertes de mouvement",
+    "guide3": "Comment ajouter de nouveaux appareils au système",
+    "support": "Support technique",
+    "contactSupport": "Contacter le support"
+  },
+  "contact": {
+    "team": "Notre Équipe",
+    "description": "Pour toute demande, n'hésitez pas à contacter notre équipe de support:",
+    "fullname": "Nom Complet",
+    "email": "E-mail",
+    "type": "Type",
+    "subject": "Sujet",
+    "message": "Message",
+    "sendMessage": "Envoyer le Message",
+    "teamMembers": [
+      {
+        "name": "Elvia Guadalupe Arteaga Cruz",
+        "role": "Chef du Support Technique",
+        "email": "{'u201616507@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 9:00 AM - 5:00 PM",
+        "description": "Supervision du support technique et escalade des problèmes critiques."
+      },
+      {
+        "name": "Dennis Piero Quevedo Yucra",
+        "role": "Spécialiste en Configuration et Dispositifs",
+        "email": "{'u201619823@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 10:00 AM - 6:00 PM",
+        "description": "Aide à la configuration et à l'installation des dispositifs de sécurité."
+      },
+      {
+        "name": "Jamutaq Piero Ortega Vélez",
+        "role": "Spécialiste Plateforme Web et App",
+        "email": "{'u201911703@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 9:00 AM - 5:00 PM",
+        "description": "Support technique pour l'utilisation de la plateforme et de l'application mobile."
+      },
+      {
+        "name": "Max Dayson Sabino Arostegui",
+        "role": "Conseiller en Ventes et Service Client",
+        "email": "{'u20201a991@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 8:00 AM - 4:00 PM",
+        "description": "Consultation sur les plans d'abonnement et les services supplémentaires."
+      },
+      {
+        "name": "Gabriela Soledad Nomberto Ramos",
+        "role": "Coordinateur de l'Escalade et de la Qualité",
+        "email": "{'u202113876@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 11:00 AM - 7:00 PM",
+        "description": "Coordination et qualité des réponses du support technique."
+      }
+    ],
+    "toast": {
+      "successMessage": "Message Envoyé",
+      "successDetail": "Nous vous contacterons bientôt.",
+      "errorMessage": "Champs Incomplets",
+      "errorDetail": "Veuillez remplir tous les champs du formulaire."
+    }
+  }
+}
