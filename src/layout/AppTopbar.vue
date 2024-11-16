@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { useLayout } from '@/layout/composables/layout';
 import { ref } from 'vue';
-import type { MenuItem } from 'primevue/menuitem';
+import { useI18n } from 'vue-i18n';  // Importar useI18n para gestionar el idioma
 import { AuthService } from '@/service/AuthService';
+import { useLayout } from '@/layout/composables/layout';
+import type { MenuItem } from 'primevue/menuitem';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
+const { locale } = useI18n();  // Accedemos a la funcionalidad de cambio de idioma
 
+// Estado para el idioma actual
 const currentLanguage = ref({ name: 'English', code: 'UK' });
 const languages = ref([
   { name: 'English', code: 'UK' },
   { name: 'Español', code: 'ES' },
   { name: 'Français', code: 'FR' }
 ]);
+
 const menu = ref();
 const overlayMenuItems = ref<MenuItem[]>([
   {
@@ -29,6 +33,14 @@ const overlayMenuItems = ref<MenuItem[]>([
     command: () => AuthService.logout()
   }
 ]);
+
+const changeLanguage = (event: any) => {
+  const language = event.value;  // Obtiene el valor seleccionado del evento
+  currentLanguage.value = language;
+  locale.value = language.code;  // Cambia el idioma en i18n
+};
+
+
 
 function toggleMenu(event: MouseEvent) {
   menu.value.toggle(event);
@@ -49,13 +61,14 @@ function toggleMenu(event: MouseEvent) {
 
     <div class="layout-topbar-actions">
       <Button as="router-link" label="Go Premium" icon="pi pi-star"
-        class="p-button-rounded border-0 ml-4 font-light leading-tight custom-button" to="/pricing" />
+              class="p-button-rounded border-0 ml-4 font-light leading-tight custom-button" to="/pricing" />
 
-      <Select v-model="currentLanguage" :options="languages" optionLabel="name" checkmark>
+      <!-- Dropdown para seleccionar el idioma -->
+      <Select v-model="currentLanguage" :options="languages" optionLabel="name" checkmark @change="changeLanguage">
         <template #value="slotProps">
           <div v-if="slotProps.value" class="flex items-center">
             <img :alt="slotProps.value.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-              :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`" style="width: 18px" />
+                 :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`" style="width: 18px" />
             <div>{{ slotProps.value.code }}</div>
           </div>
           <span v-else>
@@ -65,8 +78,8 @@ function toggleMenu(event: MouseEvent) {
         <template #option="slotProps">
           <div class="flex items-center">
             <img :alt="slotProps.option.label"
-              src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-              :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`" style="width: 18px" />
+                 src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                 :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`" style="width: 18px" />
             <div>{{ slotProps.option.name }}</div>
           </div>
         </template>
@@ -79,20 +92,10 @@ function toggleMenu(event: MouseEvent) {
         <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
           <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
         </button>
-        <!-- <div class="relative">
-          <button
-            v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
-            type="button"
-            class="layout-topbar-action layout-topbar-action-highlight"
-          >
-            <i class="pi pi-palette"></i>
-          </button>
-          <ThemeSelector />
-        </div> -->
       </div>
 
       <button class="layout-topbar-menu-button layout-topbar-action"
-        v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }">
+              v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }">
         <i class="pi pi-ellipsis-v"></i>
       </button>
 
