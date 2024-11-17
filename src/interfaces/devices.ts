@@ -1,3 +1,5 @@
+import type { IArea } from "./areas";
+
 export interface IDevice {
   id: number;
   name: string;
@@ -32,7 +34,7 @@ export interface IRegisteredDevice {
   id: number;
   registeredAt: string;
   device: IDevice;
-  //areaId: string;
+  area: IArea;
 }
 
 export interface IRegisterDeviceRequestDto {

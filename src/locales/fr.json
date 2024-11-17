@@ -20,10 +20,12 @@
       "brand": "Marque",
       "model": "Modèle",
       "type": "Type",
+      "location": "Emplacement",
       "registeredAt": "Enregistré le",
       "actions": "Actions",
       "noDevices": "Aucun appareil trouvé",
-      "loading": "Chargement des données des appareils. Veuillez patienter..."
+      "loading": "Chargement des données des appareils. Veuillez patienter...",
+      "fotter": "Affichage de {first} à {last} sur {totalRecords} appareils"
     },
     "dialogs": {
       "register": {
@@ -58,7 +60,7 @@
       },
       "delete": {
         "title": "Confirmer",
-        "message": "Êtes-vous sûr de vouloir désenregistrer {deviceName}?",
+        "message": "Êtes-vous sûr de vouloir désenregistrer ",
         "buttons": {
           "no": "Non",
           "yes": "Oui",

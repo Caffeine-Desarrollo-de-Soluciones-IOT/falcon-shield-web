@@ -20,10 +20,12 @@
       "brand": "Brand",
       "model": "Model",
       "type": "Type",
+      "location": "Location",
       "registeredAt": "Registered At",
       "actions": "Actions",
       "noDevices": "No devices found",
-      "loading": "Loading devices data. Please wait..."
+      "loading": "Loading devices data. Please wait...",
+      "fotter": "Showing {first} to {last} of {totalRecords} devices"
     },
     "dialogs": {
       "register": {
@@ -58,7 +60,7 @@
       },
       "delete": {
         "title": "Confirm",
-        "message": "Are you sure you want to unregister {deviceName}?",
+        "message": "Are you sure you want to unregister ",
         "buttons": {
           "no": "No",
           "yes": "Yes",
