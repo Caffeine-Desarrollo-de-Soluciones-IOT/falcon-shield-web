@@ -9,6 +9,42 @@
     "assistance": "Asistencia",
     "contact": "Contacto"
   },
+  "dashboard": {
+    "greeting": {
+      "morning": "Buenos Días {name} 🌤️",
+      "afternoon": "Buenas Tardes {name} ⛅️",
+      "evening": "Buenas Noches {name} 🌙"
+    },
+    "cards": {
+      "propertiesTitle": "Propiedades",
+      "areasTitle": "Áreas",
+      "devicesTitle": "Dispositivos",
+      "planTitle": "Tu plan",
+      "month": "por mes"
+    },
+    "devices": {
+      "title": "Dispositivos",
+      "table": {
+        "emptyMessage": "No se encontraron eventos",
+        "loadingMessage": "Cargando los datos de los eventos. Por favor espera...",
+        "paginatorReport": "Mostrando de {first} a {last} de {totalRecords} eventos",
+        "rowsPerPageOptions": [5, 10, 25],
+        "columns": {
+          "image": "Imagen",
+          "deviceName": "Nombre",
+          "type": "Tipo",
+          "location": "Ubicación"
+        }
+      }
+    },
+    "events": {
+      "title": "Eventos"
+    },
+    "toast": {
+      "errorFetchingEvents": "Error al obtener los eventos",
+      "errorFetchingProperties": "Error al obtener las propiedades del usuario"
+    }
+  },
   "myDevices": {
     "title": "Mis Dispositivos",
     "subtitle": "Agrega o administra tus dispositivos",
@@ -181,10 +217,21 @@
     "faq3": "¿Cómo conecto mis dispositivos al panel de control?",
     "faq3Answer": "Conectar tus dispositivos es fácil. Solo asegúrate de que estén en la misma red Wi-Fi y sigue las instrucciones en la aplicación para vincularlos a tu cuenta.",
     "guidesAndTutorials": "Guías y Tutoriales",
-    "guide1": "Guía de Instalación Rápida",
-    "guide2": "Cómo Configurar Alertas de Movimiento",
-    "guide3": "Cómo Agregar Nuevos Dispositivos al Sistema",
+    "guide1": {
+      "title": "Guía de Instalación Rápida",
+      "manual1": "Guía de instalación y manual de Detector de humo para conducto",
+      "manual2": "Guía de instalación y manual de Sensor de Proximidad"
+    },
+    "guide2": {
+      "title": "Cómo Configurar Alertas de Movimiento",
+      "description": "Descripción detallada sobre cómo configurar las alertas de movimiento en los dispositivos..."
+    },
+    "guide3": {
+      "title": "Cómo Agregar Nuevos Dispositivos al Sistema",
+      "description": "Pasos para añadir dispositivos adicionales al sistema de FalconShield..."
+    },
     "support": "Soporte Técnico",
+    "supportText": "Si necesitas asistencia adicional, contacta a nuestro equipo de soporte:",
     "contactSupport": "Contactar Soporte"
   },
   "contact": {

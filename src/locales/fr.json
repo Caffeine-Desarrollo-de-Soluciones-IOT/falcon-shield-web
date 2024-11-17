@@ -9,6 +9,42 @@
     "assistance": "Assistance",
     "contact": "Contact"
   },
+  "dashboard": {
+    "greeting": {
+      "morning": "Bonjour {name} 🌤️",
+      "afternoon": "Bon Après-midi {name} ⛅️",
+      "evening": "Bonsoir {name} 🌙"
+    },
+    "cards": {
+      "propertiesTitle": "Propriétés",
+      "areasTitle": "Zones",
+      "devicesTitle": "Appareils",
+      "planTitle": "Votre plan",
+      "month": "par mois"
+    },
+    "devices": {
+      "title": "Appareils",
+      "table": {
+        "emptyMessage": "Aucun événement trouvé",
+        "loadingMessage": "Chargement des données des événements. Veuillez patienter...",
+        "paginatorReport": "Affichage de {first} à {last} sur {totalRecords} événements",
+        "rowsPerPageOptions": [5, 10, 25],
+        "columns": {
+          "image": "Image",
+          "deviceName": "Nom",
+          "type": "Type",
+          "location": "Emplacement"
+        }
+      }
+    },
+    "events": {
+      "title": "Événements"
+    },
+    "toast": {
+      "errorFetchingEvents": "Erreur lors de la récupération des événements",
+      "errorFetchingProperties": "Erreur lors de la récupération des propriétés de l'utilisateur"
+    }
+  },
   "myDevices": {
     "title": "Mes appareils",
     "subtitle": "Ajoutez ou gérez vos appareils",
@@ -173,19 +209,30 @@
   "assistance": {
     "title": "Assistance",
     "description": "Trouvez des réponses à vos questions ou contactez notre équipe de support.",
-    "faqs": "Questions fréquemment posées (FAQ)",
+    "faqs": "Questions Fréquemment Posées (FAQs)",
     "faq1": "Comment installer les dispositifs de sécurité ?",
-    "faq1Answer": "Pour installer les dispositifs de sécurité, suivez les étapes décrites dans le manuel fourni avec votre appareil. Si vous avez besoin d\"aide supplémentaire, consultez nos guides d\"installation ou contactez-nous.",
+    "faq1Answer": "Pour installer les dispositifs de sécurité, suivez les étapes décrites dans le manuel fourni avec votre appareil. Si vous avez besoin d'une aide supplémentaire, consultez nos guides d'installation ou contactez-nous.",
     "faq2": "Comment configurer les alertes en temps réel ?",
-    "faq2Answer": "Pour configurer les alertes, allez dans la section 'Mes appareils', sélectionnez l\"appareil que vous souhaitez surveiller et ajustez les notifications selon vos préférences.",
-    "faq3": "Comment connecter mes appareils au panneau de contrôle ?",
-    "faq3Answer": "Connecter vos appareils est facile. Assurez-vous qu\"ils sont sur le même réseau Wi-Fi et suivez les instructions dans l\"application pour les lier à votre compte.",
-    "guidesAndTutorials": "Guides et tutoriels",
-    "guide1": "Guide d\"installation rapide",
-    "guide2": "Comment configurer les alertes de mouvement",
-    "guide3": "Comment ajouter de nouveaux appareils au système",
-    "support": "Support technique",
-    "contactSupport": "Contacter le support"
+    "faq2Answer": "Pour configurer les alertes, accédez à la section 'Mes dispositifs', sélectionnez l'appareil que vous souhaitez surveiller et ajustez les notifications selon vos préférences.",
+    "faq3": "Comment connecter mes dispositifs au panneau de contrôle ?",
+    "faq3Answer": "Connecter vos dispositifs est simple. Assurez-vous qu'ils sont sur le même réseau Wi-Fi et suivez les instructions dans l'application pour les lier à votre compte.",
+    "guidesAndTutorials": "Guides et Tutoriels",
+    "guide1": {
+      "title": "Guide d'Installation Rapide",
+      "manual1": "Guide d'installation et manuel pour Détecteur de Fumée pour Conduit",
+      "manual2": "Guide d'installation et manuel pour Capteur de Proximité"
+    },
+    "guide2": {
+      "title": "Comment Configurer des Alertes de Mouvement",
+      "description": "Description détaillée sur la configuration des alertes de mouvement pour vos dispositifs..."
+    },
+    "guide3": {
+      "title": "Comment Ajouter de Nouveaux Dispositifs au Système",
+      "description": "Étapes pour ajouter des dispositifs supplémentaires au système FalconShield..."
+    },
+    "support": "Support Technique",
+    "supportText": "Si vous avez besoin d'une assistance supplémentaire, contactez notre équipe de support :",
+    "contactSupport": "Contacter le Support"
   },
   "contact": {
     "team": "Notre Équipe",

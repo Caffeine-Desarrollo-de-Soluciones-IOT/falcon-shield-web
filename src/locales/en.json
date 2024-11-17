@@ -9,6 +9,42 @@
     "assistance": "Assistance",
     "contact": "Contact"
   },
+  "dashboard": {
+    "greeting": {
+      "morning": "Good Morning {name} 🌤️",
+      "afternoon": "Good Afternoon {name} ⛅️",
+      "evening": "Good Evening {name} 🌙"
+    },
+    "cards": {
+      "propertiesTitle": "Properties",
+      "areasTitle": "Areas",
+      "devicesTitle": "Devices",
+      "planTitle": "Your plan",
+      "month": "per month"
+    },
+    "devices": {
+      "title": "Devices",
+      "table": {
+        "emptyMessage": "No events found",
+        "loadingMessage": "Loading events data. Please wait...",
+        "paginatorReport": "Showing {first} to {last} of {totalRecords} events",
+        "rowsPerPageOptions": [5, 10, 25],
+        "columns": {
+          "image": "Image",
+          "deviceName": "Name",
+          "type": "Type",
+          "location": "Location"
+        }
+      }
+    },
+    "events": {
+      "title": "Events"
+    },
+    "toast": {
+      "errorFetchingEvents": "Error fetching events",
+      "errorFetchingProperties": "Error fetching user properties"
+    }
+  },
   "myDevices": {
     "title": "My Devices",
     "subtitle": "Add or manage your devices",
@@ -175,16 +211,27 @@
     "description": "Find answers to your questions or contact our support team.",
     "faqs": "Frequently Asked Questions (FAQs)",
     "faq1": "How do I install the security devices?",
-    "faq1Answer": "To install the security devices, follow the steps described in the manual that comes with your device. If you need further assistance, check out our installation guides or contact us.",
+    "faq1Answer": "To install the security devices, follow the steps outlined in the manual that comes with your device. If you need additional help, check our installation guides or contact us.",
     "faq2": "How do I set up real-time alerts?",
-    "faq2Answer": "To set up alerts, go to the 'My devices' section, select the device you want to monitor, and adjust the notifications to your preferences.",
+    "faq2Answer": "To set up alerts, go to the 'My Devices' section, select the device you want to monitor, and adjust the notifications according to your preferences.",
     "faq3": "How do I connect my devices to the control panel?",
     "faq3Answer": "Connecting your devices is easy. Just make sure they are on the same Wi-Fi network and follow the instructions in the app to link them to your account.",
     "guidesAndTutorials": "Guides and Tutorials",
-    "guide1": "Quick Installation Guide",
-    "guide2": "How to Set Up Motion Alerts",
-    "guide3": "How to Add New Devices to the System",
+    "guide1": {
+      "title": "Quick Installation Guide",
+      "manual1": "Installation Guide and Manual for Duct Smoke Detector",
+      "manual2": "Installation Guide and Manual for Proximity Sensor"
+    },
+    "guide2": {
+      "title": "How to Set Up Motion Alerts",
+      "description": "Detailed description on how to configure motion alerts on your devices..."
+    },
+    "guide3": {
+      "title": "How to Add New Devices to the System",
+      "description": "Steps to add additional devices to the FalconShield system..."
+    },
     "support": "Technical Support",
+    "supportText": "If you need additional assistance, contact our support team:",
     "contactSupport": "Contact Support"
   },
   "contact": {
