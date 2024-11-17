@@ -18,3 +18,9 @@ export interface ILocale {
   flagCode: string;
   value: string;
 }
+
+export interface IIcon {
+  id: string;
+  name: string;
+  icon_url: string;
+}
