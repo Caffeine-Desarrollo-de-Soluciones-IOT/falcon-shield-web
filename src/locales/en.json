@@ -4,6 +4,20 @@
     "myAccount": "My Account",
     "logout": "Logout"
   },
+  "login": {
+    "title": "Welcome to Falcon Shield",
+    "subtitle": "Sign in with",
+    "or": "Or",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "buttons": {
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "signUp": "Sign Up"
+    }
+  },
   "menu": {
     "principal": "Main",
     "home": "Home",
