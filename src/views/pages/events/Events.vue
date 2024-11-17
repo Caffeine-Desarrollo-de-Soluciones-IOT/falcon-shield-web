@@ -80,13 +80,13 @@ function exportCSV() {
 
 <template>
   <div className="card">
-    <div class="font-semibold text-xl mb-4">Device Events</div>
-    <p>Review the events of your devices</p>
+    <div class="font-semibold text-xl mb-4">{{ $t('events.title') }}</div>
+    <p>{{ $t('events.description') }}</p>
 
     <Toolbar class="mt-6">
       <template #start>
         <Button
-          label="Export to .csv"
+          :label="$t('events.exportCSV')"
           icon="pi pi-fw pi-file-excel"
           class="p-button-primary"
           @click="exportCSV"
@@ -95,23 +95,27 @@ function exportCSV() {
 
       <template #center>
         <Select
-        class="ml-4"
+          class="ml-4"
           id="propertySelect"
           v-model="targetProperty.id"
           :options="userProperties"
           option-label="name"
           option-value="id"
-          placeholder="Select a Property"
+          :placeholder="$t('events.selectProperty')"
           :loading="loadingProperties"
           fluid
           @change="fetchEventsByPropertyId(targetProperty.id)"
-        ></Select>
+        >
+        <template #dropdownicon>
+          <i class="pi pi-home" />
+        </template>
+      </Select>
       </template>
 
       <template #end>
         <IconField iconPosition="left">
           <InputIcon class="pi pi-search" />
-          <InputText v-model="filters['global'].value" placeholder="Search..." />
+          <InputText v-model="filters['global'].value" :placeholder="$t('events.search')" />
         </IconField>
       </template>
     </Toolbar>
@@ -127,20 +131,20 @@ function exportCSV() {
       ref="dt"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rowsPerPageOptions="[5, 10, 25]"
-      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} eventos"
+      :currentPageReportTemplate="$t('events.table.paginatorReport', { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' })"
     >
-      <template #empty> No events found </template>
-      <template #loading> Loading events data. Please wait... </template>
+      <template #empty> {{ $t('events.table.emptyMessage') }} </template>
+      <template #loading> {{ $t('events.table.loadingMessage') }} </template>
 
       <!-- COLUMNS -->
-      <Column field="title" header="Title" style="min-width: 10rem"></Column>
-      <Column field="description" header="Description" style="min-width: 15rem"></Column>
-      <Column field="status" header="Type" style="min-width: 10rem">
+      <Column field="title" :header="$t('events.table.columns.title')" style="min-width: 10rem"></Column>
+      <Column field="description" :header="$t('events.table.columns.description')" style="min-width: 15rem"></Column>
+      <Column field="status" :header="$t('events.table.columns.type')" style="min-width: 10rem">
         <template #body="slotProps">
           <Tag :value="slotProps.data.type" :severity="getStatusLabel(slotProps.data.type)" />
         </template>
       </Column>
-      <Column field="timestamp" header="Timestamp" style="min-width: 10rem">
+      <Column field="timestamp" :header="$t('events.table.columns.timestamp')" style="min-width: 10rem">
         <template #body="slotProps">
           {{ new Date(slotProps.data.timestamp).toLocaleString() }}
         </template>
