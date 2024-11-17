@@ -250,5 +250,43 @@
       "errorMessage": "Champs Incomplets",
       "errorDetail": "Veuillez remplir tous les champs du formulaire."
     }
+  },
+  "pricingPlans": {
+    "title": "Plans de Tarification",
+    "subtitle": "Choisissez un plan qui vous convient",
+    "viewMySubscription": "Voir mon abonnement",
+    "free": {
+      "priceSuffix": "par mois",
+      "features": {
+        "manageProperties": "Gérez vos propriétés",
+        "manageAreas": "Gérez vos zones",
+        "reviewDeviceEvents": "Vérifiez les événements des appareils"
+      },
+      "button": "Vous êtes ici"
+    },
+    "gold": {
+      "priceSuffix": "par mois",
+      "features": {
+        "allFreeFeatures": "Toutes les fonctionnalités du plan Gratuit",
+        "unlimitedDevices": "Appareils illimités",
+        "support": "Support 24/7"
+      },
+      "button": "Commencer"
+    },
+    "black": {
+      "priceSuffix": "par mois",
+      "features": {
+        "allGoldFeatures": "Toutes les fonctionnalités du plan Or",
+        "aiAnalytics": "Analyses basées sur l'IA",
+        "customReports": "Rapports personnalisés"
+      },
+      "button": "Commencer"
+    },
+    "toast": {
+      "error": {
+        "summary": "Erreur",
+        "detail": "Une erreur s'est produite."
+      }
+    }
   }
 }

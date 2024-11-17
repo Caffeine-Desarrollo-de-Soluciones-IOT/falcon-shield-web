@@ -46,14 +46,14 @@ async function handleGetSubscriptionDetails() {
     <div id="pricing" class="py-6 px-6 lg:px-20 my-2 md:my-6">
       <div class="text-center mb-6">
         <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">
-          Pricing Plans
+          {{ $t('pricingPlans.title') }}
         </div>
-        <span class="text-muted-color text-2xl"> Choose a plan that works for you </span>
+        <span class="text-muted-color text-2xl"> {{ $t('pricingPlans.subtitle') }} </span>
       </div>
 
       <div class="flex justify-center mb-3">
         <Button
-          label="View my subscription"
+          :label="$t('pricingPlans.viewMySubscription')"
           class="bg-primary text-surface-0"
           icon="pi pi-external-link"
           @click="handleGetSubscriptionDetails"
@@ -72,23 +72,23 @@ async function handleGetSubscriptionDetails() {
             <div class="my-8 flex flex-col items-center gap-4">
               <div class="flex items-center">
                 <span class="text-5xl font-bold mr-2 text-surface-900 dark:text-surface-0">$0</span>
-                <span class="text-surface-600 dark:text-surface-200">per month</span>
+                <span class="text-surface-600 dark:text-surface-200">{{ $t('pricingPlans.free.priceSuffix') }}</span>
               </div>
-              <Button label="You are here" disabled></Button>
+              <Button :label="$t('pricingPlans.free.button')" disabled></Button>
             </div>
             <Divider class="w-full bg-surface-200"></Divider>
             <ul class="my-8 list-none p-0 flex text-surface-900 dark:text-surface-0 flex-col px-8">
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">Manage your properties</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.free.features.manageProperties') }}</span>
               </li>
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">Manage your areas</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.free.features.manageAreas') }}</span>
               </li>
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">Review the device events</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.free.features.reviewDeviceEvents') }}</span>
               </li>
             </ul>
           </div>
@@ -107,10 +107,10 @@ async function handleGetSubscriptionDetails() {
                 <span class="text-5xl font-bold mr-2 text-surface-900 dark:text-surface-0"
                   >$10</span
                 >
-                <span class="text-surface-600 dark:text-surface-200">per month</span>
+                <span class="text-surface-600 dark:text-surface-200">{{ $t('pricingPlans.free.priceSuffix') }}</span>
               </div>
               <Button
-                label="Get Started"
+                :label="$t('pricingPlans.gold.button')"
                 @click="handleSubscribe('price_1QBfxRGThVlbgNYkYOWdwYcD')"
                 :loading="loading"
               ></Button>
@@ -119,15 +119,15 @@ async function handleGetSubscriptionDetails() {
             <ul class="my-8 list-none p-0 flex text-surface-900 dark:text-surface-0 flex-col px-8">
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">All Free features</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.gold.features.allFreeFeatures') }}</span>
               </li>
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">Unlimited Devices</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.gold.features.unlimitedDevices') }}</span>
               </li>
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">24/7 Support</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.gold.features.support') }}</span>
               </li>
             </ul>
           </div>
@@ -146,10 +146,10 @@ async function handleGetSubscriptionDetails() {
                 <span class="text-5xl font-bold mr-2 text-surface-900 dark:text-surface-0"
                   >$20</span
                 >
-                <span class="text-surface-600 dark:text-surface-200">per month</span>
+                <span class="text-surface-600 dark:text-surface-200">{{ $t('pricingPlans.free.priceSuffix') }}</span>
               </div>
               <Button
-                label="Get Started"
+                :label="$t('pricingPlans.black.button')"
                 @click="handleSubscribe('price_1QBfz8GThVlbgNYkX5Q9Usgd')"
                 :loading="loading"
               ></Button>
@@ -158,15 +158,15 @@ async function handleGetSubscriptionDetails() {
             <ul class="my-8 list-none p-0 flex text-surface-900 dark:text-surface-0 flex-col px-8">
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">All Gold Features</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.black.features.allGoldFeatures') }}</span>
               </li>
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">AI Powered Analytics</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.black.features.aiAnalytics') }}</span>
               </li>
               <li class="py-2">
                 <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                <span class="text-xl leading-normal">Custom Reports</span>
+                <span class="text-xl leading-normal">{{ $t('pricingPlans.black.features.customReports') }}</span>
               </li>
             </ul>
           </div>

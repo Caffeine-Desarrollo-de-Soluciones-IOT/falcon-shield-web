@@ -250,5 +250,43 @@
       "errorMessage": "Incomplete Fields",
       "errorDetail": "Please fill in all the fields in the form."
     }
+  },
+  "pricingPlans": {
+    "title": "Pricing Plans",
+    "subtitle": "Choose a plan that works for you",
+    "viewMySubscription": "View my subscription",
+    "free": {
+      "priceSuffix": "per month",
+      "features": {
+        "manageProperties": "Manage your properties",
+        "manageAreas": "Manage your areas",
+        "reviewDeviceEvents": "Review the device events"
+      },
+      "button": "You are here"
+    },
+    "gold": {
+      "priceSuffix": "per month",
+      "features": {
+        "allFreeFeatures": "All Free features",
+        "unlimitedDevices": "Unlimited Devices",
+        "support": "24/7 Support"
+      },
+      "button": "Get Started"
+    },
+    "black": {
+      "priceSuffix": "per month",
+      "features": {
+        "allGoldFeatures": "All Gold Features",
+        "aiAnalytics": "AI Powered Analytics",
+        "customReports": "Custom Reports"
+      },
+      "button": "Get Started"
+    },
+    "toast": {
+      "error": {
+        "summary": "Error",
+        "detail": "An error occurred."
+      }
+    }
   }
 }
