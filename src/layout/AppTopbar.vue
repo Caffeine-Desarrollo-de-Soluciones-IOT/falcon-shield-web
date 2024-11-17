@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 import { AuthService } from '@/service/AuthService';
 import { useLayout } from '@/layout/composables/layout';
 import type { MenuItem } from 'primevue/menuitem';
-import { useI18n } from 'vue-i18n';
+import LanguageSelector from './LanguageSelector.vue';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
-const { locale } = useI18n();
-
-const selectedLocale = ref({ name: 'EN', flagCode: 'UK', value: 'en' });
-const locales = ref([
-  { name: 'EN', flagCode: 'UK', value: 'en' },
-  { name: 'ES', flagCode: 'ES', value: 'es' },
-  { name: 'FR', flagCode: 'FR', value: 'fr' },
-]);
 
 const menu = ref();
 const overlayMenuItems = ref<MenuItem[]>([
@@ -36,11 +28,6 @@ const overlayMenuItems = ref<MenuItem[]>([
 function toggleMenu(event: MouseEvent) {
   menu.value.toggle(event);
 }
-
-//i18n change locale
-watchEffect(() => {
-  locale.value = selectedLocale.value.value;
-});
 </script>
 
 <template>
@@ -59,30 +46,7 @@ watchEffect(() => {
       <Button as="router-link" label="Go Premium" icon="pi pi-star"
         class="p-button-rounded border-0 ml-4 font-light leading-tight custom-button" to="/pricing" />
 
-      <!-- Dropdown para seleccionar el idioma -->
-      <Select v-model="selectedLocale" :options="locales" optionLabel="name" checkmark>
-        <template #value="slotProps">
-          <div v-if="slotProps.value" class="flex items-center">
-            <img :alt="slotProps.value.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-              :class="`mr-2 flag flag-${slotProps.value.flagCode.toLowerCase()}`" style="width: 18px" />
-            <div>{{ slotProps.value.name }}</div>
-          </div>
-          <span v-else>
-            {{ slotProps.placeholder }}
-          </span>
-        </template>
-        <template #option="slotProps">
-          <div class="flex items-center">
-            <img :alt="slotProps.option.label"
-              src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-              :class="`mr-2 flag flag-${slotProps.option.flagCode.toLowerCase()}`" style="width: 18px" />
-            <div>{{ slotProps.option.name }}</div>
-          </div>
-        </template>
-        <template #dropdownicon>
-          <i class="pi pi-globe" />
-        </template>
-      </Select>
+      <LanguageSelector />
 
       <div class="layout-config-menu">
         <button type="button" class="layout-topbar-action" @click="toggleDarkMode">

@@ -12,3 +12,9 @@ export interface IProblemDetails {
   instance: string;
   errors?: string[];
 }
+
+export interface ILocale {
+  name: string;
+  flagCode: string;
+  value: string;
+}
