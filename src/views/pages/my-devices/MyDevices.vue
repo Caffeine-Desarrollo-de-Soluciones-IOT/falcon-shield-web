@@ -19,6 +19,7 @@ const toast = useToast();
 const dt = ref();
 const registerDialogVisible = ref(false);
 const deleteDialogVisible = ref(false);
+const deviceSpecDialogVisible = ref(false);
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
@@ -90,6 +91,11 @@ async function handleRegisterDevice() {
 function confirmDeleteDevice(deviceRegistrationId: IRegisteredDevice) {
   selectedDeviceRegistration.value = deviceRegistrationId;
   deleteDialogVisible.value = true;
+}
+
+function openDeviceSpecsDialog(deviceRegistration: IRegisteredDevice) {
+  selectedDeviceRegistration.value = deviceRegistration;
+  deviceSpecDialogVisible.value = true;
 }
 
 async function deleteDevice() {
@@ -268,7 +274,14 @@ function getStatusLabel(type: EDeviceType) {
             outlined
             rounded
             severity="danger"
+            class="mr-2"
             @click="confirmDeleteDevice(slotProps.data)"
+          />
+          <Button
+            icon="pi pi-eye"
+            outlined
+            rounded
+            @click="openDeviceSpecsDialog(slotProps.data)"
           />
         </template>
       </Column>
@@ -420,6 +433,21 @@ function getStatusLabel(type: EDeviceType) {
         severity="danger"
         :loading="unregisteringDevice"
         @click="deleteDevice()" />
+    </template>
+  </Dialog>
+
+  <Dialog v-model:visible="deviceSpecDialogVisible" modal :header="$t('myDevices.dialogs.deviceSpecs.title')"  :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" :draggable="false">
+    <div v-if="selectedDeviceRegistration">
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.description') }}:</strong> {{ selectedDeviceRegistration.device.description }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.brand') }}:</strong> {{ selectedDeviceRegistration.device.brand }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.model') }}:</strong> {{ selectedDeviceRegistration.device.model }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.power') }}:</strong> {{ selectedDeviceRegistration.device.specs.power }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.connectivity') }}:</strong> {{ selectedDeviceRegistration.device.specs.connectivity }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.compatibility') }}:</strong> {{ selectedDeviceRegistration.device.specs.compatibility }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.warranty') }}:</strong> {{ selectedDeviceRegistration.device.specs.warranty }}</p>
+    </div>
+    <template #footer>
+      <Button :label="$t('myDevices.dialogs.deviceSpecs.close')" icon="pi pi-times" @click="deviceSpecDialogVisible = false" class="mt-3" />
     </template>
   </Dialog>
 </template>

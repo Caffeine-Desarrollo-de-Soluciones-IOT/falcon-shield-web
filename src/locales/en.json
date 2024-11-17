@@ -66,6 +66,17 @@
           "yes": "Yes",
           "unregistering": "Unregistering..."
         }
+      },
+      "deviceSpecs": {
+        "title": "Device Specifications",
+        "description": "Description",
+        "brand": "Brand",
+        "model": "Model",
+        "power": "Power",
+        "connectivity": "Connectivity",
+        "compatibility": "Compatibility",
+        "warranty": "Warranty",
+        "close": "Close"
       }
     },
     "notifications": {

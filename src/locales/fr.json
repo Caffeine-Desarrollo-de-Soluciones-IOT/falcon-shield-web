@@ -66,6 +66,17 @@
           "yes": "Oui",
           "unregistering": "Désenregistrement..."
         }
+      },
+      "deviceSpecs": {
+        "title": "Spécifications de l'appareil",
+        "description": "Description",
+        "brand": "Marque",
+        "model": "Modèle",
+        "power": "Puissance",
+        "connectivity": "Connectivité",
+        "compatibility": "Compatibilité",
+        "warranty": "Garantie",
+        "close": "Fermer"
       }
     },
     "notifications": {
