@@ -20,6 +20,12 @@ export const DeviceService = {
     );
     return res.data;
   },
+  async getRegisteredDevicesForArea(areaId: number): Promise<IApiResponse<IRegisteredDevice[]>> {
+    const res = await httpClient.get<IApiResponse<IRegisteredDevice[]>>(
+      `${serviceName}/registered/${areaId}`
+    );
+    return res.data;
+  },
   async registerDevice(data: IRegisterDeviceRequestDto): Promise<IApiResponse> {
     const res = await httpClient.post<IApiResponse>(`${serviceName}/register`, data);
     return res.data;

@@ -207,7 +207,8 @@ function toggleMenu(event: any, index: number) {
       </template>
     </Toolbar>
 
-    <DataView class="mt-6" :value="registeredProperties" :layout="layout" paginator :rows="5" data-key="id">
+    <div v-if="loadingList" class="mt-6 text-center">Loading...</div>
+    <DataView v-else class="mt-6" :value="registeredProperties" :layout="layout" paginator :rows="5" data-key="id">
       <!-- GRID VIEW -->
       <template #grid="slotProps">
         <div class="grid grid-cols-12 gap-4">

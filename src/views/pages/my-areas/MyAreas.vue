@@ -1,82 +1,106 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { PropertyService } from '@/service/PropertyService';
 import { AreaService } from '@/service/AreaService';
+import { PropertyService } from '@/service/PropertyService';
+import { DeviceService } from '@/service/DeviceService';
 import { useToast } from 'primevue/usetoast';
 import { IconService } from '@/service/IconService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
 import type { IArea } from '@/interfaces/areas';
 import type { MenuItem } from 'primevue/menuitem';
-
+import type { IIcon } from '@/interfaces/common';
+import type { IRegisteredDevice } from '@/interfaces/devices';
 
 const route = useRoute();
 const router = useRouter();
-const areas = ref<IArea[]>([]);
-const propertyId = Number(route.params.property_id);
-const area = ref<IArea>({ id: '', name: '', icon_id: '', property_id: propertyId.toString() });
-const propertyName = ref('');
-const areaToDelete = ref<IArea | null>(null);
-const areaDialog = ref(false);
-const deleteDialog = ref(false);
-const submitted = ref(false);
 const toast = useToast();
 
-const options = ref(['grid', 'list']);
-const layout = ref<'grid' | 'list'>('grid');
+const areas = ref<IArea[]>([]);
+const devices = ref<IRegisteredDevice[]>([]);
+const propertyId = Number(route.params.property_id);
+const area = ref<IArea>({} as IArea);
+const propertyName = ref('--');
+const areaDialog = ref(false);
+const submitted = ref(false);
+const creatingArea = ref(false);
+const loadingDevices = ref(false);
+const loadingAreas = ref(false);
 
-// Para los íconos
-const icons = ref([]);
-const selectedIcon = ref(null);
-const popoverRef = ref(null);
+//icons & popover
+const icons = ref<IIcon[]>([]);
+const selectedIcon = ref<IIcon | null>(null);
+const popoverRef = ref<any>(null);
+const popoverDevices = ref();
+const menu = ref<any>(null);
 
-const items = (item: IArea): MenuItem[] => [
+const menuItems = (item: IArea): MenuItem[] => [
   {
     label: 'Edit',
     icon: 'pi pi-pencil',
     command: () => {
       editArea(item);
     }
-  },
-  {
-    label: 'Delete',
-    icon: 'pi pi-times',
-    command: () => {
-      confirmDelete(item);
-    }
   }
 ];
 
-onMounted(() => {
-  loadAreas();
+onMounted(async () => {
+  getProperty();
+  await loadAreas();
   loadIcons();
 });
 
-function loadAreas() {
-  AreaService.getAreasByPropertyId(propertyId).then((data) => {
-    areas.value = data.data.slice(0, 6);
+function getProperty() {
+  PropertyService.getPropertyById(propertyId).then((res) => {
+    propertyName.value = res.data.name;
   });
+}
+
+async function loadAreas() {
+  try {
+    loadingAreas.value = true;
+    const res = await AreaService.getAreasByPropertyId(propertyId);
+    areas.value = res.data;
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Failed to load areas',
+      life: 3000
+    });
+  } finally {
+    loadingAreas.value = false;
+  }
 }
 
 function loadIcons() {
-  IconService.getIcons().then((data) => {
-    icons.value = data;
-  });
+  icons.value = IconService.getIcons();
 }
 
-function getIconUrl(iconId: any) {
-  const icon = icons.value.find((icon) => icon.id === iconId);
-  const url = icon ? `${storageBaseUrl}${icon.icon_url}` : null;
-  return url;
+function getIconUrl(iconId: string) {
+  const icon = IconService.getIconById(iconId);
+  return `${storageBaseUrl}${icon!.icon_url}`;
 }
 
-function viewMoreDevices(areaId: any) {
-  const propertyId = route.params.property_id;
-  router.push(`/my-properties/${propertyId}/my-areas/${areaId}/devices`);
+async function loadDevicesForArea(areaId: number) {
+  try {
+    loadingDevices.value = true;
+    const res = await DeviceService.getRegisteredDevicesForArea(areaId);
+    devices.value = res.data;
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Failed to load devices',
+      life: 3000
+    });
+  } finally {
+    loadingDevices.value = false;
+  }
 }
 
 function openNew() {
-  area.value = { name: '', icon_id: '', property_id: propertyId };
+  area.value = {} as IArea;
   selectedIcon.value = null;
   submitted.value = false;
   areaDialog.value = true;
@@ -87,11 +111,11 @@ function hideDialog() {
   submitted.value = false;
 }
 
-function saveArea() {
+async function saveArea() {
   submitted.value = true;
 
   if (!area.value.name) {
-    return; // Validación básica
+    return;
   }
 
   if (area.value.id) {
@@ -117,58 +141,34 @@ function saveArea() {
     //     });
     //   });
   } else {
-    // Si no hay id, crea una nueva area
-    AreaService.createArea(propertyId, area.value)
-      .then(() => {
-        toast.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Area created',
-          life: 3000
-        });
-        loadAreas();
-        openNew();
-        areaDialog.value = false;
-      })
-      .catch(() => {
-        toast.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to create area',
-          life: 3000
-        });
+    try {
+      creatingArea.value = true;
+      await AreaService.createArea(propertyId, area.value);
+      toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Area created',
+        life: 3000
       });
+      loadAreas();
+      openNew();
+      areaDialog.value = false;
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: (error as Error).message || 'Failed to create area',
+        life: 3000
+      });
+    } finally {
+      creatingArea.value = false;
+    }
   }
 }
 
 function editArea(item: IArea) {
-  // Copiar el area seleccionada y abrir el diálogo de edición
   area.value = { ...item };
-  areaDialog.value = true; // Asegurarse de que solo se abre el diálogo de edición
-}
-
-function deleteArea() {
-  if (areaToDelete.value) {
-    AreaService.deleteArea(areaToDelete.value.id) // Asumiendo que tienes este método en el servicio
-      .then(() => {
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Area deleted', life: 3000 });
-        loadAreas(); // Recargar areas
-        deleteDialog.value = false; // Cerrar diálogo de eliminación
-      })
-      .catch(() => {
-        toast.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to delete area',
-          life: 3000
-        });
-      });
-  }
-}
-
-function confirmDelete(item: IArea) {
-  areaToDelete.value = item; // Guardar la area a eliminar
-  deleteDialog.value = true; // Abrir diálogo de confirmación
+  areaDialog.value = true;
 }
 
 function mapAreaTypeToName(iconId: string) {
@@ -192,119 +192,103 @@ function mapAreaTypeToName(iconId: string) {
 
 function selectIcon(icon: any) {
   selectedIcon.value = icon;
-  area.value.icon_id = icon.id;
-  popoverRef.value.hide();
+  area.value.icon = icon.id;
+  popoverRef.value?.hide();
 }
 
 function showIconPopover(event: any) {
   if (popoverRef.value) {
     popoverRef.value.toggle(event);
-  } else {
-    console.error('popoverRef is null');
   }
+}
+
+function showDevicesPopover(event: any, index: number, areaId: number) {
+  if (popoverDevices.value) {
+    popoverDevices.value[index].toggle(event);
+    loadDevicesForArea(areaId);
+  }
+}
+
+function closeDevicesPopover() {
+  devices.value = [];
+}
+
+function toggleMenu(event: any, index: number) {
+  menu.value[index].toggle(event);
+}
+
+function redirectToDevicesList() {
+  router.push(`/my-devices`);
 }
 </script>
 
 <template>
   <div class="flex flex-col">
     <div class="card">
-      <div class="font-semibold text-xl mb-6">Areas for {{ propertyName }}</div>
-      <Toolbar class="mb-6">
+      <div class="font-semibold text-xl mb-4">Areas for {{ propertyName }}</div>
+      <p>Manage your areas</p>
+
+      <Toolbar class="mt-6">
         <template #start>
-          <Button
-            label="New"
-            icon="pi pi-plus"
-            severity="secondary"
-            class="mr-2"
-            @click="openNew"
-          />
+          <Button label="New" icon="pi pi-plus" severity="primary" class="mr-2" @click="openNew" />
         </template>
 
         <template #end>
-          <SelectButton v-model="layout" :options="options" :allowEmpty="false">
-            <template #option="{ option }">
-              <i :class="[option === 'list' ? 'pi pi-bars' : 'pi pi-table']" />
-            </template>
-          </SelectButton>
+          <Button label="View all devices" icon="pi pi-external-link" severity="secondary" class="mr-2"
+            @click="redirectToDevicesList" />
         </template>
       </Toolbar>
 
-      <DataView :value="areas" :layout="layout">
+      <div v-if="loadingAreas" class="mt-6 text-center">Loading...</div>
+      <DataView v-else class="mt-6" :value="areas" data-key="id" paginator :rows="5">
         <template #list="slotProps">
           <div class="flex flex-col">
             <div v-for="(item, index) in slotProps.items" :key="index">
-              <div
-                class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
-                :class="{ 'border-t border-surface': index !== 0 }"
-              >
+              <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
+                :class="{ 'border-t border-surface': index !== 0 }">
                 <div class="md:w-40 flex justify-center items-center">
-                  <img
-                    v-if="getIconUrl(item.icon_id)"
-                    :src="getIconUrl(item.icon_id)"
-                    alt="Area Icon"
-                    class="area-icon"
-                    style="height: 50px"
-                  />
+                  <img v-if="getIconUrl(item.icon)" :src="getIconUrl(item.icon)" alt="Area Icon" class="area-icon"
+                    style="height: 50px" />
                 </div>
                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
-                  <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                  <div>
                     <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                      mapAreaTypeToName(item.type_id)
+                      mapAreaTypeToName(item.icon)
                     }}</span>
-                    <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                    <div class="text-lg font-medium mt-1">{{ item.name }}</div>
                   </div>
                   <div class="flex flex-col md:items-end gap-8">
                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
-                      <SplitButton
-                        label="View devices"
-                        dropdownIcon="pi pi-chevron-down"
-                        @click="viewMoreDevices(item.id)"
-                        class="flex-auto md:flex-initial whitespace-nowrap"
-                        :model="items(item)"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </template>
+                      <!-- POPOVER FOR DEVICES -->
+                      <Button icon="pi pi-fw pi-mobile" label="View devices" class="flex-auto whitespace-nowrap"
+                        @click="showDevicesPopover($event, index, item.id)"></Button>
+                      <Popover ref="popoverDevices" @hide="closeDevicesPopover">
+                        <div class="flex flex-col gap-4 w-[25rem]">
+                          <div>
+                            <span class="font-medium block mb-2">Registered devices</span>
+                            <div v-if="loadingDevices" class="text-center">Loading...</div>
+                            <div v-else-if="devices.length === 0" class="text-center">No devices registered</div>
+                            <ul v-else class="list-none p-0 m-0 flex flex-col gap-4">
+                              <li v-for="device in devices" :key="device.id" class="flex items-center gap-2">
+                                <img :src="device.device.imageUrl" style="width: 32px" />
+                                <div>
+                                  <span class="font-medium">{{ device.device.name }}</span>
+                                  <div class="text-sm text-surface-500 dark:text-surface-400">
+                                    {{ device.device.brand }} {{ device.device.model }}
+                                  </div>
+                                </div>
+                                <div
+                                  class="flex items-center gap-2 text-surface-500 dark:text-surface-400 ml-auto text-sm">
+                                  <span>{{ device.device.type }}</span>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </Popover>
 
-        <template #grid="slotProps">
-          <div class="grid grid-cols-12 gap-4">
-            <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 lg:col-span-4 p-2">
-              <div class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col">
-                <div class="bg-surface-50 flex justify-center rounded p-4">
-                  <div class="relative mx-auto">
-                    <img
-                      v-if="getIconUrl(item.icon_id)"
-                      :src="getIconUrl(item.icon_id)"
-                      alt="Area Icon"
-                      class="area-icon"
-                      style="height: 50px"
-                    />
-                  </div>
-                </div>
-                <div class="pt-6">
-                  <div class="flex flex-row justify-between items-start gap-2">
-                    <div>
-                      <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                        mapAreaTypeToName(item.icon_id)
-                      }}</span>
-                      <div class="text-lg font-medium mt-1">{{ item.name }}</div>
-                    </div>
-                  </div>
-                  <div class="flex flex-col md:items-end gap-8">
-                    <div class="flex flex-row-reverse md:flex-row gap-2">
-                      <!-- <Button icon="pi pi-heart" outlined></Button> -->
-                      <SplitButton
-                        label="View devices"
-                        dropdownIcon="pi pi-chevron-down"
-                        @click="viewMoreDevices(item.id)"
-                        class="flex-auto md:flex-initial whitespace-nowrap"
-                        :model="items(item)"
-                      />
+                      <Menu ref="menu" :model="menuItems(item)" :popup="true" />
+                      <Button type="button" icon="pi pi-ellipsis-v" outlined @click="toggleMenu($event, index)" />
                     </div>
                   </div>
                 </div>
@@ -316,46 +300,27 @@ function showIconPopover(event: any) {
     </div>
 
     <!-- Diálogo para crear/editar area -->
-    <Dialog
-      v-model:visible="areaDialog"
-      :style="{ width: '450px' }"
-      header="Area Details"
-      modal
-      :draggable="false"
-    >
+    <Dialog v-model:visible="areaDialog" :style="{ width: '450px' }" header="Area Details" modal :draggable="false">
       <div class="flex flex-col gap-6">
         <div>
           <label for="name" class="block font-bold mb-3">Name</label>
-          <InputText
-            id="name"
-            v-model.trim="area.name"
-            required="true"
-            autofocus
-            :invalid="submitted && !area.name"
-            fluid
-          />
+          <InputText id="name" v-model.trim="area.name" required="true" autofocus :invalid="submitted && !area.name"
+            fluid />
           <small v-if="submitted && !area.name" class="text-red-500">Name is required.</small>
         </div>
 
         <div>
           <label for="icon" class="block font-bold mb-3">Icon</label>
-          <Button
-            type="button"
-            :label="selectedIcon ? selectedIcon.name : 'Select Icon'"
-            @click="showIconPopover"
-            class="min-w-48"
-          />
+          <Button type="button" :label="selectedIcon ? selectedIcon.name : 'Select Icon'" @click="showIconPopover"
+            class="min-w-48" />
           <Popover ref="popoverRef">
             <div class="flex flex-col gap-4">
               <div>
                 <span class="font-medium block mb-2">Icons</span>
                 <ul class="list-none p-0 m-0 flex flex-col">
-                  <li
-                    v-for="icon in icons"
-                    :key="icon.id"
+                  <li v-for="icon in icons" :key="icon.id"
                     class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border"
-                    @click="selectIcon(icon)"
-                  >
+                    @click="selectIcon(icon)">
                     <img :src="`${storageBaseUrl}${icon.icon_url}`" style="width: 32px" />
                     <div>
                       <span class="font-medium">{{ icon.name }}</span>
@@ -370,31 +335,13 @@ function showIconPopover(event: any) {
 
       <template #footer>
         <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" text @click="saveArea" />
-      </template>
-    </Dialog>
-
-    <!-- Diálogo para confirmar eliminación -->
-    <Dialog
-      header="Confirm"
-      v-model:visible="deleteDialog"
-      modal
-      :draggable="false"
-      footer="footer"
-      :style="{ width: '450px' }"
-    >
-      <div>
-        Are you sure you want to delete <b>{{ areaToDelete?.name }}</b
-        >?
-      </div>
-      <template #footer>
         <Button
-          label="Cancel"
-          icon="pi pi-times"
-          @click="deleteDialog = false"
-          class="p-button-text"
+          :label="creatingArea ? 'Creating...' : 'Create'"
+          icon="pi pi-check"
+          text
+          @click="saveArea"
+          :loading="creatingArea"
         />
-        <Button label="Yes" icon="pi pi-check" @click="deleteArea" autoFocus />
       </template>
     </Dialog>
   </div>
