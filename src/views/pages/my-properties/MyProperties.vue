@@ -10,15 +10,12 @@ import type { MenuItem } from 'primevue/menuitem';
 
 const toast = useToast();
 const registerDialogVisible = ref(false);
-const deleteDialogVisible = ref(false);
 const submitted = ref(false);
 const registeredProperties = ref<IProperty[]>([]);
 const newProperty = ref<IRegisterPropertyRequestDto>({} as IRegisterPropertyRequestDto);
-const selectedPropertyRegistration = ref<IProperty>();
 
 const loadingList = ref(false);
 const registeringProperty = ref(false);
-const unregisteringProperty = ref(false);
 
 const router = useRouter();
 const addressVisibility = ref<any>({});
@@ -31,11 +28,8 @@ const menu = ref<any>(null);
 
 const menuItems = (item: IProperty): MenuItem[] => [
   {
-    label: 'Delete',
-    icon: 'pi pi-times',
-    command: () => {
-      confirmDelete(item);
-    }
+    label: 'Edit',
+    icon: 'pi pi-pencil',
   }
 ];
 
@@ -112,38 +106,6 @@ async function saveProperty() {
 //   src.value = `${storageBaseUrl}${item.imageUrl}`; // Mostrar la imagen actual en la vista previa
 // }
 
-function confirmDelete(propertyRegistrationId: IProperty) {
-  selectedPropertyRegistration.value = propertyRegistrationId;
-  deleteDialogVisible.value = true;
-}
-
-async function deleteProperty() {
-  try {
-    unregisteringProperty.value = true;
-    await PropertyService.deleteProperty(selectedPropertyRegistration.value!.id);
-
-    toast.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Property deleted',
-      life: 3000
-    });
-    deleteDialogVisible.value = false;
-    selectedPropertyRegistration.value = {} as IProperty;
-
-    await loadProperties();
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: (error as Error).message,
-      life: 3000
-    });
-  } finally {
-    unregisteringProperty.value = false;
-  }
-}
-
 async function loadProperties() {
   try {
     loadingList.value = true;
@@ -189,12 +151,12 @@ function toggleMenu(event: any, index: number) {
 
 <template>
   <div class="card">
-    <div class="font-semibold text-xl mb-4">My Properties</div>
-    <p>Manage your properties & areas</p>
+    <div class="font-semibold text-xl mb-4">{{ $t('myProperties.title') }}</div>
+    <p>{{ $t('myProperties.description') }}</p>
 
     <Toolbar class="mt-6">
       <template #start>
-        <Button label="Register property" icon="pi pi-plus" @click="openNew" />
+        <Button :label="$t('myProperties.registerProperty')" icon="pi pi-plus" @click="openNew" />
       </template>
 
       <template #end>
@@ -207,7 +169,7 @@ function toggleMenu(event: any, index: number) {
       </template>
     </Toolbar>
 
-    <div v-if="loadingList" class="mt-6 text-center">Loading...</div>
+    <div v-if="loadingList" class="mt-6 text-center">{{ $t('myProperties.loading') }}</div>
     <DataView v-else class="mt-6" :value="registeredProperties" :layout="layout" paginator :rows="5" data-key="id">
       <!-- GRID VIEW -->
       <template #grid="slotProps">
@@ -236,14 +198,14 @@ function toggleMenu(event: any, index: number) {
                   </div>
 
                   <Button @click="toggleAddressVisibility(item.id)" class="p-button-link flex items-center">
-                    {{ addressVisibility[item.id] ? 'Hide address' : 'Show address' }}
+                    {{ addressVisibility[item.id] ? $t('myProperties.hideAddress') : $t('myProperties.showAddress') }}
                     <i :class="addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'" />
                   </Button>
                 </div>
 
                 <div class="flex flex-col gap-6 mt-6">
                   <div class="flex gap-2">
-                    <Button icon="pi pi-th-large" label="View areas" class="flex-auto whitespace-nowrap"
+                    <Button icon="pi pi-th-large" :label="$t('myProperties.viewAreas')" class="flex-auto whitespace-nowrap"
                       @click="viewMoreAreas(item.id)"></Button>
 
                     <!-- MENU BUTTON -->
@@ -279,11 +241,11 @@ function toggleMenu(event: any, index: number) {
                 <div class="flex flex-col md:items-end gap-8">
                   <div class="flex flex-row-reverse md:flex-row gap-2">
                     <Button @click="toggleAddressVisibility(item.id)" class="p-button-link flex items-center">
-                      {{ addressVisibility[item.id] ? 'Hide address' : 'Show address' }}
+                      {{ addressVisibility[item.id] ? $t('myProperties.hideAddress') : $t('myProperties.showAddress') }}
                       <i :class="addressVisibility[item.id] ? 'pi pi-eye-slash' : 'pi pi-eye'" />
                     </Button>
 
-                    <Button icon="pi pi-th-large" label="View areas" class="flex-auto whitespace-nowrap"
+                    <Button icon="pi pi-th-large" :label="$t('myProperties.viewAreas')" class="flex-auto whitespace-nowrap"
                       @click="viewMoreAreas(item.id)"></Button>
 
                     <!-- MENU BUTTON -->
@@ -300,25 +262,25 @@ function toggleMenu(event: any, index: number) {
   </div>
 
   <!-- Diálogo para crear/editar propiedad -->
-  <Dialog v-model:visible="registerDialogVisible" :style="{ width: '450px' }" header="Property Details" modal
+  <Dialog v-model:visible="registerDialogVisible" :style="{ width: '450px' }" :header="$t('myProperties.dialog.header')" modal
     :draggable="false">
     <div class="flex flex-col gap-6">
       <div>
-        <label for="name" class="block font-bold mb-3">Name</label>
+        <label for="name" class="block font-bold mb-3">{{ $t('myProperties.dialog.name.label') }}</label>
         <InputText id="name" v-model.trim="newProperty.name" required="true" autofocus
           :invalid="submitted && !newProperty.name" fluid />
-        <small v-if="submitted && !newProperty.name" class="text-red-500">Name is required.</small>
+        <small v-if="submitted && !newProperty.name" class="text-red-500">{{ $t('myProperties.dialog.name.requiredMessage') }}</small>
       </div>
       <div>
-        <label for="address" class="block font-bold mb-3">Address</label>
+        <label for="address" class="block font-bold mb-3">{{ $t('myProperties.dialog.address.label') }}</label>
         <InputText id="address" v-model.trim="newProperty.address" required="true"
           :invalid="submitted && !newProperty.address" fluid />
-        <small v-if="submitted && !newProperty.address" class="text-red-500">Address is required.</small>
+        <small v-if="submitted && !newProperty.address" class="text-red-500">{{ $t('myProperties.dialog.address.requiredMessage') }}</small>
       </div>
       <div>
-        <label for="image" class="block font-bold mb-3">Image</label>
+        <label for="image" class="block font-bold mb-3">{{ $t('myProperties.dialog.image.label') }}</label>
         <div class="card flex flex-col items-center gap-6">
-          <FileUpload mode="basic" accept="image/*" @select="onFileSelect" customUpload auto severity="secondary"
+          <FileUpload mode="basic" accept="image/*" @select="onFileSelect" customUpload auto severity="secondary" :choose-label="$t('myProperties.dialog.image.button')"
             class="p-button-outlined" />
           <img v-if="src" :src="src" alt="image" class="shadow-md rounded-xl w-full sm:w-64" />
         </div>
@@ -326,23 +288,9 @@ function toggleMenu(event: any, index: number) {
     </div>
 
     <template #footer>
-      <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-      <Button icon="pi pi-check" :label="registeringProperty ? 'Registering...' : 'Register'"
+      <Button :label="$t('myProperties.dialog.cancel')" icon="pi pi-times" text @click="hideDialog" />
+      <Button icon="pi pi-check" :label="registeringProperty ? $t('myProperties.dialog.register.inProgress') : $t('myProperties.dialog.register.default')"
         :loading="registeringProperty" :disabled="registeringProperty" @click="saveProperty" />
-    </template>
-  </Dialog>
-
-  <!-- Diálogo para confirmar eliminación -->
-  <Dialog v-model:visible="deleteDialogVisible" :style="{ width: '450px' }" header="Confirm" modal :draggable="false">
-    <div class="flex items-center gap-4">
-      <i class="pi pi-exclamation-triangle !text-3xl" />
-      <span v-if="selectedPropertyRegistration">Are you sure you want to delete <b>{{ selectedPropertyRegistration.name
-          }}</b>?</span>
-    </div>
-    <template #footer>
-      <Button label="No" icon="pi pi-times" severity="secondary" text @click="deleteDialogVisible = false" />
-      <Button :label="unregisteringProperty ? 'Unregistering...' : 'Yes'" icon="pi pi-check" severity="danger"
-        :loading="unregisteringProperty" @click="deleteProperty()" autoFocus />
     </template>
   </Dialog>
 </template>

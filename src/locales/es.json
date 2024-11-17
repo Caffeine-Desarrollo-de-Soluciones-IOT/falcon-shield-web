@@ -83,6 +83,63 @@
       }
     }
   },
+  "myProperties": {
+    "title": "Mis Propiedades",
+    "description": "Administra tus propiedades y áreas",
+    "registerProperty": "Registrar propiedad",
+    "loading": "Cargando...",
+    "showAddress": "Mostrar dirección",
+    "hideAddress": "Ocultar dirección",
+    "viewAreas": "Ver áreas",
+    "edit": "Edit",
+    "dialog": {
+      "header": "Detalles de la Propiedad",
+      "name": {
+        "label": "Nombre",
+        "requiredMessage": "El nombre es obligatorio."
+      },
+      "address": {
+        "label": "Dirección",
+        "requiredMessage": "La dirección es obligatoria."
+      },
+      "image": {
+        "label": "Imagen",
+        "button": "Subir Imagen",
+        "uploadFailed": "Error al subir la imagen"
+      },
+      "cancel": "Cancelar",
+      "register": {
+        "default": "Registrar",
+        "inProgress": "Registrando..."
+      }
+    },
+    "menu": {
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "confirm": {
+      "header": "Confirmar",
+      "yes": {
+        "default": "Sí",
+        "inProgress": "Eliminando..."
+      },
+      "no": "No"
+    },
+    "toast": {
+      "propertyCreated": {
+        "summary": "Éxito",
+        "detail": "Propiedad creada"
+      },
+      "error": {
+        "summary": "Error",
+        "detail": "Error al obtener las propiedades"
+      }
+    },
+    "layout": {
+      "grid": "Cuadrícula",
+      "list": "Lista"
+    }
+  },
   "events": {
     "title": "Eventos de Dispositivos",
     "description": "Revisa los eventos de tus dispositivos",

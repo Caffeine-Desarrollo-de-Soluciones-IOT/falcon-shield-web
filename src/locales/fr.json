@@ -83,6 +83,63 @@
       }
     }
   },
+  "myProperties": {
+    "title": "Mes Propriétés",
+    "description": "Gérez vos propriétés et zones",
+    "registerProperty": "Enregistrer une propriété",
+    "loading": "Chargement...",
+    "showAddress": "Afficher l'adresse",
+    "hideAddress": "Masquer l'adresse",
+    "viewAreas": "Voir les zones",
+    "edit": "Edit",
+    "dialog": {
+      "header": "Détails de la Propriété",
+      "name": {
+        "label": "Nom",
+        "requiredMessage": "Le nom est obligatoire."
+      },
+      "address": {
+        "label": "Adresse",
+        "requiredMessage": "L'adresse est obligatoire."
+      },
+      "image": {
+        "label": "Image",
+        "button": "Télécharger une image",
+        "uploadFailed": "Échec du téléchargement de l'image"
+      },
+      "cancel": "Annuler",
+      "register": {
+        "default": "Enregistrer",
+        "inProgress": "Enregistrement..."
+      }
+    },
+    "menu": {
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "confirm": {
+      "header": "Confirmer",
+      "yes": {
+        "default": "Oui",
+        "inProgress": "Suppression..."
+      },
+      "no": "Non"
+    },
+    "toast": {
+      "propertyCreated": {
+        "summary": "Succès",
+        "detail": "Propriété créée"
+      },
+      "error": {
+        "summary": "Erreur",
+        "detail": "Erreur lors de la récupération des propriétés"
+      }
+    },
+    "layout": {
+      "grid": "Grille",
+      "list": "Liste"
+    }
+  },
   "events": {
     "title": "Événements des Appareils",
     "description": "Revoir les événements de vos appareils",

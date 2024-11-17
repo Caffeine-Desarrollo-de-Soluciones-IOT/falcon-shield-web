@@ -83,6 +83,63 @@
       }
     }
   },
+  "myProperties": {
+    "title": "My Properties",
+    "description": "Manage your properties & areas",
+    "registerProperty": "Register property",
+    "loading": "Loading...",
+    "showAddress": "Show address",
+    "hideAddress": "Hide address",
+    "viewAreas": "View areas",
+    "edit": "Edit",
+    "dialog": {
+      "header": "Property Details",
+      "name": {
+        "label": "Name",
+        "requiredMessage": "Name is required."
+      },
+      "address": {
+        "label": "Address",
+        "requiredMessage": "Address is required."
+      },
+      "image": {
+        "label": "Image",
+        "button": "Upload Image",
+        "uploadFailed": "Image upload failed"
+      },
+      "cancel": "Cancel",
+      "register": {
+        "default": "Register",
+        "inProgress": "Registering..."
+      }
+    },
+    "menu": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "confirm": {
+      "header": "Confirm",
+      "yes": {
+        "default": "Yes",
+        "inProgress": "Unregistering..."
+      },
+      "no": "No"
+    },
+    "toast": {
+      "propertyCreated": {
+        "summary": "Success",
+        "detail": "Property Created"
+      },
+      "error": {
+        "summary": "Error",
+        "detail": "Error fetching properties"
+      }
+    },
+    "layout": {
+      "grid": "Grid",
+      "list": "List"
+    }
+  },
   "events": {
     "title": "Device Events",
     "description": "Review the events of your devices",
