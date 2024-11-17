@@ -202,7 +202,7 @@ function getStatusLabel(type: EDeviceType) {
     <div class="font-semibold text-xl mb-4">{{ $t('myDevices.title') }}</div>
     <p>{{ $t('myDevices.subtitle') }}</p>
 
-    <Menubar class="mt-6">
+    <Toolbar class="mt-6">
       <template #start>
         <Button :label="$t('myDevices.registerDevice')" icon="pi pi-plus" @click="openNew" />
       </template>
@@ -213,7 +213,7 @@ function getStatusLabel(type: EDeviceType) {
           <InputText v-model="filters['global'].value" :placeholder="$t('myDevices.searchPlaceholder')" />
         </IconField>
       </template>
-    </Menubar>
+    </Toolbar>
 
     <DataTable
       class="mt-6"

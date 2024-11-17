@@ -83,7 +83,7 @@ function exportCSV() {
     <div class="font-semibold text-xl mb-4">Device Events</div>
     <p>Review the events of your devices</p>
 
-    <Menubar class="mt-6">
+    <Toolbar class="mt-6">
       <template #start>
         <Button
           label="Export to .csv"
@@ -91,7 +91,9 @@ function exportCSV() {
           class="p-button-primary"
           @click="exportCSV"
         />
+      </template>
 
+      <template #center>
         <Select
         class="ml-4"
           id="propertySelect"
@@ -100,6 +102,7 @@ function exportCSV() {
           option-label="name"
           option-value="id"
           placeholder="Select a Property"
+          :loading="loadingProperties"
           fluid
           @change="fetchEventsByPropertyId(targetProperty.id)"
         ></Select>
@@ -111,7 +114,7 @@ function exportCSV() {
           <InputText v-model="filters['global'].value" placeholder="Search..." />
         </IconField>
       </template>
-    </Menubar>
+    </Toolbar>
 
     <DataTable
       class="mt-6"
