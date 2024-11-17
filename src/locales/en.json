@@ -1,4 +1,9 @@
 {
+  "topbar": {
+    "goPremium": "Go Premium",
+    "myAccount": "My Account",
+    "logout": "Logout"
+  },
   "menu": {
     "principal": "Main",
     "home": "Home",

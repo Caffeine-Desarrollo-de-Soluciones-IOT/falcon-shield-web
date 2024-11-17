@@ -1,4 +1,9 @@
 {
+  "topbar": {
+    "goPremium": "Passer à Premium",
+    "myAccount": "Mon Compte",
+    "logout": "Déconnexion"
+  },
   "menu": {
     "principal": "Principal",
     "home": "Accueil",
