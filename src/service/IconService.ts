@@ -1,5 +1,5 @@
 import type { IIcon } from '@/interfaces/common';
-import icons from '../../public/data/icons.json';
+import icons from '../data/icons.json';
 
 export const IconService = {
   getIcons(): IIcon[] {
