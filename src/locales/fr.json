@@ -237,12 +237,7 @@
   "contact": {
     "team": "Notre Équipe",
     "description": "Pour toute demande, n'hésitez pas à contacter notre équipe de support:",
-    "fullname": "Nom Complet",
-    "email": "E-mail",
-    "type": "Type",
-    "subject": "Sujet",
-    "message": "Message",
-    "sendMessage": "Envoyer le Message",
+    "schedule": "Calendrier",
     "teamMembers": [
       {
         "name": "Elvia Guadalupe Arteaga Cruz",
@@ -280,6 +275,19 @@
         "description": "Coordination et qualité des réponses du support technique."
       }
     ],
+    "formTitle": "Entrer en contact",
+    "fullname": "Nom Complet",
+    "email": "E-mail",
+    "type": "Taper",
+    "subject": "Sujet",
+    "message": "Message",
+    "typeOptions": {
+      "supportType": "Assistance Technique",
+      "deviceSetup": "Configuration des Appareils",
+      "subscriptions": "Abonnements",
+      "others": "Autres"
+    },
+    "sendMessage": "Envoyer le Message",
     "toast": {
       "successMessage": "Message Envoyé",
       "successDetail": "Nous vous contacterons bientôt.",

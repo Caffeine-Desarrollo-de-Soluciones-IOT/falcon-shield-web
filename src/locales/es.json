@@ -237,12 +237,7 @@
   "contact": {
     "team": "Nuestro Equipo",
     "description": "Para cualquier consulta, no dudes en ponerte en contacto con nuestro equipo de soporte:",
-    "fullname": "Nombre Completo",
-    "email": "Correo Electrónico",
-    "type": "Tipo",
-    "subject": "Asunto",
-    "message": "Mensaje",
-    "sendMessage": "Enviar Mensaje",
+    "schedule": "Horario",
     "teamMembers": [
       {
         "name": "Elvia Guadalupe Arteaga Cruz",
@@ -280,6 +275,19 @@
         "description": "Coordinación y calidad en respuestas de soporte técnico."
       }
     ],
+    "formTitle": "Contáctanos",
+    "fullname": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "type": "Tipo",
+    "subject": "Asunto",
+    "typeOptions":{
+      "supportType": "Soporte Técnico",
+      "deviceSetup": "Configuración de Dispositivos",
+      "subscriptions": "Suscripciones",
+      "others": "Otros"
+    },
+    "message": "Mensaje",
+    "sendMessage": "Enviar Mensaje",
     "toast": {
       "successMessage": "Mensaje Enviado",
       "successDetail": "Nos pondremos en contacto contigo pronto.",

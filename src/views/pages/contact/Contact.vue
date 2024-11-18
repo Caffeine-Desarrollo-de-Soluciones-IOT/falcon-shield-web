@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const toastService = useToast();
 
 const formData = ref({
@@ -10,21 +12,21 @@ const formData = ref({
   email: '',
   subject: '',
   message: '',
-  type: 'Soporte Técnico'
+  type: t('contact.typeOptions.supportType')
 });
 
-const typeOptions = [
-  { name: 'Soporte Técnico', code: 'Soporte Técnico' },
-  { name: 'Configuración de Dispositivos', code: 'Configuración de Dispositivos' },
-  { name: 'Suscripciones', code: 'Suscripciones' },
-  { name: 'Otros', code: 'Otros' }
-];
+const typeOptions = computed(() => [
+  { name: t('contact.typeOptions.supportType'), code: t('contact.typeOptions.supportType') },
+  { name: t('contact.typeOptions.deviceSetup'), code: t('contact.typeOptions.deviceSetup') },
+  { name: t('contact.typeOptions.subscriptions'), code: t('contact.typeOptions.subscriptions') },
+  { name: t('contact.typeOptions.others'), code: t('contact.typeOptions.others') }
+]);
 
 const handleSubmit = () => {
   toastService.add({
     severity: 'success',
-    summary: 'Mensaje Enviado',
-    detail: 'Nos pondremos en contacto contigo pronto.',
+    summary: t('contact.toast.successMessage'),
+    detail: t('contact.toast.successDetail'),
     life: 3000
   });
 
@@ -33,105 +35,101 @@ const handleSubmit = () => {
     email: '',
     subject: '',
     message: '',
-    type: 'Soporte Técnico'
+    type: t('contact.typeOptions.supportType')
   };
 };
 
-const teamMembers = [
+const teamMembers = computed(() => [
   {
-    name: 'Elvia Guadalupe Arteaga Cruz',
-    role: 'Líder de Soporte Técnico',
-    email: 'u201616507@upc.edu.pe',
-    schedule: 'Lunes a Viernes, 9:00 AM - 5:00 PM',
-    description: 'Supervisión de soporte técnico y escalación de problemas críticos.'
+    name: t('contact.teamMembers[0].name'),
+    role: t('contact.teamMembers[0].role'),
+    email: t('contact.teamMembers[0].email'),
+    schedule: t('contact.teamMembers[0].schedule'),
+    description: t('contact.teamMembers[0].description')
   },
   {
-    name: 'Dennis Piero Quevedo Yucra',
-    role: 'Especialista en Configuración y Dispositivos',
-    email: 'u201619823@upc.edu.pe',
-    schedule: 'Lunes a Viernes, 10:00 AM - 6:00 PM',
-    description: 'Asistencia en la configuración e instalación de dispositivos de seguridad.'
+    name: t('contact.teamMembers[1].name'),
+    role: t('contact.teamMembers[1].role'),
+    email: t('contact.teamMembers[1].email'),
+    schedule: t('contact.teamMembers[1].schedule'),
+    description: t('contact.teamMembers[1].description')
   },
   {
-    name: 'Jamutaq Piero Ortega Vélez',
-    role: 'Especialista en Plataforma Web y App',
-    email: 'u201911703@upc.edu.pe',
-    schedule: 'Lunes a Viernes, 9:00 AM - 5:00 PM',
-    description: 'Soporte técnico para el uso de la plataforma y la app móvil.'
+    name: t('contact.teamMembers[2].name'),
+    role: t('contact.teamMembers[2].role'),
+    email: t('contact.teamMembers[2].email'),
+    schedule: t('contact.teamMembers[2].schedule'),
+    description: t('contact.teamMembers[2].description')
   },
   {
-    name: 'Max Dayson Sabino Arostegui',
-    role: 'Asesor de Ventas y Atención al Cliente',
-    email: 'u20201a991@upc.edu.pe',
-    schedule: 'Lunes a Viernes, 8:00 AM - 4:00 PM',
-    description: 'Consulta de planes de suscripción y servicios adicionales.'
+    name: t('contact.teamMembers[3].name'),
+    role: t('contact.teamMembers[3].role'),
+    email: t('contact.teamMembers[3].email'),
+    schedule: t('contact.teamMembers[3].schedule'),
+    description: t('contact.teamMembers[3].description')
   },
   {
-    name: 'Gabriela Soledad Nomberto Ramos',
-    role: 'Coordinador de Escalación y Calidad',
-    email: 'u202113876@upc.edu.pe',
-    schedule: 'Lunes a Viernes, 11:00 AM - 7:00 PM',
-    description: 'Coordinación y calidad en respuestas de soporte técnico.'
+    name: t('contact.teamMembers[4].name'),
+    role: t('contact.teamMembers[4].role'),
+    email: t('contact.teamMembers[4].email'),
+    schedule: t('contact.teamMembers[4].schedule'),
+    description: t('contact.teamMembers[4].description')
   }
-];
+]);
 </script>
 
 <template>
   <div class="card">
     <Toast ref="toast" />
 
-    <div class="font-semibold text-xl mb-4">Our Team</div>
-    <p class="mb-4">Para cualquier consulta, no dudes en ponerte en contacto con nuestro equipo de soporte:</p>
+    <div class="font-semibold text-xl mb-4">{{ $t('contact.team') }}</div>
+    <p class="mb-4">{{ $t('contact.description') }}</p>
 
     <!-- Team Members Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
       <div class="border p-4 rounded shadow" v-for="member in teamMembers" :key="member.email">
         <h3 class="font-semibold">{{ member.name }}</h3>
         <p class="text-sm text-gray-600 mb-2">{{ member.role }}</p>
-        <p><strong>Email:</strong> {{ member.email }}</p>
-        <p><strong>Horario:</strong> {{ member.schedule }}</p>
+        <p><strong>{{ $t('contact.email') }}:</strong> {{ member.email }}</p>
+        <p><strong>{{ $t('contact.schedule') }}:</strong> {{ member.schedule }}</p>
         <p class="text-sm text-gray-500 mt-2">{{ member.description }}</p>
       </div>
     </div>
 
     <!-- Contact Form -->
-     <Divider />
+    <Divider />
     <Fluid>
       <div class=" flex flex-col gap-4 w-full">
-        <div class="font-semibold text-xl">Get in Touch</div>
+        <div class="font-semibold text-xl">{{ $t('contact.formTitle') }}</div>
         <div class="flex flex-col md:flex-row gap-4">
           <div class="flex flex-wrap gap-2 w-full">
-            <label for="fullname">Fullname</label>
+            <label for="fullname">{{ $t('contact.fullname') }}</label>
             <InputText id="fullname" type="text" v-model="formData.name" required />
           </div>
           <div class="flex flex-wrap gap-2 w-full">
-            <label for="email">Email</label>
+            <label for="email">{{ $t('contact.email') }}</label>
             <InputText id="email" type="email" v-model="formData.email" required />
           </div>
         </div>
 
         <div class="flex flex-col md:flex-row gap-4">
           <div class="flex flex-wrap gap-2 w-full">
-            <label for="type">Type</label>
-            <Select id="type" v-model="formData.type" :options="typeOptions" optionLabel="name"
-              placeholder="Select One" class="w-full"></Select>
+            <label for="type">{{ $t('contact.type') }}</label>
+            <Select id="type" v-model="formData.type" :options="typeOptions" optionLabel="name" placeholder="Select One"
+              class="w-full"></Select>
           </div>
           <div class="flex flex-wrap gap-2 w-full">
-            <label for="subject">Subject</label>
+            <label for="subject">{{ $t('contact.subject') }}</label>
             <InputText id="subject" type="text" v-model="formData.subject" required />
           </div>
         </div>
 
         <div class="flex flex-wrap">
-          <label for="message">Message</label>
+          <label for="message">{{ $t('contact.message') }}</label>
           <Textarea id="message" rows="4" v-model="formData.message" required />
         </div>
       </div>
-      <Button label="Enviar Mensaje" icon="pi pi-send" class="mt-6" @click="handleSubmit" />
+      <Button :label="$t('contact.sendMessage')" icon="pi pi-send" class="mt-6" @click="handleSubmit" />
     </Fluid>
   </div>
 </template>
-
-<style scoped>
-/* Personaliza los estilos de la sección de contacto según sea necesario */
-</style>

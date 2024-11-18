@@ -237,12 +237,7 @@
   "contact": {
     "team": "Our Team",
     "description": "For any inquiries, feel free to contact our support team:",
-    "fullname": "Full Name",
-    "email": "Email",
-    "type": "Type",
-    "subject": "Subject",
-    "message": "Message",
-    "sendMessage": "Send Message",
+    "schedule": "Schedule",
     "teamMembers": [
       {
         "name": "Elvia Guadalupe Arteaga Cruz",
@@ -280,6 +275,19 @@
         "description": "Coordination and quality assurance in technical support responses."
       }
     ],
+    "formTitle": "Get in Touch",
+    "fullname": "Full Name",
+    "email": "Email",
+    "type": "Type",
+    "subject": "Subject",
+    "message": "Message",
+    "typeOptions": {
+      "supportType": "Technical Support",
+      "deviceSetup": "Device Setup",
+      "subscriptions": "Subscriptions",
+      "others": "Others"
+    },
+    "sendMessage": "Send Message",
     "toast": {
       "successMessage": "Message Sent",
       "successDetail": "We will get in touch with you soon.",
