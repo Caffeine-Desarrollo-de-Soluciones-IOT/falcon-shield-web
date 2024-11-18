@@ -5,10 +5,8 @@ import type { IDeviceEvent, IRegisterEventRequestDto } from '@/interfaces/events
 const serviceName = '/events';
 
 export const EventService = {
-  async getEvents(userId: number): Promise<IApiResponse<IDeviceEvent[]>> {
-    const response = await httpClient.get<IApiResponse<IDeviceEvent[]>>(
-      `${serviceName}/user/${userId}`
-    );
+  async getRegisteredEvents(): Promise<IApiResponse<IDeviceEvent[]>> {
+    const response = await httpClient.get<IApiResponse<IDeviceEvent[]>>(`${serviceName}/all`);
     return response.data;
   },
 

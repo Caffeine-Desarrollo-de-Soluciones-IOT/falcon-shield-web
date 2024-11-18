@@ -38,8 +38,7 @@
       "propertiesTitle": "Propiedades",
       "areasTitle": "Áreas",
       "devicesTitle": "Dispositivos",
-      "planTitle": "Tu plan",
-      "month": "por mes"
+      "eventTitle": "Eventos"
     },
     "devices": {
       "title": "Dispositivos",
@@ -214,6 +213,44 @@
       "list": "Lista"
     }
   },
+  "myAreas": {
+    "title": "Áreas de ",
+    "description": "Administra tus áreas",
+    "registerArea": "Registrar área",
+    "viewAllDevicesButton": "Ver todos los dispositivos",
+    "loading": "Cargando...",
+    "viewDeviceButton": "Ver dispositivos",
+    "menu": {
+      "edit": "Editar"
+    },
+    "popoverAdd": {
+      "title": "Detalles del área",
+      "name": "Nombre",
+      "nameRequired": "El nombre es requerido",
+      "icon": "Ícono",
+      "icons": "Íconos",
+      "selectIcon": "Seleccionar ícono",
+      "selectButton": "Seleccionar ícono",
+      "cancelButton": "Cancelar",
+      "createButton": "Crear"
+    },
+    "icons": {
+      "default": "Por defecto",
+      "kitchen": "Cocina",
+      "garage": "Garage",
+      "livingRoom": "Sala",
+      "DiningRoom": "Comedor",
+      "bedroom": "Dormitorio"
+    },
+    "toast": {
+      "error": "Error",
+      "errorFetchingAreas": "Error al obtener las áreas",
+      "errorFetchingDevices": "Error al obtener los dispositivos",
+      "success": "Éxito",
+      "areaCreated": "Área creada",
+      "failedCreate": "No se pudo crear el área"
+    }
+  },
   "events": {
     "title": "Eventos de Dispositivos",
     "description": "Revisa los eventos de tus dispositivos",
@@ -318,7 +355,7 @@
     "email": "Correo Electrónico",
     "type": "Tipo",
     "subject": "Asunto",
-    "typeOptions":{
+    "typeOptions": {
       "supportType": "Soporte Técnico",
       "deviceSetup": "Configuración de Dispositivos",
       "subscriptions": "Suscripciones",

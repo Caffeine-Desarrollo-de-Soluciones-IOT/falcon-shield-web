@@ -38,8 +38,7 @@
       "propertiesTitle": "Properties",
       "areasTitle": "Areas",
       "devicesTitle": "Devices",
-      "planTitle": "Your plan",
-      "month": "per month"
+      "eventTitle": "Eventos"
     },
     "devices": {
       "title": "Devices",
@@ -212,6 +211,41 @@
     "layout": {
       "grid": "Grid",
       "list": "List"
+    }
+  },
+  "myAreas": {
+    "title": "Areas of ",
+    "description": "Manage your areas",
+    "registerArea": "Register area",
+    "viewAllDevicesButton": "View all devices",
+    "loading": "Loading...",
+    "viewDeviceButton": "View devices",
+    "menu":{
+      "edit": "Edit"
+    },
+    "popoverAdd": {
+      "title": "Area details",
+      "name": "Name",
+      "icon": "Icon",
+      "selectButton": "Select icon",
+      "cancelButton": "Cancel",
+      "createButton": "Create"
+    },
+    "icons": {
+      "default": "Default",
+      "kitchen": "Kitchen",
+      "garage": "Garage",
+      "livingRoom": "Living Room",
+      "DiningRoom": "Dining Room",
+      "bedroom": "Bedroom"
+    },
+    "toast": {
+      "error": "Error",
+      "errorFetchingAreas": "Error fetching areas",
+      "errorFetchingDevices": "Error fetching devices",
+      "success": "Success",
+      "areaCreated": "Area created",
+      "failedCreate": "Failed to create area"
     }
   },
   "events": {
