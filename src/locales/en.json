@@ -1,4 +1,23 @@
 {
+  "topbar": {
+    "goPremium": "Go Premium",
+    "myAccount": "My Account",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Welcome to Falcon Shield",
+    "subtitle": "Sign in with",
+    "or": "Or",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "buttons": {
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "signUp": "Sign Up"
+    }
+  },
   "menu": {
     "principal": "Main",
     "home": "Home",
@@ -102,6 +121,17 @@
           "yes": "Yes",
           "unregistering": "Unregistering..."
         }
+      },
+      "deviceSpecs": {
+        "title": "Device Specifications",
+        "description": "Description",
+        "brand": "Brand",
+        "model": "Model",
+        "power": "Power",
+        "connectivity": "Connectivity",
+        "compatibility": "Compatibility",
+        "warranty": "Warranty",
+        "close": "Close"
       }
     },
     "notifications": {
@@ -129,7 +159,8 @@
     "viewAreas": "View areas",
     "edit": "Edit",
     "dialog": {
-      "header": "Property Details",
+      "header": "Register Property",
+      "editHeader": "Edit Property",
       "name": {
         "label": "Name",
         "requiredMessage": "Name is required."
@@ -147,11 +178,14 @@
       "register": {
         "default": "Register",
         "inProgress": "Registering..."
+      },
+      "edit": {
+        "default": "Edit",
+        "inProgress": "Editing..."
       }
     },
     "menu": {
-      "edit": "Edit",
-      "delete": "Delete"
+      "edit": "Edit"
     },
     "confirm": {
       "header": "Confirm",
@@ -165,6 +199,10 @@
       "propertyCreated": {
         "summary": "Success",
         "detail": "Property Created"
+      },
+      "propertyEdited": {
+        "summary": "Success",
+        "detail": "Property Edited"
       },
       "error": {
         "summary": "Error",
@@ -293,6 +331,44 @@
       "successDetail": "We will get in touch with you soon.",
       "errorMessage": "Incomplete Fields",
       "errorDetail": "Please fill in all the fields in the form."
+    }
+  },
+  "pricingPlans": {
+    "title": "Pricing Plans",
+    "subtitle": "Choose a plan that works for you",
+    "viewMySubscription": "View my subscription",
+    "free": {
+      "priceSuffix": "per month",
+      "features": {
+        "manageProperties": "Manage your properties",
+        "manageAreas": "Manage your areas",
+        "reviewDeviceEvents": "Review the device events"
+      },
+      "button": "You are here"
+    },
+    "gold": {
+      "priceSuffix": "per month",
+      "features": {
+        "allFreeFeatures": "All Free features",
+        "unlimitedDevices": "Unlimited Devices",
+        "support": "24/7 Support"
+      },
+      "button": "Get Started"
+    },
+    "black": {
+      "priceSuffix": "per month",
+      "features": {
+        "allGoldFeatures": "All Gold Features",
+        "aiAnalytics": "AI Powered Analytics",
+        "customReports": "Custom Reports"
+      },
+      "button": "Get Started"
+    },
+    "toast": {
+      "error": {
+        "summary": "Error",
+        "detail": "An error occurred."
+      }
     }
   }
 }

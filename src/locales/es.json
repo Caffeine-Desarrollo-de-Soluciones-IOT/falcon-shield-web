@@ -1,4 +1,23 @@
 {
+  "topbar": {
+    "goPremium": "Ser Premium",
+    "myAccount": "Mi Cuenta",
+    "logout": "Cerrar Sesión"
+  },
+  "login": {
+    "title": "Bienvenido a Falcon Shield",
+    "subtitle": "Inicia sesión con",
+    "or": "O",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recuérdame",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "buttons": {
+      "signIn": "Iniciar Sesión",
+      "signingIn": "Iniciando sesión...",
+      "signUp": "Registrarse"
+    }
+  },
   "menu": {
     "principal": "Principal",
     "home": "Inicio",
@@ -102,6 +121,17 @@
           "yes": "Sí",
           "unregistering": "Desregistrando..."
         }
+      },
+      "deviceSpecs": {
+        "title": "Especificaciones del Dispositivo",
+        "description": "Descripción",
+        "brand": "Marca",
+        "model": "Modelo",
+        "power": "Poder",
+        "connectivity": "Conectividad",
+        "compatibility": "Compatibilidad",
+        "warranty": "Garantía",
+        "close": "Cerrar"
       }
     },
     "notifications": {
@@ -129,7 +159,8 @@
     "viewAreas": "Ver áreas",
     "edit": "Edit",
     "dialog": {
-      "header": "Detalles de la Propiedad",
+      "header": "Registrar Propiedad",
+      "editHeader": "Editar Propiedad",
       "name": {
         "label": "Nombre",
         "requiredMessage": "El nombre es obligatorio."
@@ -147,11 +178,14 @@
       "register": {
         "default": "Registrar",
         "inProgress": "Registrando..."
+      },
+      "edit": {
+        "default": "Editar",
+        "inProgress": "Editando..."
       }
     },
     "menu": {
-      "edit": "Editar",
-      "delete": "Eliminar"
+      "edit": "Editar"
     },
     "confirm": {
       "header": "Confirmar",
@@ -165,6 +199,10 @@
       "propertyCreated": {
         "summary": "Éxito",
         "detail": "Propiedad creada"
+      },
+      "propertyEdited": {
+        "summary": "Éxito",
+        "detail": "Propiedad editada"
       },
       "error": {
         "summary": "Error",
@@ -293,6 +331,44 @@
       "successDetail": "Nos pondremos en contacto contigo pronto.",
       "errorMessage": "Campos incompletos",
       "errorDetail": "Por favor, completa todos los campos del formulario."
+    }
+  },
+  "pricingPlans": {
+    "title": "Planes de Precios",
+    "subtitle": "Elige un plan que funcione para ti",
+    "viewMySubscription": "Ver mi suscripción",
+    "free": {
+      "priceSuffix": "por mes",
+      "features": {
+        "manageProperties": "Gestiona tus propiedades",
+        "manageAreas": "Gestiona tus áreas",
+        "reviewDeviceEvents": "Revisa los eventos del dispositivo"
+      },
+      "button": "Estás aquí"
+    },
+    "gold": {
+      "priceSuffix": "por mes",
+      "features": {
+        "allFreeFeatures": "Todas las características del plan Gratis",
+        "unlimitedDevices": "Dispositivos ilimitados",
+        "support": "Soporte 24/7"
+      },
+      "button": "Comenzar"
+    },
+    "black": {
+      "priceSuffix": "por mes",
+      "features": {
+        "allGoldFeatures": "Todas las características del plan Oro",
+        "aiAnalytics": "Analíticas con IA",
+        "customReports": "Reportes personalizados"
+      },
+      "button": "Comenzar"
+    },
+    "toast": {
+      "error": {
+        "summary": "Error",
+        "detail": "Ocurrió un error."
+      }
     }
   }
 }

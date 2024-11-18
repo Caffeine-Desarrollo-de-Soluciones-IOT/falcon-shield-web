@@ -34,6 +34,11 @@ export const PropertyService = {
     return response.data;
   },
 
+  async updateProperty(property: Partial<IProperty>): Promise<IApiResponse> {
+    const response = await httpClient.put<IApiResponse>(`${serviceName}/update/${property.id}`, property);
+    return response.data;
+  },
+
   async deleteProperty(propertyId: number): Promise<IApiResponse> {
     /* Obtener todas las áreas asociadas a la propiedad
     const areas = await AreaService.getAreasByPropertyId(propertyId);
