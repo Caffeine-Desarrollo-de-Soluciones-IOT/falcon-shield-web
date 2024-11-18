@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { AuthService } from '@/service/AuthService';
 import { useLayout } from '@/layout/composables/layout';
 import type { MenuItem } from 'primevue/menuitem';
@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n';
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
 const { t } = useI18n();
 
+const isPremium = ref(false);
 const menu = ref();
 const overlayMenuItems = computed((): MenuItem[] => [
   {
@@ -30,6 +31,13 @@ const overlayMenuItems = computed((): MenuItem[] => [
 function toggleMenu(event: MouseEvent) {
   menu.value.toggle(event);
 }
+
+onMounted(() => {
+  if(localStorage.getItem('subscription') === 'true') {
+    isPremium.value = true;
+  }
+  console.log(isPremium.value);
+});
 </script>
 
 <template>
@@ -45,7 +53,7 @@ function toggleMenu(event: MouseEvent) {
     </div>
 
     <div class="layout-topbar-actions">
-      <Button as="router-link" :label="$t('topbar.goPremium')" icon="pi pi-star"
+      <Button v-if="!isPremium" as="router-link" :label="$t('topbar.goPremium')" icon="pi pi-star"
         class="p-button-rounded border-0 ml-4 font-light leading-tight custom-button" to="/pricing" />
 
       <LanguageSelector />

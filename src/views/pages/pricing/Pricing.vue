@@ -1,10 +1,24 @@
 <script setup lang="ts">
 import { PaymentService } from '@/service/PaymentService';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const toast = useToast();
 const loading = ref(false);
+const successDialog = ref(false);
+const errorDialog = ref(false);
+
+onMounted(() => {
+  const query = route.query;
+  if (query.success === 'true') {
+    successDialog.value = true;
+    localStorage.setItem('subscription', 'true');
+  } else if (query.canceled === 'true') {
+    errorDialog.value = true;
+  }
+});
 
 async function handleSubscribe(priceId: string) {
   try {
@@ -174,4 +188,18 @@ async function handleGetSubscriptionDetails() {
       </div>
     </div>
   </div>
+
+  <Dialog v-model:visible="successDialog" header="Success!" modal>
+    <p>Suscripción realizada con éxito</p>
+    <template #footer>
+      <Button label="OK" @click="successDialog = false" class="p-button-success" />
+    </template>
+  </Dialog>
+
+  <Dialog v-model:visible="errorDialog" header="Error :(" modal>
+    <p>Hubo un error al procesar la suscripción</p>
+    <template #footer>
+      <Button label="OK" @click="errorDialog = false" class="p-button-danger" />
+    </template>
+  </Dialog>
 </template>
