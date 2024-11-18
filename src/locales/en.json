@@ -1,0 +1,408 @@
+{
+  "topbar": {
+    "goPremium": "Go Premium",
+    "myAccount": "My Account",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Welcome to Falcon Shield",
+    "subtitle": "Sign in with",
+    "or": "Or",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "buttons": {
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "signUp": "Sign Up"
+    }
+  },
+  "menu": {
+    "principal": "Main",
+    "home": "Home",
+    "myDevices": "My devices",
+    "myProperties": "My properties",
+    "events": "Events",
+    "helpAndSupport": "Help & Support",
+    "assistance": "Assistance",
+    "contact": "Contact"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Good Morning {name} 🌤️",
+      "afternoon": "Good Afternoon {name} ⛅️",
+      "evening": "Good Evening {name} 🌙"
+    },
+    "cards": {
+      "propertiesTitle": "Properties",
+      "areasTitle": "Areas",
+      "devicesTitle": "Devices",
+      "eventTitle": "Eventos"
+    },
+    "devices": {
+      "title": "Devices",
+      "table": {
+        "emptyMessage": "No events found",
+        "loadingMessage": "Loading events data. Please wait...",
+        "paginatorReport": "Showing {first} to {last} of {totalRecords} events",
+        "rowsPerPageOptions": [5, 10, 25],
+        "columns": {
+          "image": "Image",
+          "deviceName": "Name",
+          "type": "Type",
+          "location": "Location"
+        }
+      }
+    },
+    "events": {
+      "title": "Events"
+    },
+    "toast": {
+      "errorFetchingEvents": "Error fetching events",
+      "errorFetchingProperties": "Error fetching user properties"
+    }
+  },
+  "myDevices": {
+    "title": "My Devices",
+    "subtitle": "Add or manage your devices",
+    "registerDevice": "Register a device",
+    "searchPlaceholder": "Search...",
+    "table": {
+      "deviceName": "Device Name",
+      "image": "Image",
+      "brand": "Brand",
+      "model": "Model",
+      "type": "Type",
+      "location": "Location",
+      "registeredAt": "Registered At",
+      "actions": "Actions",
+      "noDevices": "No devices found",
+      "loading": "Loading devices data. Please wait...",
+      "fotter": "Showing {first} to {last} of {totalRecords} devices"
+    },
+    "dialogs": {
+      "register": {
+        "title": "Register a new device",
+        "step1": "Select the device type",
+        "step2": "Enter the registration code",
+        "step3": "Assign to a property & area",
+        "labels": {
+          "device": "Device",
+          "registrationCode": "Registration Code",
+          "property": "Select a Property",
+          "area": "Select an Area"
+        },
+        "placeholders": {
+          "selectDevice": "Select a Device",
+          "loadingDeviceCatalog": "Loading device catalog...",
+          "selectProperty": "Select a Property",
+          "selectArea": "Select an Area",
+          "loadingAreas": "Loading areas..."
+        },
+        "errors": {
+          "requiredDevice": "Choose a device",
+          "requiredRegistrationCode": "Registration Code is required"
+        },
+        "buttons": {
+          "next": "Next",
+          "back": "Back",
+          "cancel": "Cancel",
+          "register": "Register",
+          "registering": "Registering..."
+        }
+      },
+      "delete": {
+        "title": "Confirm",
+        "message": "Are you sure you want to unregister ",
+        "buttons": {
+          "no": "No",
+          "yes": "Yes",
+          "unregistering": "Unregistering..."
+        }
+      },
+      "deviceSpecs": {
+        "title": "Device Specifications",
+        "description": "Description",
+        "brand": "Brand",
+        "model": "Model",
+        "power": "Power",
+        "connectivity": "Connectivity",
+        "compatibility": "Compatibility",
+        "warranty": "Warranty",
+        "close": "Close"
+      }
+    },
+    "notifications": {
+      "success": {
+        "registered": "Device registered",
+        "unregistered": "Device unregistered"
+      },
+      "error": {
+        "fetchCatalog": "Error fetching device catalog",
+        "fetchDevices": "Error fetching registered devices",
+        "fetchProperties": "Error fetching user properties",
+        "fetchAreas": "Error fetching areas",
+        "register": "Error registering device",
+        "unregister": "Error unregistering device"
+      }
+    }
+  },
+  "myProperties": {
+    "title": "My Properties",
+    "description": "Manage your properties & areas",
+    "registerProperty": "Register property",
+    "loading": "Loading...",
+    "showAddress": "Show address",
+    "hideAddress": "Hide address",
+    "viewAreas": "View areas",
+    "edit": "Edit",
+    "dialog": {
+      "header": "Register Property",
+      "editHeader": "Edit Property",
+      "name": {
+        "label": "Name",
+        "requiredMessage": "Name is required."
+      },
+      "address": {
+        "label": "Address",
+        "requiredMessage": "Address is required."
+      },
+      "image": {
+        "label": "Image",
+        "button": "Upload Image",
+        "uploadFailed": "Image upload failed"
+      },
+      "cancel": "Cancel",
+      "register": {
+        "default": "Register",
+        "inProgress": "Registering..."
+      },
+      "edit": {
+        "default": "Edit",
+        "inProgress": "Editing..."
+      }
+    },
+    "menu": {
+      "edit": "Edit"
+    },
+    "confirm": {
+      "header": "Confirm",
+      "yes": {
+        "default": "Yes",
+        "inProgress": "Unregistering..."
+      },
+      "no": "No"
+    },
+    "toast": {
+      "propertyCreated": {
+        "summary": "Success",
+        "detail": "Property Created"
+      },
+      "propertyEdited": {
+        "summary": "Success",
+        "detail": "Property Edited"
+      },
+      "error": {
+        "summary": "Error",
+        "detail": "Error fetching properties"
+      }
+    },
+    "layout": {
+      "grid": "Grid",
+      "list": "List"
+    }
+  },
+  "myAreas": {
+    "title": "Areas of ",
+    "description": "Manage your areas",
+    "registerArea": "Register area",
+    "viewAllDevicesButton": "View all devices",
+    "loading": "Loading...",
+    "viewDeviceButton": "View devices",
+    "menu":{
+      "edit": "Edit"
+    },
+    "popoverAdd": {
+      "title": "Area details",
+      "name": "Name",
+      "icon": "Icon",
+      "selectButton": "Select icon",
+      "cancelButton": "Cancel",
+      "createButton": "Create"
+    },
+    "icons": {
+      "default": "Default",
+      "kitchen": "Kitchen",
+      "garage": "Garage",
+      "livingRoom": "Living Room",
+      "DiningRoom": "Dining Room",
+      "bedroom": "Bedroom"
+    },
+    "toast": {
+      "error": "Error",
+      "errorFetchingAreas": "Error fetching areas",
+      "errorFetchingDevices": "Error fetching devices",
+      "success": "Success",
+      "areaCreated": "Area created",
+      "failedCreate": "Failed to create area"
+    }
+  },
+  "events": {
+    "title": "Device Events",
+    "description": "Review the events of your devices",
+    "exportCSV": "Export to .csv",
+    "selectProperty": "Select a Property",
+    "search": "Search...",
+    "table": {
+      "emptyMessage": "No events found",
+      "loadingMessage": "Loading events data. Please wait...",
+      "paginatorReport": "Showing {first} to {last} of {totalRecords} events",
+      "rowsPerPageOptions": [5, 10, 25],
+      "columns": {
+        "title": "Title",
+        "description": "Description",
+        "type": "Type",
+        "timestamp": "Timestamp"
+      },
+      "statusLabels": {
+        "ONLINE": "Active",
+        "ALERT": "Alert",
+        "OFFLINE": "Inactive",
+        "ERROR": "Error",
+        "WARNING": "Warning"
+      }
+    },
+    "toast": {
+      "errorFetchingEvents": "Error fetching events",
+      "errorFetchingProperties": "Error fetching user properties"
+    }
+  },
+  "assistance": {
+    "title": "Assistance",
+    "description": "Find answers to your questions or contact our support team.",
+    "faqs": "Frequently Asked Questions (FAQs)",
+    "faq1": "How do I install the security devices?",
+    "faq1Answer": "To install the security devices, follow the steps outlined in the manual that comes with your device. If you need additional help, check our installation guides or contact us.",
+    "faq2": "How do I set up real-time alerts?",
+    "faq2Answer": "To set up alerts, go to the 'My Devices' section, select the device you want to monitor, and adjust the notifications according to your preferences.",
+    "faq3": "How do I connect my devices to the control panel?",
+    "faq3Answer": "Connecting your devices is easy. Just make sure they are on the same Wi-Fi network and follow the instructions in the app to link them to your account.",
+    "guidesAndTutorials": "Guides and Tutorials",
+    "guide1": {
+      "title": "Quick Installation Guide",
+      "manual1": "Installation Guide and Manual for Duct Smoke Detector",
+      "manual2": "Installation Guide and Manual for Proximity Sensor"
+    },
+    "guide2": {
+      "title": "How to Set Up Motion Alerts",
+      "description": "Detailed description on how to configure motion alerts on your devices..."
+    },
+    "guide3": {
+      "title": "How to Add New Devices to the System",
+      "description": "Steps to add additional devices to the FalconShield system..."
+    },
+    "support": "Technical Support",
+    "supportText": "If you need additional assistance, contact our support team:",
+    "contactSupport": "Contact Support"
+  },
+  "contact": {
+    "team": "Our Team",
+    "description": "For any inquiries, feel free to contact our support team:",
+    "schedule": "Schedule",
+    "teamMembers": [
+      {
+        "name": "Elvia Guadalupe Arteaga Cruz",
+        "role": "Technical Support Lead",
+        "email": "{'u201616507@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 9:00 AM - 5:00 PM",
+        "description": "Overseeing technical support and escalation of critical issues."
+      },
+      {
+        "name": "Dennis Piero Quevedo Yucra",
+        "role": "Configuration and Device Specialist",
+        "email": "{'u201619823@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 10:00 AM - 6:00 PM",
+        "description": "Assisting with configuration and installation of security devices."
+      },
+      {
+        "name": "Jamutaq Piero Ortega Vélez",
+        "role": "Web and App Platform Specialist",
+        "email": "{'u201911703@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 9:00 AM - 5:00 PM",
+        "description": "Providing technical support for platform and mobile app usage."
+      },
+      {
+        "name": "Max Dayson Sabino Arostegui",
+        "role": "Sales and Customer Service Advisor",
+        "email": "{'u20201a991@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 8:00 AM - 4:00 PM",
+        "description": "Consultation on subscription plans and additional services."
+      },
+      {
+        "name": "Gabriela Soledad Nomberto Ramos",
+        "role": "Escalation and Quality Coordinator",
+        "email": "{'u202113876@upc.edu.pe'}",
+        "schedule": "Monday to Friday, 11:00 AM - 7:00 PM",
+        "description": "Coordination and quality assurance in technical support responses."
+      }
+    ],
+    "formTitle": "Get in Touch",
+    "fullname": "Full Name",
+    "email": "Email",
+    "type": "Type",
+    "subject": "Subject",
+    "message": "Message",
+    "typeOptions": {
+      "supportType": "Technical Support",
+      "deviceSetup": "Device Setup",
+      "subscriptions": "Subscriptions",
+      "others": "Others"
+    },
+    "sendMessage": "Send Message",
+    "toast": {
+      "successMessage": "Message Sent",
+      "successDetail": "We will get in touch with you soon.",
+      "errorMessage": "Incomplete Fields",
+      "errorDetail": "Please fill in all the fields in the form."
+    }
+  },
+  "pricingPlans": {
+    "title": "Pricing Plans",
+    "subtitle": "Choose a plan that works for you",
+    "viewMySubscription": "View my subscription",
+    "free": {
+      "priceSuffix": "per month",
+      "features": {
+        "manageProperties": "Manage your properties",
+        "manageAreas": "Manage your areas",
+        "reviewDeviceEvents": "Review the device events"
+      },
+      "button": "You are here"
+    },
+    "gold": {
+      "priceSuffix": "per month",
+      "features": {
+        "allFreeFeatures": "All Free features",
+        "unlimitedDevices": "Unlimited Devices",
+        "support": "24/7 Support"
+      },
+      "button": "Get Started"
+    },
+    "black": {
+      "priceSuffix": "per month",
+      "features": {
+        "allGoldFeatures": "All Gold Features",
+        "aiAnalytics": "AI Powered Analytics",
+        "customReports": "Custom Reports"
+      },
+      "button": "Get Started"
+    },
+    "toast": {
+      "error": {
+        "summary": "Error",
+        "detail": "An error occurred."
+      }
+    }
+  }
+}

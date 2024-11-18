@@ -19,6 +19,7 @@ const toast = useToast();
 const dt = ref();
 const registerDialogVisible = ref(false);
 const deleteDialogVisible = ref(false);
+const deviceSpecDialogVisible = ref(false);
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
@@ -90,6 +91,11 @@ async function handleRegisterDevice() {
 function confirmDeleteDevice(deviceRegistrationId: IRegisteredDevice) {
   selectedDeviceRegistration.value = deviceRegistrationId;
   deleteDialogVisible.value = true;
+}
+
+function openDeviceSpecsDialog(deviceRegistration: IRegisteredDevice) {
+  selectedDeviceRegistration.value = deviceRegistration;
+  deviceSpecDialogVisible.value = true;
 }
 
 async function deleteDevice() {
@@ -199,21 +205,21 @@ function getStatusLabel(type: EDeviceType) {
 
 <template>
   <div className="card">
-    <div class="font-semibold text-xl mb-4">My devices</div>
-    <p>Add or manage your devices</p>
+    <div class="font-semibold text-xl mb-4">{{ $t('myDevices.title') }}</div>
+    <p>{{ $t('myDevices.subtitle') }}</p>
 
-    <Menubar class="mt-6">
+    <Toolbar class="mt-6">
       <template #start>
-        <Button label="Register a device" icon="pi pi-plus" @click="openNew" />
+        <Button :label="$t('myDevices.registerDevice')" icon="pi pi-plus" @click="openNew" />
       </template>
 
       <template #end>
         <IconField iconPosition="left">
           <InputIcon class="pi pi-search" />
-          <InputText v-model="filters['global'].value" placeholder="Search..." />
+          <InputText v-model="filters['global'].value" :placeholder="$t('myDevices.searchPlaceholder')" />
         </IconField>
       </template>
-    </Menubar>
+    </Toolbar>
 
     <DataTable
       class="mt-6"
@@ -226,14 +232,14 @@ function getStatusLabel(type: EDeviceType) {
       :loading="loading"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rowsPerPageOptions="[5, 10, 25]"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registered devices"
+      :currentPageReportTemplate="$t('myDevices.table.fotter', { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' })"
     >
-      <template #empty> No devices found </template>
-      <template #loading> Loading devices data. Please wait... </template>
+      <template #empty> {{ $t('myDevices.table.noDevices')}} </template>
+      <template #loading> {{ $t('myDevices.table.loading')}} </template>
 
       <!-- COLUMNS -->
-      <Column field="device.name" header="Device Name" style="min-width: 10rem"></Column>
-      <Column header="Image">
+      <Column field="device.name" :header="$t('myDevices.table.deviceName')" style="min-width: 10rem"></Column>
+      <Column :header="$t('myDevices.table.image')">
         <template #body="slotProps">
           <img
             :src="slotProps.data.device.imageUrl"
@@ -243,34 +249,39 @@ function getStatusLabel(type: EDeviceType) {
           />
         </template>
       </Column>
-      <Column field="device.brand" header="Brand" style="min-width: 10rem"></Column>
-      <Column field="device.model" header="Model" style="min-width: 10rem"></Column>
-      <Column field="device.type" header="Type" style="min-width: 10rem">
+      <Column field="device.brand" :header="$t('myDevices.table.brand')" style="min-width: 10rem"></Column>
+      <Column field="device.model" :header="$t('myDevices.table.model')" style="min-width: 10rem"></Column>
+      <Column :header="$t('myDevices.table.location')" style="min-width: 10rem">
+        <template #body="slotProps">
+          <div>{{ slotProps.data.area.name }}</div>
+          <small>{{ slotProps.data.area.property.name }}</small>
+        </template>
+      </Column>
+      <Column field="device.type" :header="$t('myDevices.table.type')" style="min-width: 10rem">
         <template #body="slotProps">
           <Tag :value="slotProps.data.device.type" :severity="getStatusLabel(slotProps.data.device.type)" />
         </template>
       </Column>
-      <Column field="registeredAt" header="Registered At" style="min-width: 10rem">
+      <Column field="registeredAt" :header="$t('myDevices.table.registeredAt')" style="min-width: 10rem">
         <template #body="slotProps">
           {{ new Date(slotProps.data.registeredAt).toLocaleString() }}
         </template>
       </Column>
-      <!-- <Column field="area.name" header="Area" style="min-width: 10rem"></Column> -->
-      <Column header="Actions" style="min-width: 10rem">
+      <Column :header="$t('myDevices.table.actions')" style="min-width: 10rem">
         <template #body="slotProps">
-          <!-- <Button
-            icon="pi pi-eye"
-            outlined
-            rounded
-            class="mr-2"
-            @click="showDeviceDetails(slotProps.data)"
-          /> -->
           <Button
             icon="pi pi-trash"
             outlined
             rounded
             severity="danger"
+            class="mr-2"
             @click="confirmDeleteDevice(slotProps.data)"
+          />
+          <Button
+            icon="pi pi-eye"
+            outlined
+            rounded
+            @click="openDeviceSpecsDialog(slotProps.data)"
           />
         </template>
       </Column>
@@ -281,15 +292,15 @@ function getStatusLabel(type: EDeviceType) {
   <Dialog
     v-model:visible="registerDialogVisible"
     :style="{ width: '450px' }"
-    header="Register a new device"
+    :header="$t('myDevices.dialogs.register.title')"
     :modal="true"
   >
     <Stepper value="1">
       <!-- STEP 1 -->
       <StepItem value="1">
-        <Step>Select the device type</Step>
+        <Step>{{ $t('myDevices.dialogs.register.step1') }}</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <label for="deviceSelect" class="block font-bold mb-3">Device</label>
+          <label for="deviceSelect" class="block font-bold mb-3">{{ $t('myDevices.dialogs.register.labels.device') }}</label>
           <Select
             id="deviceSelect"
             v-model="newDevice.deviceId"
@@ -301,7 +312,7 @@ function getStatusLabel(type: EDeviceType) {
             :show-clear="true"
             fluid
             :invalid="submitted && !newDevice?.deviceId"
-            :placeholder="loadingCatalog ? 'Loading device catalog...' : 'Select a Device'"
+            :placeholder="loadingCatalog ? $t('myDevices.dialogs.register.placeholders.loadingDeviceCatalog') : $t('myDevices.dialogs.register.placeholders.selectDevice')"
             :loading="loadingCatalog"
             :disabled="loadingCatalog"
           >
@@ -313,20 +324,20 @@ function getStatusLabel(type: EDeviceType) {
             </template>
           </Select>
           <small v-if="submitted && !newDevice?.deviceId" class="text-red-500"
-            >Choose a device</small
+            >{{ $t('myDevices.dialogs.register.errors.requiredDevice') }}</small
           >
 
           <div class="py-6">
-            <Button label="Next" @click="activateCallback('2')" />
+            <Button :label="$t('myDevices.dialogs.register.buttons.next')" @click="activateCallback('2')" />
           </div>
         </StepPanel>
       </StepItem>
 
       <!-- STEP 2 -->
       <StepItem value="2">
-        <Step>Enter the registration code</Step>
+        <Step>{{ $t('myDevices.dialogs.register.step2') }}</Step>
         <StepPanel v-slot="{ activateCallback }">
-          <label for="name" class="block font-bold mb-3">Registration Code</label>
+          <label for="name" class="block font-bold mb-3">{{ $t('myDevices.dialogs.register.labels.registrationCode') }}</label>
           <InputText
             id="name"
             v-model.trim="newDevice.registrationCode"
@@ -335,28 +346,28 @@ function getStatusLabel(type: EDeviceType) {
             :invalid="submitted && !newDevice?.registrationCode"
             fluid
           />
-          <small v-if="submitted && !newDevice?.registrationCode" class="text-red-500">Registration Code is required</small>
+          <small v-if="submitted && !newDevice?.registrationCode" class="text-red-500">{{ $t('myDevices.dialogs.register.errors.requiredRegistrationCode') }}</small>
           <div class="flex py-6 gap-2">
-            <Button label="Back" severity="secondary" @click="activateCallback('1')" />
-            <Button label="Next" @click="activateCallback('3')" />
+            <Button :label="$t('myDevices.dialogs.register.buttons.back')" severity="secondary" @click="activateCallback('1')" />
+            <Button :label="$t('myDevices.dialogs.register.buttons.next')" @click="activateCallback('3')" />
           </div>
         </StepPanel>
       </StepItem>
 
       <!-- STEP 3 -->
       <StepItem value="3">
-        <Step>Assign to a property & area</Step>
+        <Step>{{ $t('myDevices.dialogs.register.step3') }}</Step>
         <StepPanel v-slot="{ activateCallback }">
           <div class="flex flex-col gap-6">
             <div>
-              <label for="propertySelect" class="block font-bold mb-3">Select a Property</label>
+              <label for="propertySelect" class="block font-bold mb-3">{{ $t('myDevices.dialogs.register.labels.property') }}</label>
               <Select
                 id="propertySelect"
                 v-model="targetProperty.id"
                 :options="userProperties"
                 option-label="name"
                 option-value="id"
-                placeholder="Select a Property"
+                :placeholder="$t('myDevices.dialogs.register.placeholders.selectProperty')"
                 :show-clear="true"
                 fluid
                 @change="getAreas(targetProperty.id)"
@@ -364,7 +375,7 @@ function getStatusLabel(type: EDeviceType) {
             </div>
 
             <div>
-              <label for="areaSelect" class="block font-bold mb-3">Select an Area</label>
+              <label for="areaSelect" class="block font-bold mb-3">{{ $t('myDevices.dialogs.register.labels.area') }}</label>
               <Select
                 id="areaSelect"
                 v-model="newDevice.areaId"
@@ -372,7 +383,7 @@ function getStatusLabel(type: EDeviceType) {
                 optionLabel="name"
                 optionValue="id"
                 fluid
-                :placeholder="loadingAreas ? 'Loading areas...' : 'Select an Area'"
+                :placeholder="loadingAreas ? $t('myDevices.dialogs.register.placeholders.loadingAreas') : $t('myDevices.dialogs.register.placeholders.selectArea')"
                 :disabled="!targetProperty.id || loadingAreas"
                 :loading="loadingAreas"
                 >
@@ -384,17 +395,17 @@ function getStatusLabel(type: EDeviceType) {
           </div>
 
           <div class="py-6">
-            <Button label="Back" severity="secondary" @click="activateCallback('2')" />
+            <Button :label="$t('myDevices.dialogs.register.buttons.back')" severity="secondary" @click="activateCallback('2')" />
           </div>
         </StepPanel>
       </StepItem>
     </Stepper>
 
     <template #footer>
-      <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+      <Button :label="$t('myDevices.dialogs.register.buttons.cancel')" icon="pi pi-times" text @click="hideDialog" />
       <Button
         icon="pi pi-check"
-        :label="registeringDevice ? 'Registering...' : 'Register'"
+        :label="registeringDevice ? $t('myDevices.dialogs.register.buttons.registering') : $t('myDevices.dialogs.register.buttons.register')"
         :loading="registeringDevice"
         :disabled="registeringDevice"
         @click="handleRegisterDevice" />
@@ -405,23 +416,38 @@ function getStatusLabel(type: EDeviceType) {
   <Dialog
     v-model:visible="deleteDialogVisible"
     :style="{ width: '450px' }"
-    header="Confirm"
+    :header="$t('myDevices.dialogs.delete.title')"
     :modal="true"
   >
     <div class="flex items-center gap-4">
       <i class="pi pi-exclamation-triangle !text-3xl" />
       <span v-if="selectedDeviceRegistration">
-        Are you sure you want to unregister <b>{{ selectedDeviceRegistration.device.name }}</b>?
+        {{ $t('myDevices.dialogs.delete.message') }} <b>{{ selectedDeviceRegistration.device.name }}</b>?
       </span>
     </div>
     <template #footer>
-      <Button label="No" icon="pi pi-times" severity="secondary" text @click="deleteDialogVisible = false" />
+      <Button :label="$t('myDevices.dialogs.delete.buttons.no')" icon="pi pi-times" severity="secondary" text @click="deleteDialogVisible = false" />
       <Button
-        :label="unregisteringDevice ? 'Unregistering...' : 'Yes'"
+        :label="unregisteringDevice ? $t('myDevices.dialogs.delete.buttons.unregistering') : $t('myDevices.dialogs.delete.buttons.yes')"
         icon="pi pi-check"
         severity="danger"
         :loading="unregisteringDevice"
         @click="deleteDevice()" />
+    </template>
+  </Dialog>
+
+  <Dialog v-model:visible="deviceSpecDialogVisible" modal :header="$t('myDevices.dialogs.deviceSpecs.title')"  :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" :draggable="false">
+    <div v-if="selectedDeviceRegistration">
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.description') }}:</strong> {{ selectedDeviceRegistration.device.description }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.brand') }}:</strong> {{ selectedDeviceRegistration.device.brand }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.model') }}:</strong> {{ selectedDeviceRegistration.device.model }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.power') }}:</strong> {{ selectedDeviceRegistration.device.specs.power }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.connectivity') }}:</strong> {{ selectedDeviceRegistration.device.specs.connectivity }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.compatibility') }}:</strong> {{ selectedDeviceRegistration.device.specs.compatibility }}</p>
+      <p><strong>{{ $t('myDevices.dialogs.deviceSpecs.warranty') }}:</strong> {{ selectedDeviceRegistration.device.specs.warranty }}</p>
+    </div>
+    <template #footer>
+      <Button :label="$t('myDevices.dialogs.deviceSpecs.close')" icon="pi pi-times" @click="deviceSpecDialogVisible = false" class="mt-3" />
     </template>
   </Dialog>
 </template>

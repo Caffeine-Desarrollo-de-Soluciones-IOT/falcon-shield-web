@@ -6,6 +6,8 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import { dirname, resolve } from 'node:path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -26,6 +28,9 @@ export default defineConfig({
           dest: 'js'
         }
       ]
+    }),
+    VueI18nPlugin({
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**')
     })
   ],
   resolve: {
@@ -33,4 +38,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   }
-})
+});

@@ -1,15 +1,12 @@
-import { httpClient } from '@/config/httpClient';
-
-const serviceName = '/icons';
+import type { IIcon } from '@/interfaces/common';
+import icons from '../data/icons.json';
 
 export const IconService = {
-  async getIcons() {
-    const response = await httpClient.get(`${serviceName}`);
-    return response.data;
+  getIcons(): IIcon[] {
+    return icons;
   },
 
-  async getIconById(iconId: string) {
-    const response = await httpClient.get(`${serviceName}/?id=${iconId}`);
-    return response.data;
+  getIconById(iconId: string): IIcon | undefined {
+    return icons.find((icon) => icon.id === iconId);
   }
 };

@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import { useLayout } from '@/layout/composables/layout';
-import { ref } from 'vue';
-import type { MenuItem } from 'primevue/menuitem';
+import { computed, onMounted, ref } from 'vue';
 import { AuthService } from '@/service/AuthService';
+import { useLayout } from '@/layout/composables/layout';
+import type { MenuItem } from 'primevue/menuitem';
+import LanguageSelector from './LanguageSelector.vue';
+import { useI18n } from 'vue-i18n';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
+const { t } = useI18n();
 
-const currentLanguage = ref({ name: 'English', code: 'UK' });
-const languages = ref([
-  { name: 'English', code: 'UK' },
-  { name: 'Español', code: 'ES' },
-  { name: 'Français', code: 'FR' }
-]);
+const isPremium = ref(false);
 const menu = ref();
-const overlayMenuItems = ref<MenuItem[]>([
+const overlayMenuItems = computed((): MenuItem[] => [
   {
-    label: 'My account',
+    label: t('topbar.myAccount'),
     icon: 'pi pi-user',
     url: AuthService.accountConsoleUrl,
     target: '_blank'
@@ -24,7 +22,7 @@ const overlayMenuItems = ref<MenuItem[]>([
     separator: true
   },
   {
-    label: 'Logout',
+    label: t('topbar.logout'),
     icon: 'pi pi-power-off',
     command: () => AuthService.logout()
   }
@@ -33,6 +31,13 @@ const overlayMenuItems = ref<MenuItem[]>([
 function toggleMenu(event: MouseEvent) {
   menu.value.toggle(event);
 }
+
+onMounted(() => {
+  if(localStorage.getItem('subscription') === 'true') {
+    isPremium.value = true;
+  }
+  console.log(isPremium.value);
+});
 </script>
 
 <template>
@@ -48,47 +53,15 @@ function toggleMenu(event: MouseEvent) {
     </div>
 
     <div class="layout-topbar-actions">
-      <Button as="router-link" label="Go Premium" icon="pi pi-star"
+      <Button v-if="!isPremium" as="router-link" :label="$t('topbar.goPremium')" icon="pi pi-star"
         class="p-button-rounded border-0 ml-4 font-light leading-tight custom-button" to="/pricing" />
 
-      <Select v-model="currentLanguage" :options="languages" optionLabel="name" checkmark>
-        <template #value="slotProps">
-          <div v-if="slotProps.value" class="flex items-center">
-            <img :alt="slotProps.value.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-              :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`" style="width: 18px" />
-            <div>{{ slotProps.value.code }}</div>
-          </div>
-          <span v-else>
-            {{ slotProps.placeholder }}
-          </span>
-        </template>
-        <template #option="slotProps">
-          <div class="flex items-center">
-            <img :alt="slotProps.option.label"
-              src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-              :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`" style="width: 18px" />
-            <div>{{ slotProps.option.name }}</div>
-          </div>
-        </template>
-        <template #dropdownicon>
-          <i class="pi pi-globe" />
-        </template>
-      </Select>
+      <LanguageSelector />
 
       <div class="layout-config-menu">
         <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
           <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
         </button>
-        <!-- <div class="relative">
-          <button
-            v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
-            type="button"
-            class="layout-topbar-action layout-topbar-action-highlight"
-          >
-            <i class="pi pi-palette"></i>
-          </button>
-          <ThemeSelector />
-        </div> -->
       </div>
 
       <button class="layout-topbar-menu-button layout-topbar-action"
@@ -120,6 +93,7 @@ function toggleMenu(event: MouseEvent) {
   border: none !important;
   transition: all 0.3s ease;
 }
+
 .custom-button:hover {
   background: linear-gradient(45deg, #fbbf24, #f59e0b) !important;
   color: #000000 !important;

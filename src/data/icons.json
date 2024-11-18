@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "Default",
+    "icon_url": "icons%2Fimage-default.jpg?alt=media&token=05e7a158-6db0-47bc-a8f2-3940efd15889"
+  },
+  {
+    "id": "2",
+    "name": "Kitchen",
+    "icon_url": "icons%2Fkitchen.png?alt=media&token=679fc92b-d32e-49ff-a66f-317e13db1fc7"
+  },
+  {
+    "id": "3",
+    "name": "Garage",
+    "icon_url": "icons%2Fgaraje.png?alt=media&token=bf087276-6c29-43f4-a312-c000d52e81e4"
+  },
+  {
+    "id": "4",
+    "name": "Living Room",
+    "icon_url": "icons%2Fliving-room.png?alt=media&token=3454c0a0-420b-437e-b30a-6305931bee3d"
+  },
+  {
+    "id": "5",
+    "name": "Dining Room",
+    "icon_url": "icons%2Fdining-room.png?alt=media&token=25904132-28f3-4727-92a1-2756fb4a8007"
+  },
+  {
+    "id": "6",
+    "name": "Bedroom",
+    "icon_url": "icons%2Fbedroom.png?alt=media&token=bd351654-9ea6-4802-b362-00896c3d0946"
+  }
+]

@@ -10,7 +10,7 @@ import ToastService from 'primevue/toastservice';
 
 import '@/assets/styles.scss';
 import '@/assets/tailwind.css';
-
+import { i18n } from './config/i18nConfig';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -27,5 +27,5 @@ app.use(PrimeVue, {
 });
 app.use(ToastService);
 app.use(ConfirmationService);
-
+app.use(i18n);
 app.mount('#app');

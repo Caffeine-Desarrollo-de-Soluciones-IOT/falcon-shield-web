@@ -76,11 +76,6 @@ const router = createRouter({
           component: () => import('@/views/pages/my-areas/MyAreas.vue')
         },
         {
-          path: '/my-properties/:property_id/my-areas/:area_id/devices',
-          name: 'devices',
-          component: () => import('@/views/pages/my-devices/DevicesXArea.vue')
-        },
-        {
           path: 'events',
           name: 'events',
           component: () => import('@/views/pages/events/Events.vue')
@@ -119,7 +114,7 @@ const router = createRouter({
               path: 'charts',
               name: 'charts',
               component: () => import('@/views/uikit/ChartDoc.vue')
-            },
+            }
           ]
         }
       ]

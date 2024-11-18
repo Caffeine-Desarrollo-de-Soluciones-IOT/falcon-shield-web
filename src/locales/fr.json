@@ -1,0 +1,408 @@
+{
+  "topbar": {
+    "goPremium": "Passer à Premium",
+    "myAccount": "Mon Compte",
+    "logout": "Déconnexion"
+  },
+  "login": {
+    "title": "Bienvenue sur Falcon Shield",
+    "subtitle": "Connectez-vous avec",
+    "or": "Ou",
+    "email": "Email",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié?",
+    "buttons": {
+      "signIn": "Se connecter",
+      "signingIn": "Connexion...",
+      "signUp": "S'inscrire"
+    }
+  },
+  "menu": {
+    "principal": "Principal",
+    "home": "Accueil",
+    "myDevices": "Mes appareils",
+    "myProperties": "Mes propriétés",
+    "events": "Événements",
+    "helpAndSupport": "Aide et support",
+    "assistance": "Assistance",
+    "contact": "Contact"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Bonjour {name} 🌤️",
+      "afternoon": "Bon Après-midi {name} ⛅️",
+      "evening": "Bonsoir {name} 🌙"
+    },
+    "cards": {
+      "propertiesTitle": "Propriétés",
+      "areasTitle": "Zones",
+      "devicesTitle": "Appareils",
+      "eventTitle": "Événements"
+    },
+    "devices": {
+      "title": "Appareils",
+      "table": {
+        "emptyMessage": "Aucun événement trouvé",
+        "loadingMessage": "Chargement des données des événements. Veuillez patienter...",
+        "paginatorReport": "Affichage de {first} à {last} sur {totalRecords} événements",
+        "rowsPerPageOptions": [5, 10, 25],
+        "columns": {
+          "image": "Image",
+          "deviceName": "Nom",
+          "type": "Type",
+          "location": "Emplacement"
+        }
+      }
+    },
+    "events": {
+      "title": "Événements"
+    },
+    "toast": {
+      "errorFetchingEvents": "Erreur lors de la récupération des événements",
+      "errorFetchingProperties": "Erreur lors de la récupération des propriétés de l'utilisateur"
+    }
+  },
+  "myDevices": {
+    "title": "Mes appareils",
+    "subtitle": "Ajoutez ou gérez vos appareils",
+    "registerDevice": "Enregistrer un appareil",
+    "searchPlaceholder": "Rechercher...",
+    "table": {
+      "deviceName": "Nom de l'appareil",
+      "image": "Image",
+      "brand": "Marque",
+      "model": "Modèle",
+      "type": "Type",
+      "location": "Emplacement",
+      "registeredAt": "Enregistré le",
+      "actions": "Actions",
+      "noDevices": "Aucun appareil trouvé",
+      "loading": "Chargement des données des appareils. Veuillez patienter...",
+      "fotter": "Affichage de {first} à {last} sur {totalRecords} appareils"
+    },
+    "dialogs": {
+      "register": {
+        "title": "Enregistrer un nouvel appareil",
+        "step1": "Sélectionnez le type d'appareil",
+        "step2": "Entrez le code de registre",
+        "step3": "Assignez à une propriété et une zone",
+        "labels": {
+          "device": "Appareil",
+          "registrationCode": "Code de registre",
+          "property": "Sélectionnez une propriété",
+          "area": "Sélectionnez une zone"
+        },
+        "placeholders": {
+          "selectDevice": "Sélectionnez un appareil",
+          "loadingDeviceCatalog": "Chargement du catalogue des appareils...",
+          "selectProperty": "Sélectionnez une propriété",
+          "selectArea": "Sélectionnez une zone",
+          "loadingAreas": "Chargement des zones..."
+        },
+        "errors": {
+          "requiredDevice": "Choisissez un appareil",
+          "requiredRegistrationCode": "Le code de registre est obligatoire"
+        },
+        "buttons": {
+          "next": "Suivant",
+          "back": "Retour",
+          "cancel": "Annuler",
+          "register": "Enregistrer",
+          "registering": "Enregistrement..."
+        }
+      },
+      "delete": {
+        "title": "Confirmer",
+        "message": "Êtes-vous sûr de vouloir désenregistrer ",
+        "buttons": {
+          "no": "Non",
+          "yes": "Oui",
+          "unregistering": "Désenregistrement..."
+        }
+      },
+      "deviceSpecs": {
+        "title": "Spécifications de l'appareil",
+        "description": "Description",
+        "brand": "Marque",
+        "model": "Modèle",
+        "power": "Puissance",
+        "connectivity": "Connectivité",
+        "compatibility": "Compatibilité",
+        "warranty": "Garantie",
+        "close": "Fermer"
+      }
+    },
+    "notifications": {
+      "success": {
+        "registered": "Appareil enregistré",
+        "unregistered": "Appareil désenregistré"
+      },
+      "error": {
+        "fetchCatalog": "Erreur lors de la récupération du catalogue d'appareils",
+        "fetchDevices": "Erreur lors de la récupération des appareils enregistrés",
+        "fetchProperties": "Erreur lors de la récupération des propriétés de l'utilisateur",
+        "fetchAreas": "Erreur lors de la récupération des zones",
+        "register": "Erreur lors de l'enregistrement de l'appareil",
+        "unregister": "Erreur lors de la désinscription de l'appareil"
+      }
+    }
+  },
+  "myProperties": {
+    "title": "Mes Propriétés",
+    "description": "Gérez vos propriétés et zones",
+    "registerProperty": "Enregistrer une propriété",
+    "loading": "Chargement...",
+    "showAddress": "Afficher l'adresse",
+    "hideAddress": "Masquer l'adresse",
+    "viewAreas": "Voir les zones",
+    "edit": "Edit",
+    "dialog": {
+      "header": "Enregistrer une Propriété",
+      "editHeader": "Modifier la Propriété",
+      "name": {
+        "label": "Nom",
+        "requiredMessage": "Le nom est obligatoire."
+      },
+      "address": {
+        "label": "Adresse",
+        "requiredMessage": "L'adresse est obligatoire."
+      },
+      "image": {
+        "label": "Image",
+        "button": "Télécharger une image",
+        "uploadFailed": "Échec du téléchargement de l'image"
+      },
+      "cancel": "Annuler",
+      "register": {
+        "default": "Enregistrer",
+        "inProgress": "Enregistrement..."
+      },
+      "edit": {
+        "default": "Modifier",
+        "inProgress": "Modification..."
+      }
+    },
+    "menu": {
+      "edit": "Modifier"
+    },
+    "confirm": {
+      "header": "Confirmer",
+      "yes": {
+        "default": "Oui",
+        "inProgress": "Suppression..."
+      },
+      "no": "Non"
+    },
+    "toast": {
+      "propertyCreated": {
+        "summary": "Succès",
+        "detail": "Propriété créée"
+      },
+      "propertyEdited": {
+        "summary": "Succès",
+        "detail": "Propriété modifiée"
+      },
+      "error": {
+        "summary": "Erreur",
+        "detail": "Erreur lors de la récupération des propriétés"
+      }
+    },
+    "layout": {
+      "grid": "Grille",
+      "list": "Liste"
+    }
+  },
+  "myAreas": {
+    "title": "Zones de ",
+    "description": "Gérez vos zones",
+    "registerArea": "Enregistrer une zone",
+    "viewAllDevicesButton": "Voir tous les appareils",
+    "loading": "Chargement...",
+    "viewDeviceButton": "Voir les appareils",
+    "menu": {
+      "edit": "Modifier"
+    },
+    "popoverAdd": {
+      "title": "Détails de la zone",
+      "name": "Nom",
+      "icon": "Icône",
+      "selectButton": "Sélectionner une icône",
+      "cancelButton": "Annuler",
+      "createButton": "Créer"
+    },
+    "icons": {
+      "default": "Par défaut",
+      "kitchen": "Cuisine",
+      "garage": "Garage",
+      "livingRoom": "Salon",
+      "DiningRoom": "Salle à manger",
+      "bedroom": "Chambre"
+    },
+    "toast": {
+      "error": "Erreur",
+      "errorFetchingAreas": "Erreur lors de la récupération des zones",
+      "errorFetchingDevices": "Erreur lors de la récupération des appareils",
+      "success": "Succès",
+      "areaCreated": "Zone créée",
+      "failedCreate": "Échec de la création de la zone"
+    }
+  },
+  "events": {
+    "title": "Événements des Appareils",
+    "description": "Revoir les événements de vos appareils",
+    "exportCSV": "Exporter vers .csv",
+    "selectProperty": "Sélectionner une Propriété",
+    "search": "Rechercher...",
+    "table": {
+      "emptyMessage": "Aucun événement trouvé",
+      "loadingMessage": "Chargement des données des événements. Veuillez patienter...",
+      "paginatorReport": "Affichage de {first} à {last} sur {totalRecords} événements",
+      "rowsPerPageOptions": [5, 10, 25],
+      "columns": {
+        "title": "Titre",
+        "description": "Description",
+        "type": "Type",
+        "timestamp": "Horodatage"
+      },
+      "statusLabels": {
+        "ONLINE": "Actif",
+        "ALERT": "Alerte",
+        "OFFLINE": "Inactif",
+        "ERROR": "Erreur",
+        "WARNING": "Avertissement"
+      }
+    },
+    "toast": {
+      "errorFetchingEvents": "Erreur lors de la récupération des événements",
+      "errorFetchingProperties": "Erreur lors de la récupération des propriétés de l'utilisateur"
+    }
+  },
+  "assistance": {
+    "title": "Assistance",
+    "description": "Trouvez des réponses à vos questions ou contactez notre équipe de support.",
+    "faqs": "Questions Fréquemment Posées (FAQs)",
+    "faq1": "Comment installer les dispositifs de sécurité ?",
+    "faq1Answer": "Pour installer les dispositifs de sécurité, suivez les étapes décrites dans le manuel fourni avec votre appareil. Si vous avez besoin d'une aide supplémentaire, consultez nos guides d'installation ou contactez-nous.",
+    "faq2": "Comment configurer les alertes en temps réel ?",
+    "faq2Answer": "Pour configurer les alertes, accédez à la section 'Mes dispositifs', sélectionnez l'appareil que vous souhaitez surveiller et ajustez les notifications selon vos préférences.",
+    "faq3": "Comment connecter mes dispositifs au panneau de contrôle ?",
+    "faq3Answer": "Connecter vos dispositifs est simple. Assurez-vous qu'ils sont sur le même réseau Wi-Fi et suivez les instructions dans l'application pour les lier à votre compte.",
+    "guidesAndTutorials": "Guides et Tutoriels",
+    "guide1": {
+      "title": "Guide d'Installation Rapide",
+      "manual1": "Guide d'installation et manuel pour Détecteur de Fumée pour Conduit",
+      "manual2": "Guide d'installation et manuel pour Capteur de Proximité"
+    },
+    "guide2": {
+      "title": "Comment Configurer des Alertes de Mouvement",
+      "description": "Description détaillée sur la configuration des alertes de mouvement pour vos dispositifs..."
+    },
+    "guide3": {
+      "title": "Comment Ajouter de Nouveaux Dispositifs au Système",
+      "description": "Étapes pour ajouter des dispositifs supplémentaires au système FalconShield..."
+    },
+    "support": "Support Technique",
+    "supportText": "Si vous avez besoin d'une assistance supplémentaire, contactez notre équipe de support :",
+    "contactSupport": "Contacter le Support"
+  },
+  "contact": {
+    "team": "Notre Équipe",
+    "description": "Pour toute demande, n'hésitez pas à contacter notre équipe de support:",
+    "schedule": "Calendrier",
+    "teamMembers": [
+      {
+        "name": "Elvia Guadalupe Arteaga Cruz",
+        "role": "Chef du Support Technique",
+        "email": "{'u201616507@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 9:00 AM - 5:00 PM",
+        "description": "Supervision du support technique et escalade des problèmes critiques."
+      },
+      {
+        "name": "Dennis Piero Quevedo Yucra",
+        "role": "Spécialiste en Configuration et Dispositifs",
+        "email": "{'u201619823@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 10:00 AM - 6:00 PM",
+        "description": "Aide à la configuration et à l'installation des dispositifs de sécurité."
+      },
+      {
+        "name": "Jamutaq Piero Ortega Vélez",
+        "role": "Spécialiste Plateforme Web et App",
+        "email": "{'u201911703@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 9:00 AM - 5:00 PM",
+        "description": "Support technique pour l'utilisation de la plateforme et de l'application mobile."
+      },
+      {
+        "name": "Max Dayson Sabino Arostegui",
+        "role": "Conseiller en Ventes et Service Client",
+        "email": "{'u20201a991@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 8:00 AM - 4:00 PM",
+        "description": "Consultation sur les plans d'abonnement et les services supplémentaires."
+      },
+      {
+        "name": "Gabriela Soledad Nomberto Ramos",
+        "role": "Coordinateur de l'Escalade et de la Qualité",
+        "email": "{'u202113876@upc.edu.pe'}",
+        "schedule": "Lundi à Vendredi, 11:00 AM - 7:00 PM",
+        "description": "Coordination et qualité des réponses du support technique."
+      }
+    ],
+    "formTitle": "Entrer en contact",
+    "fullname": "Nom Complet",
+    "email": "E-mail",
+    "type": "Taper",
+    "subject": "Sujet",
+    "message": "Message",
+    "typeOptions": {
+      "supportType": "Assistance Technique",
+      "deviceSetup": "Configuration des Appareils",
+      "subscriptions": "Abonnements",
+      "others": "Autres"
+    },
+    "sendMessage": "Envoyer le Message",
+    "toast": {
+      "successMessage": "Message Envoyé",
+      "successDetail": "Nous vous contacterons bientôt.",
+      "errorMessage": "Champs Incomplets",
+      "errorDetail": "Veuillez remplir tous les champs du formulaire."
+    }
+  },
+  "pricingPlans": {
+    "title": "Plans de Tarification",
+    "subtitle": "Choisissez un plan qui vous convient",
+    "viewMySubscription": "Voir mon abonnement",
+    "free": {
+      "priceSuffix": "par mois",
+      "features": {
+        "manageProperties": "Gérez vos propriétés",
+        "manageAreas": "Gérez vos zones",
+        "reviewDeviceEvents": "Vérifiez les événements des appareils"
+      },
+      "button": "Vous êtes ici"
+    },
+    "gold": {
+      "priceSuffix": "par mois",
+      "features": {
+        "allFreeFeatures": "Toutes les fonctionnalités du plan Gratuit",
+        "unlimitedDevices": "Appareils illimités",
+        "support": "Support 24/7"
+      },
+      "button": "Commencer"
+    },
+    "black": {
+      "priceSuffix": "par mois",
+      "features": {
+        "allGoldFeatures": "Toutes les fonctionnalités du plan Or",
+        "aiAnalytics": "Analyses basées sur l'IA",
+        "customReports": "Rapports personnalisés"
+      },
+      "button": "Commencer"
+    },
+    "toast": {
+      "error": {
+        "summary": "Erreur",
+        "detail": "Une erreur s'est produite."
+      }
+    }
+  }
+}
