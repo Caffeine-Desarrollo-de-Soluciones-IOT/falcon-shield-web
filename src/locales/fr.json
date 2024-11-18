@@ -123,7 +123,8 @@
     "viewAreas": "Voir les zones",
     "edit": "Edit",
     "dialog": {
-      "header": "Détails de la Propriété",
+      "header": "Enregistrer une Propriété",
+      "editHeader": "Modifier la Propriété",
       "name": {
         "label": "Nom",
         "requiredMessage": "Le nom est obligatoire."
@@ -141,11 +142,14 @@
       "register": {
         "default": "Enregistrer",
         "inProgress": "Enregistrement..."
+      },
+      "edit": {
+        "default": "Modifier",
+        "inProgress": "Modification..."
       }
     },
     "menu": {
-      "edit": "Modifier",
-      "delete": "Supprimer"
+      "edit": "Modifier"
     },
     "confirm": {
       "header": "Confirmer",
@@ -159,6 +163,10 @@
       "propertyCreated": {
         "summary": "Succès",
         "detail": "Propriété créée"
+      },
+      "propertyEdited": {
+        "summary": "Succès",
+        "detail": "Propriété modifiée"
       },
       "error": {
         "summary": "Erreur",

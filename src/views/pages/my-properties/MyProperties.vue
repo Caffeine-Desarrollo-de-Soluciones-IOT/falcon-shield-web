@@ -1,26 +1,24 @@
 <script setup lang="ts">
 import { PropertyService } from '@/service/PropertyService';
-import { ImageService } from '@/service/ImageService';
 import { storageBaseUrl } from '@/config/firebaseConfig';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { type IProperty, type IRegisterPropertyRequestDto } from '@/interfaces/properties';
 import type { MenuItem } from 'primevue/menuitem';
+import PropertyDialog from './components/PropertyDialog.vue';
+import { useI18n } from 'vue-i18n';
 
 const toast = useToast();
 const registerDialogVisible = ref(false);
-const submitted = ref(false);
 const registeredProperties = ref<IProperty[]>([]);
-const newProperty = ref<IRegisterPropertyRequestDto>({} as IRegisterPropertyRequestDto);
-
+const currentProperty = ref<IRegisterPropertyRequestDto>({ name: '', address: '', imageUrl: '' });
+const isEditing = ref(false);
 const loadingList = ref(false);
-const registeringProperty = ref(false);
+const addressVisibility = ref<any>({});
 
 const router = useRouter();
-const addressVisibility = ref<any>({});
-const selectedFile = ref<File | null>(null);
-const src = ref<string | null>(null); // Para la vista previa de la imagen
+const { t } = useI18n();
 
 const options = ref(['grid', 'list']);
 const layout = ref<'grid' | 'list'>('grid');
@@ -28,8 +26,9 @@ const menu = ref<any>(null);
 
 const menuItems = (item: IProperty): MenuItem[] => [
   {
-    label: 'Edit',
+    label: t('myProperties.menu.edit'),
     icon: 'pi pi-pencil',
+    command: () => editProperty(item)
   }
 ];
 
@@ -38,84 +37,27 @@ onMounted(async () => {
 });
 
 function openNew() {
-  newProperty.value = {} as IRegisterPropertyRequestDto;
-  submitted.value = false;
+  isEditing.value = false;
+  currentProperty.value = { name: '', address: '', imageUrl: '' };
   registerDialogVisible.value = true;
-  src.value = null; //reset image preview
 }
 
-function hideDialog() {
-  registerDialogVisible.value = false;
-  submitted.value = false;
-  newProperty.value = {} as IRegisterPropertyRequestDto;
+function editProperty(property: any) {
+  isEditing.value = true;
+  currentProperty.value = { ...property };
+  registerDialogVisible.value = true;
 }
-
-async function saveProperty() {
-  submitted.value = true;
-
-  if (newProperty.value.name && newProperty.value.address) {
-    try {
-      registeringProperty.value = true;
-
-      //save image
-      if (selectedFile.value) {
-        const imageName = await ImageService.uploadImage(selectedFile.value);
-
-        if (imageName) {
-          newProperty.value.imageUrl = imageName;
-        } else {
-          toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Image upload failed',
-            life: 3000
-          });
-        }
-      }
-
-      //save property
-      await PropertyService.createProperty(newProperty.value);
-      toast.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Property Created',
-        life: 3000
-      });
-
-      hideDialog();
-
-      //refresh
-      await loadProperties();
-    } catch (error) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: (error as Error).message,
-        life: 3000
-      });
-    } finally {
-      registeringProperty.value = false;
-    }
-  }
-}
-
-// function editProperty(item: IProperty) {
-//   // Copiar la propiedad seleccionada y abrir el diálogo de edición
-//   newProperty.value = { ...item };
-//   registeringProperty.value = true; // Asegurarse de que solo se abre el diálogo de edición
-//   src.value = `${storageBaseUrl}${item.imageUrl}`; // Mostrar la imagen actual en la vista previa
-// }
 
 async function loadProperties() {
   try {
     loadingList.value = true;
     const response = await PropertyService.getPropertiesSmall();
-    registeredProperties.value = response.data.slice(0, 6);
+    registeredProperties.value = response.data;
   } catch (error) {
     toast.add({
       severity: 'error',
-      summary: 'Error',
-      detail: 'Error fetching properties',
+      summary: t('myProperties.toast.error.summary'),
+      detail: t('myProperties.toast.error.detail'),
       life: 3000
     });
   } finally {
@@ -129,19 +71,6 @@ function viewMoreAreas(propertyId: number) {
 
 function toggleAddressVisibility(propertyId: number) {
   addressVisibility.value[propertyId] = !addressVisibility.value[propertyId];
-}
-
-function onFileSelect(event: any) {
-  selectedFile.value = event.files[0];
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    src.value = e.target?.result as string;
-  };
-
-  if (selectedFile.value) {
-    reader.readAsDataURL(selectedFile.value);
-  }
 }
 
 function toggleMenu(event: any, index: number) {
@@ -261,36 +190,12 @@ function toggleMenu(event: any, index: number) {
     </DataView>
   </div>
 
-  <!-- Diálogo para crear/editar propiedad -->
-  <Dialog v-model:visible="registerDialogVisible" :style="{ width: '450px' }" :header="$t('myProperties.dialog.header')" modal
-    :draggable="false">
-    <div class="flex flex-col gap-6">
-      <div>
-        <label for="name" class="block font-bold mb-3">{{ $t('myProperties.dialog.name.label') }}</label>
-        <InputText id="name" v-model.trim="newProperty.name" required="true" autofocus
-          :invalid="submitted && !newProperty.name" fluid />
-        <small v-if="submitted && !newProperty.name" class="text-red-500">{{ $t('myProperties.dialog.name.requiredMessage') }}</small>
-      </div>
-      <div>
-        <label for="address" class="block font-bold mb-3">{{ $t('myProperties.dialog.address.label') }}</label>
-        <InputText id="address" v-model.trim="newProperty.address" required="true"
-          :invalid="submitted && !newProperty.address" fluid />
-        <small v-if="submitted && !newProperty.address" class="text-red-500">{{ $t('myProperties.dialog.address.requiredMessage') }}</small>
-      </div>
-      <div>
-        <label for="image" class="block font-bold mb-3">{{ $t('myProperties.dialog.image.label') }}</label>
-        <div class="card flex flex-col items-center gap-6">
-          <FileUpload mode="basic" accept="image/*" @select="onFileSelect" customUpload auto severity="secondary" :choose-label="$t('myProperties.dialog.image.button')"
-            class="p-button-outlined" />
-          <img v-if="src" :src="src" alt="image" class="shadow-md rounded-xl w-full sm:w-64" />
-        </div>
-      </div>
-    </div>
-
-    <template #footer>
-      <Button :label="$t('myProperties.dialog.cancel')" icon="pi pi-times" text @click="hideDialog" />
-      <Button icon="pi pi-check" :label="registeringProperty ? $t('myProperties.dialog.register.inProgress') : $t('myProperties.dialog.register.default')"
-        :loading="registeringProperty" :disabled="registeringProperty" @click="saveProperty" />
-    </template>
-  </Dialog>
+  <!-- DIALOG FOR REGISTER/EDIT PROPERTY -->
+  <PropertyDialog
+    :visible="registerDialogVisible"
+    :property="currentProperty"
+    :isEditing="isEditing"
+    @update:visible="registerDialogVisible = $event"
+    @refresh="loadProperties"
+  />
 </template>

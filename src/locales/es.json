@@ -123,7 +123,8 @@
     "viewAreas": "Ver áreas",
     "edit": "Edit",
     "dialog": {
-      "header": "Detalles de la Propiedad",
+      "header": "Registrar Propiedad",
+      "editHeader": "Editar Propiedad",
       "name": {
         "label": "Nombre",
         "requiredMessage": "El nombre es obligatorio."
@@ -141,11 +142,14 @@
       "register": {
         "default": "Registrar",
         "inProgress": "Registrando..."
+      },
+      "edit": {
+        "default": "Editar",
+        "inProgress": "Editando..."
       }
     },
     "menu": {
-      "edit": "Editar",
-      "delete": "Eliminar"
+      "edit": "Editar"
     },
     "confirm": {
       "header": "Confirmar",
@@ -159,6 +163,10 @@
       "propertyCreated": {
         "summary": "Éxito",
         "detail": "Propiedad creada"
+      },
+      "propertyEdited": {
+        "summary": "Éxito",
+        "detail": "Propiedad editada"
       },
       "error": {
         "summary": "Error",
