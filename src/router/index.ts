@@ -119,7 +119,7 @@ const router = createRouter({
               path: 'charts',
               name: 'charts',
               component: () => import('@/views/uikit/ChartDoc.vue')
-            },
+            }
           ]
         }
       ]

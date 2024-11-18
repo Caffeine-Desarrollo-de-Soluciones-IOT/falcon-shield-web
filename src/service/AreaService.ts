@@ -5,8 +5,15 @@ import type { IApiResponse } from '../interfaces/common';
 const serviceName = '/areas';
 
 export const AreaService = {
+  async getAreas(): Promise<IApiResponse<IArea[]>> {
+    const response = await httpClient.get<IApiResponse<IArea[]>>(`${serviceName}`);
+    return response.data;
+  },
+
   async getAreasByPropertyId(propertyId: number): Promise<IApiResponse<IArea[]>> {
-    const response = await httpClient.get<IApiResponse<IArea[]>>(`${serviceName}/all/${propertyId}`);
+    const response = await httpClient.get<IApiResponse<IArea[]>>(
+      `${serviceName}/all/${propertyId}`
+    );
     return response.data;
   },
 
@@ -19,7 +26,10 @@ export const AreaService = {
     if (!request.icon) {
       request.icon = '1';
     }
-    const response = await httpClient.post<IApiResponse>(`${serviceName}/register/${propertyId}`, request);
+    const response = await httpClient.post<IApiResponse>(
+      `${serviceName}/register/${propertyId}`,
+      request
+    );
     return response.data;
   },
 
