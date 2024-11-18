@@ -5,8 +5,8 @@ import type { IApiResponse } from '../interfaces/common';
 const serviceName = '/areas';
 
 export const AreaService = {
-  async getAreas(): Promise<IApiResponse<IArea[]>> {
-    const response = await httpClient.get<IApiResponse<IArea[]>>(`${serviceName}`);
+  async getRegisteredAreas(): Promise<IApiResponse<IArea[]>> {
+    const response = await httpClient.get<IApiResponse<IArea[]>>(`${serviceName}/all`);
     return response.data;
   },
 

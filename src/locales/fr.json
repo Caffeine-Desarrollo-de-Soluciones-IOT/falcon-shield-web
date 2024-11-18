@@ -38,8 +38,7 @@
       "propertiesTitle": "Propriétés",
       "areasTitle": "Zones",
       "devicesTitle": "Appareils",
-      "planTitle": "Votre plan",
-      "month": "par mois"
+      "eventTitle": "Événements"
     },
     "devices": {
       "title": "Appareils",
@@ -212,6 +211,41 @@
     "layout": {
       "grid": "Grille",
       "list": "Liste"
+    }
+  },
+  "myAreas": {
+    "title": "Zones de ",
+    "description": "Gérez vos zones",
+    "registerArea": "Enregistrer une zone",
+    "viewAllDevicesButton": "Voir tous les appareils",
+    "loading": "Chargement...",
+    "viewDeviceButton": "Voir les appareils",
+    "menu": {
+      "edit": "Modifier"
+    },
+    "popoverAdd": {
+      "title": "Détails de la zone",
+      "name": "Nom",
+      "icon": "Icône",
+      "selectButton": "Sélectionner une icône",
+      "cancelButton": "Annuler",
+      "createButton": "Créer"
+    },
+    "icons": {
+      "default": "Par défaut",
+      "kitchen": "Cuisine",
+      "garage": "Garage",
+      "livingRoom": "Salon",
+      "DiningRoom": "Salle à manger",
+      "bedroom": "Chambre"
+    },
+    "toast": {
+      "error": "Erreur",
+      "errorFetchingAreas": "Erreur lors de la récupération des zones",
+      "errorFetchingDevices": "Erreur lors de la récupération des appareils",
+      "success": "Succès",
+      "areaCreated": "Zone créée",
+      "failedCreate": "Échec de la création de la zone"
     }
   },
   "events": {

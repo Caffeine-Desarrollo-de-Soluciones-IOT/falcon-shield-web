@@ -25,7 +25,6 @@ interface FetchDataParams<T> {
 
 const toast = useToast();
 
-const events = ref<IDeviceEvent[]>([]);
 const loading = ref(false);
 const user = ref<User | null>(null);
 
@@ -44,6 +43,11 @@ const loadingDevices = ref(false);
 const registeredDevices = ref<IRegisteredDevice[]>([]);
 const devicesCount = ref(0);
 
+// Devices card
+const loadingEvents = ref(false);
+const registeredEvents = ref<IDeviceEvent[]>([]);
+const eventsCount = ref(0);
+
 // Chart
 const chartData = ref();
 const chartOptions = ref();
@@ -52,14 +56,10 @@ onMounted(async () => {
   await fetchRegisteredProperties();
   await fetchRegisteredAreas();
   await fetchRegisteredDevices();
-  //await fetchRegisteredEvents();
+  await fetchRegisteredEvents();
   AuthService.getUser().then((data) => (user.value = data))
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
-  console.log("chartData: ", chartData)
-  console.log('Properties:', registeredProperties.value);
-  console.log('Devices:', registeredDevices.value);
-
 });
 
 const setChartData = () => {
@@ -127,12 +127,12 @@ function getGreeting() {
   const userName = user.value?.profile.name ?? '--';
 
   if (hour >= 5 && hour < 12) {
-    return t('dashboard.greeting.morning', { name: userName }) + ' 🌤️';
+    return t('dashboard.greeting.morning', { name: userName });
   }
   if (hour >= 12 && hour < 18) {
-    return t('dashboard.greeting.afternoon', { name: userName }) + ' ⛅️';
+    return t('dashboard.greeting.afternoon', { name: userName });
   }
-  return t('dashboard.greeting.evening', { name: userName }) + ' 🌙';
+  return t('dashboard.greeting.evening', { name: userName });
 }
 
 
@@ -169,11 +169,12 @@ async function fetchRegisteredProperties(): Promise<void> {
     countVar: propertiesCount,
     errorMessage: 'Error fetching properties'
   });
+  console.log("properties: ", registeredProperties);
 }
 
 async function fetchRegisteredAreas(): Promise<void> {
   await fetchData({
-    serviceMethod: AreaService.getAreas,
+    serviceMethod: AreaService.getRegisteredAreas,
     loadingFlag: loadingAreas,
     registeredList: registeredAreas,
     countVar: areasCount,
@@ -194,8 +195,9 @@ async function fetchRegisteredDevices(): Promise<void> {
 async function fetchRegisteredEvents() {
   try {
     loading.value = true;
-    const res = await EventService.getEvents(1);
-    events.value = res.data;
+    const res = await EventService.getRegisteredEvents();
+    registeredEvents.value = res.data;
+    eventsCount.value = res.data.length;
   } catch (error) {
     toast.add({
       severity: 'error',
@@ -226,7 +228,7 @@ async function fetchRegisteredEvents() {
           </div>
           <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border"
             style="width: 2.5rem; height: 2.5rem">
-            <i class="pi pi-shopping-cart text-blue-500 !text-xl"></i>
+            <i class="pi pi-building text-blue-500 !text-xl"></i>
           </div>
         </div>
       </div>
@@ -237,11 +239,12 @@ async function fetchRegisteredEvents() {
         <div class="flex justify-between mb-4">
           <div>
             <span class="block text-muted-color font-medium mb-4">{{ $t('dashboard.cards.areasTitle') }}</span>
-            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ areasCount || '--' }}</div>
+            <ProgressSpinner v-if="loadingAreas" style="width: 30px; height: 50px" fill="transparent" />
+            <div v-else class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ areasCount || '--' }}</div>
           </div>
           <div class="flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-border"
             style="width: 2.5rem; height: 2.5rem">
-            <i class="pi pi-dollar text-orange-500 !text-xl"></i>
+            <i class="pi pi-box text-orange-500 !text-xl"></i>
           </div>
         </div>
       </div>
@@ -252,11 +255,13 @@ async function fetchRegisteredEvents() {
         <div class="flex justify-between mb-4">
           <div>
             <span class="block text-muted-color font-medium mb-4">{{ $t('dashboard.cards.devicesTitle') }}</span>
-            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ devicesCount || '--' }}</div>
+            <ProgressSpinner v-if="loadingDevices" style="width: 30px; height: 50px" fill="transparent" />
+            <div v-else class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ devicesCount || '--' }}
+            </div>
           </div>
           <div class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border"
             style="width: 2.5rem; height: 2.5rem">
-            <i class="pi pi-users text-cyan-500 !text-xl"></i>
+            <i class="pi pi-mobile text-cyan-500 !text-xl"></i>
           </div>
         </div>
       </div>
@@ -266,13 +271,14 @@ async function fetchRegisteredEvents() {
       <div class="card mb-0">
         <div class="flex justify-between mb-4">
           <div>
-            <span class="block text-muted-color font-medium mb-4">{{ $t('dashboard.cards.planTitle') }}: Free</span>
-            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">$0 {{ $t('dashboard.cards.month') }}
+            <span class="block text-muted-color font-medium mb-4">{{ $t('dashboard.cards.eventTitle') }}</span>
+            <ProgressSpinner v-if="loadingEvents" style="width: 30px; height: 50px" fill="transparent" />
+            <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ eventsCount || '--' }}
             </div>
           </div>
           <div class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border"
             style="width: 2.5rem; height: 2.5rem">
-            <i class="pi pi-comment text-purple-500 !text-xl"></i>
+            <i class="pi pi-exclamation-circle text-purple-500 !text-xl"></i>
           </div>
         </div>
       </div>
@@ -319,14 +325,15 @@ async function fetchRegisteredEvents() {
           <div class="font-semibold text-xl">{{ $t('dashboard.events.title') }}</div>
         </div>
         <ul class="p-0 mx-0 mt-0 mb-6 list-none">
-          <li class="flex items-center py-2 border-b border-surface">
+          <li v-for="event in registeredEvents" :key="event.id" class="flex items-center py-2 border-b border-surface">
             <div
               class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-full mr-4 shrink-0">
-              <i class="pi pi-dollar !text-xl text-blue-500"></i>
+              <i class="pi pi-bell !text-xl text-blue-500"></i>
             </div>
-            <span class="text-surface-900 dark:text-surface-0 leading-normal">Richard Jones
-              <span class="text-surface-700 dark:text-surface-100">has purchased a blue t-shirt for <span
-                  class="text-primary font-bold">$79.00</span></span>
+            <span class="text-surface-900 dark:text-surface-0 leading-normal">{{ event.type }} - {{ event.description }}
+              <small class="block text-surface-700 dark:text-surface-100">
+                {{ new Date(event.timestamp).toLocaleString() }}
+              </small>
             </span>
           </li>
         </ul>
